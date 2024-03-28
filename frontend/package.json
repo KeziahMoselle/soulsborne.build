@@ -1,5 +1,5 @@
 {
-  "frontend": "c-users-mehdi-documents-github-soulsborne-build-frontend",
+  "name": "frontend",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
