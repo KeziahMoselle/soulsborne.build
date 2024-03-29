@@ -95,27 +95,27 @@ const ERWeapons: CollectionConfig = {
       fields: [
         {
           name: 'physical',
-          label: 'Physical Damage',
+          label: 'Physical',
           type: 'number',
         },
         {
           name: 'magic',
-          label: 'Magic Damage',
+          label: 'Magic',
           type: 'number',
         },
         {
           name: 'fire',
-          label: 'Fire Damage',
+          label: 'Fire',
           type: 'number',
         },
         {
           name: 'lightning',
-          label: 'Lightning Damage',
+          label: 'Lightning',
           type: 'number',
         },
         {
           name: 'holy',
-          label: 'Holy Damage',
+          label: 'Holy',
           type: 'number',
         },
         {
@@ -150,7 +150,8 @@ const ERWeapons: CollectionConfig = {
             'B',
             'C',
             'D',
-            'E'
+            'E',
+            'TODO'
           ],
           required: true,
         },
