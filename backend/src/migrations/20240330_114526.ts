@@ -5,6 +5,12 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
 await payload.db.drizzle.execute(sql`
 
 DO $$ BEGIN
+ CREATE TYPE "enum_users_role" AS ENUM('admin', 'developer', 'editor', 'user');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
  CREATE TYPE "enum_er_weapons_scaling_letter" AS ENUM('S', 'A', 'B', 'C', 'D', 'E', 'TODO');
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -18,6 +24,7 @@ END $$;
 
 CREATE TABLE IF NOT EXISTS "users" (
 	"id" serial PRIMARY KEY NOT NULL,
+	"role" "enum_users_role" NOT NULL,
 	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
 	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
 	"email" varchar NOT NULL,

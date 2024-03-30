@@ -17,6 +17,11 @@ export default buildConfig({
     user: Users.slug,
     bundler: webpackBundler(),
   },
+  csrf: [
+    // whitelist of domains to allow cookie auth from
+    'https://soulsborne-build.pages.dev',
+    'http://localhost:4321',
+  ],
   editor: slateEditor({}),
   collections: [Users, Archetype, Restrictions, ...ERCollections],
   typescript: {
