@@ -2,11 +2,18 @@ import { CollectionConfig } from 'payload/types'
 
 const ERMedia: CollectionConfig = {
   slug: 'er-media',
+  labels: {
+    singular: 'Media',
+    plural: 'Medias',
+  },
+  admin: {
+    group: 'Elden Ring',
+  },
   upload: {
     staticURL: '/er-media',
     staticDir: 'er-media',
     disableLocalStorage: true,
-    adminThumbnail: ({ doc }) => `https://place-hold.it/300x300`,
+    adminThumbnail: ({ doc }) => `https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/${doc.filename}`,
     mimeTypes: ['image/*', 'audio/*', 'video/*'],
   },
   fields: [
