@@ -31,6 +31,18 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     bundler: webpackBundler(),
+    webpack: (config) => {
+      return {
+          ...config,
+          resolve: {
+              ...config.resolve,
+              alias: {
+                  ...config.resolve.alias,
+                  'fs': {},
+              }
+          }
+      };
+  },
   },
   csrf: [
     // whitelist of domains to allow cookie auth from
