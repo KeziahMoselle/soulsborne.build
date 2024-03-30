@@ -1,4 +1,5 @@
 import { CollectionConfig } from 'payload/types'
+import { isVisitor } from '../../access/isVisitor';
 
 const ERMedia: CollectionConfig = {
   slug: 'er-media',
@@ -8,6 +9,9 @@ const ERMedia: CollectionConfig = {
   },
   admin: {
     group: 'Elden Ring',
+  },
+  access: {
+    read: isVisitor
   },
   upload: {
     staticURL: '/er-media',

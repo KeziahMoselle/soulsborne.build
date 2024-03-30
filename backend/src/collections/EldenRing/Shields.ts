@@ -1,11 +1,11 @@
 import { CollectionConfig } from 'payload/types'
 import { isVisitor } from '../../access/isVisitor'
 
-const ERWeapons: CollectionConfig = {
-  slug: 'er-weapons',
+const ERShields: CollectionConfig = {
+  slug: 'er-shields',
   labels: {
-    singular: 'Weapon',
-    plural: 'Weapons',
+    singular: 'Shield',
+    plural: 'Shields',
   },
   admin: {
     group: 'Elden Ring',
@@ -23,10 +23,14 @@ const ERWeapons: CollectionConfig = {
       type: 'upload',
     }, */
     {
-      name: 'weapon_type',
-      label: 'Weapon Type',
-      type: 'relationship',
-      relationTo: 'er-weapon-types',
+      name: 'shield_type',
+      label: 'Shield Type',
+      type: 'select',
+      options: [
+        'Small Shield',
+        'Medium Shield',
+        'Greatshield'
+      ],
       admin: {
         position: 'sidebar'
       }
@@ -197,4 +201,4 @@ const ERWeapons: CollectionConfig = {
   ],
 }
 
-export default ERWeapons
+export default ERShields

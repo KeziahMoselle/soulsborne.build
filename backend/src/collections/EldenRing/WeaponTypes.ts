@@ -1,4 +1,5 @@
 import { CollectionConfig } from 'payload/types'
+import { isVisitor } from '../../access/isVisitor'
 
 const ERWeaponTypes: CollectionConfig = {
   slug: 'er-weapon-types',
@@ -10,11 +11,15 @@ const ERWeaponTypes: CollectionConfig = {
     group: 'Elden Ring',
     useAsTitle: 'name',
   },
+  access: {
+    read: isVisitor
+  },
   fields: [
     {
       name: 'name',
       label: 'Name',
-      type: 'text'
+      type: 'text',
+      unique: true,
     },
     {
       name: 'description',

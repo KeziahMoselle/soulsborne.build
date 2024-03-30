@@ -1,11 +1,11 @@
 import { CollectionConfig } from 'payload/types'
 import { isVisitor } from '../../access/isVisitor'
 
-const ERStatistics: CollectionConfig = {
-  slug: 'er-skills',
+const ERIncantationType: CollectionConfig = {
+  slug: 'er-incantation-types',
   labels: {
-    singular: 'Skill',
-    plural: 'Skills',
+    singular: 'Incantation Type',
+    plural: 'Incantations Types',
   },
   admin: {
     group: 'Elden Ring',
@@ -15,6 +15,11 @@ const ERStatistics: CollectionConfig = {
     read: isVisitor
   },
   fields: [
+    /* {
+      name: 'image',
+      label: 'Image',
+      type: 'upload',
+    }, */
     {
       name: 'name',
       label: 'Name',
@@ -22,24 +27,11 @@ const ERStatistics: CollectionConfig = {
       unique: true,
     },
     {
-      name: 'fp_cost',
-      label: 'FP Cost',
-      type: 'number',
-      admin: {
-        position: 'sidebar'
-      }
-    },
-    {
       name: 'description',
       label: 'Description',
-      type: 'richText'
-    },
-    {
-      name: 'location',
-      label: 'Location',
       type: 'richText'
     },
   ],
 }
 
-export default ERStatistics
+export default ERIncantationType

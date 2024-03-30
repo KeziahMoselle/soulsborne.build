@@ -4,8 +4,8 @@ import path from 'path'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { webpackBundler } from '@payloadcms/bundler-webpack'
 import { slateEditor } from '@payloadcms/richtext-slate'
-import { cloudStorage } from '@payloadcms/plugin-cloud-storage'
-import { s3Adapter } from '@payloadcms/plugin-cloud-storage/s3'
+// import { cloudStorage } from '@payloadcms/plugin-cloud-storage'
+// import { s3Adapter } from '@payloadcms/plugin-cloud-storage/s3'
 
 import { seed } from './endpoints/seed'
 
@@ -14,8 +14,10 @@ import Archetype from './collections/Archetype'
 import Restrictions from './collections/Restrictions'
 import ERCollections from './collections/EldenRing'
 
+// const mockModulePath = path.resolve(__dirname, 'mocks/emptyObject.js')
 
-const adapter = s3Adapter({
+
+/* const adapter = s3Adapter({
   config: {
     credentials: {
       accessKeyId: process.env.S3_ACCESS_KEY_ID,
@@ -25,24 +27,27 @@ const adapter = s3Adapter({
     endpoint: process.env.S3_ENDPOINT
   },
   bucket: process.env.S3_BUCKET,
-})
+}) */
 
 export default buildConfig({
   admin: {
     user: Users.slug,
     bundler: webpackBundler(),
-    webpack: (config) => {
+    /* webpack: (config) => {
       return {
-          ...config,
-          resolve: {
-              ...config.resolve,
-              alias: {
-                  ...config.resolve.alias,
-                  'fs': {},
-              }
-          }
-      };
-  },
+        ...config,
+        resolve: {
+          ...config.resolve,
+          alias: {
+            ...config.resolve.alias,
+            fs: mockModulePath,
+            util: mockModulePath,
+            os: mockModulePath,
+            process: mockModulePath,
+          },
+        },
+      }
+    }, */
   },
   csrf: [
     // whitelist of domains to allow cookie auth from
@@ -60,23 +65,25 @@ export default buildConfig({
     schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),
   },
   endpoints: [
-    // The seed endpoint is used to populate the database with some example data
-    // You should delete this endpoint before deploying your site to production
-    {
+    process.env.NODE_ENV === 'development' ? {
       path: '/seed',
       method: 'get',
       handler: seed,
+    } : {
+      path: '/seed',
+      method: 'get',
+      handler: () => {},
     },
   ],
   plugins: [
-    cloudStorage({
+    /* cloudStorage({
       enabled: true,
       collections: {
         'er-medias': {
           adapter,
         },
       },
-    }),
+    }), */
   ],
   db: postgresAdapter({
     pool: {

@@ -1,11 +1,11 @@
 import { CollectionConfig } from 'payload/types'
 import { isVisitor } from '../../access/isVisitor'
 
-const ERStatistics: CollectionConfig = {
-  slug: 'er-skills',
+const ERStatusEffects: CollectionConfig = {
+  slug: 'er-status-effects',
   labels: {
-    singular: 'Skill',
-    plural: 'Skills',
+    singular: 'Status Effect',
+    plural: 'Status Effects',
   },
   admin: {
     group: 'Elden Ring',
@@ -15,6 +15,11 @@ const ERStatistics: CollectionConfig = {
     read: isVisitor
   },
   fields: [
+    /* {
+      name: 'image',
+      label: 'Image',
+      type: 'upload',
+    }, */
     {
       name: 'name',
       label: 'Name',
@@ -22,24 +27,16 @@ const ERStatistics: CollectionConfig = {
       unique: true,
     },
     {
-      name: 'fp_cost',
-      label: 'FP Cost',
-      type: 'number',
-      admin: {
-        position: 'sidebar'
-      }
-    },
-    {
       name: 'description',
       label: 'Description',
       type: 'richText'
     },
     {
-      name: 'location',
-      label: 'Location',
+      name: 'effect',
+      label: 'Effect',
       type: 'richText'
     },
   ],
 }
 
-export default ERStatistics
+export default ERStatusEffects

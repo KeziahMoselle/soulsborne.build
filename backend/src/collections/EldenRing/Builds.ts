@@ -1,4 +1,5 @@
 import { CollectionConfig } from 'payload/types'
+import { isVisitor } from '../../access/isVisitor'
 
 const ERBuilds: CollectionConfig = {
   slug: 'er-builds',
@@ -9,6 +10,9 @@ const ERBuilds: CollectionConfig = {
   admin: {
     group: 'Elden Ring',
     useAsTitle: 'name',
+  },
+  access: {
+    read: isVisitor
   },
   fields: [
     /**
@@ -86,6 +90,7 @@ const ERBuilds: CollectionConfig = {
               name: 'mainhand_weapons',
               label: 'Mainhand weapons',
               type: 'array',
+              maxRows: 3,
               fields: [
                 {
                   name: 'weapon',
@@ -105,12 +110,19 @@ const ERBuilds: CollectionConfig = {
               name: 'offhand_weapons',
               label: 'Off-hand weapons',
               type: 'array',
+              maxRows: 3,
               fields: [
                 {
                   name: 'weapon',
                   label: 'Weapon',
                   type: 'relationship',
                   relationTo: 'er-weapons',
+                },
+                {
+                  name: 'shield',
+                  label: 'Shield',
+                  type: 'relationship',
+                  relationTo: 'er-shields',
                 },
                 {
                   name: 'ash_of_war',
@@ -120,16 +132,40 @@ const ERBuilds: CollectionConfig = {
                 }
               ]
             },
-            // todo: arrows & bolts
-            // todo: Armor
-            // todo: Talismans
+            {
+              name: 'arrows',
+              label: 'Arrows',
+              type: 'relationship',
+              relationTo: 'er-ammunitions',
+              hasMany: true
+            },
+            {
+              name: 'bolts',
+              label: 'Bolts',
+              type: 'relationship',
+              relationTo: 'er-ammunitions',
+              hasMany: true
+            },
+            {
+              name: 'armors',
+              label: 'Armors',
+              type: 'relationship',
+              relationTo: 'er-armors',
+              hasMany: true
+            },
+            {
+              name: 'talismans',
+              label: 'Talismans',
+              type: 'relationship',
+              relationTo: 'er-talismans',
+              hasMany: true
+            },
           ]
         },
         {
           label: 'Statistics',
           description: 'Required attributes to use this build',
           fields: [
-            // todo: Starting class
             {
               name: 'starting_class',
               label: 'Starting Class',

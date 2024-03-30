@@ -11,11 +11,20 @@ export interface Config {
     users: User;
     archetypes: Archetype;
     restrictions: Restriction;
+    'er-ammunitions': ErAmmunition;
+    'er-armors': ErArmor;
     'er-ashes-of-war': ErAshesOfWar;
     'er-builds': ErBuild;
     'er-classes': ErClass;
+    'er-incantations': ErIncantation;
+    'er-incantation-types': ErIncantationType;
+    'er-shields': ErShield;
     'er-skills': ErSkill;
+    'er-sorceries': ErSorcery;
+    'er-sorcery-types': ErSorceryType;
     'er-statistics': ErStatistic;
+    'er-status-effects': ErStatusEffect;
+    'er-talismans': ErTalisman;
     'er-weapon-types': ErWeaponType;
     'er-weapons': ErWeapon;
     'payload-preferences': PayloadPreference;
@@ -29,6 +38,7 @@ export interface Config {
  */
 export interface User {
   id: number;
+  role: 'admin' | 'developer' | 'editor' | 'user';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -67,6 +77,85 @@ export interface Restriction {
         [k: string]: unknown;
       }[]
     | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-ammunitions".
+ */
+export interface ErAmmunition {
+  id: number;
+  ammunition_type?: ('Bolt' | 'Greatbolt') | null;
+  name?: string | null;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  attack?: {
+    physical?: number | null;
+    magic?: number | null;
+    fire?: number | null;
+    lightning?: number | null;
+    holy?: number | null;
+    critical?: number | null;
+  };
+  passives?: (number | null) | ErStatusEffect;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-status-effects".
+ */
+export interface ErStatusEffect {
+  id: number;
+  name?: string | null;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  effect?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-armors".
+ */
+export interface ErArmor {
+  id: number;
+  armor_type?: ('Helm' | 'Chest' | 'Gauntlet' | 'Leg') | null;
+  name?: string | null;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  weight?: number | null;
+  damage_negation?: {
+    physical?: number | null;
+    vs_strike?: number | null;
+    vs_slash?: number | null;
+    vs_pierce?: number | null;
+    magic?: number | null;
+    fire?: number | null;
+    lightning?: number | null;
+    holy?: number | null;
+  };
+  resistance?: {
+    immunity?: number | null;
+    robustness?: number | null;
+    focus?: number | null;
+    vitality?: number | null;
+    poise?: number | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -154,10 +243,15 @@ export interface ErBuild {
   offhand_weapons?:
     | {
         weapon?: (number | null) | ErWeapon;
+        shield?: (number | null) | ErShield;
         ash_of_war?: (number | null) | ErAshesOfWar;
         id?: string | null;
       }[]
     | null;
+  arrows?: (number | ErAmmunition)[] | null;
+  bolts?: (number | ErAmmunition)[] | null;
+  armors?: (number | ErArmor)[] | null;
+  talismans?: (number | ErTalisman)[] | null;
   starting_class?: (number | null) | ErClass;
   statistics?:
     | {
@@ -214,6 +308,7 @@ export interface ErWeapon {
         id?: string | null;
       }[]
     | null;
+  passives?: (number | null) | ErStatusEffect;
   updatedAt: string;
   createdAt: string;
 }
@@ -240,6 +335,76 @@ export interface ErStatistic {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-shields".
+ */
+export interface ErShield {
+  id: number;
+  shield_type?: ('Small Shield' | 'Medium Shield' | 'Greatshield') | null;
+  skill?: (number | null) | ErSkill;
+  name?: string | null;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  weight?: number | null;
+  attack?: {
+    physical?: number | null;
+    magic?: number | null;
+    fire?: number | null;
+    lightning?: number | null;
+    holy?: number | null;
+    critical?: number | null;
+  };
+  defense?: {
+    physical?: number | null;
+    magic?: number | null;
+    fire?: number | null;
+    lightning?: number | null;
+    holy?: number | null;
+    boost?: number | null;
+  };
+  scaling?:
+    | {
+        statistic: number | ErStatistic;
+        letter: 'S' | 'A' | 'B' | 'C' | 'D' | 'E' | 'TODO';
+        id?: string | null;
+      }[]
+    | null;
+  requirements?:
+    | {
+        statistic: number | ErStatistic;
+        value: number;
+        id?: string | null;
+      }[]
+    | null;
+  passives?: (number | null) | ErStatusEffect;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-talismans".
+ */
+export interface ErTalisman {
+  id: number;
+  weight?: number | null;
+  name?: string | null;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  effect?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "er-classes".
  */
 export interface ErClass {
@@ -251,6 +416,94 @@ export interface ErClass {
         stat?: (number | null) | ErStatistic;
         value?: number | null;
         id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-incantations".
+ */
+export interface ErIncantation {
+  id: number;
+  name?: string | null;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  effect?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  incantation_type?: (number | null) | ErIncantationType;
+  slots?: number | null;
+  requirements?:
+    | {
+        statistic: number | ErStatistic;
+        value: number;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-incantation-types".
+ */
+export interface ErIncantationType {
+  id: number;
+  name?: string | null;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-sorceries".
+ */
+export interface ErSorcery {
+  id: number;
+  name?: string | null;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  effect?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  sorcery_type?: (number | null) | ErSorceryType;
+  slots?: number | null;
+  requirements?:
+    | {
+        statistic: number | ErStatistic;
+        value: number;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-sorcery-types".
+ */
+export interface ErSorceryType {
+  id: number;
+  name?: string | null;
+  description?:
+    | {
+        [k: string]: unknown;
       }[]
     | null;
   updatedAt: string;

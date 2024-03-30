@@ -9,8 +9,11 @@ const Users: CollectionConfig = {
   fields: [
     {
       name: 'role',
+      label: 'Role',
       type: 'select',
       required: true,
+      saveToJWT: true,
+      defaultValue: 'user',
       options: [
         'admin',
         'developer',

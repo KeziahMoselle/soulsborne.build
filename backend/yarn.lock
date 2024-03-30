@@ -1700,7 +1700,7 @@
     to-snake-case "1.0.0"
     uuid "9.0.0"
 
-"@payloadcms/plugin-cloud-storage@^1.0.19":
+"@payloadcms/plugin-cloud-storage@1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@payloadcms/plugin-cloud-storage/-/plugin-cloud-storage-1.1.2.tgz#deb0f5131b34377c61ddd0cc70a0366e87e35c5a"
   integrity sha512-wBpEWv4VdfltBqEi5ECSrKQ/TtNvmBWT4DLCrTCOhpNuD8dYD2rp+0Eoj7cF8f6wU7DpS5rvdQ/8gxlqh0Armw==

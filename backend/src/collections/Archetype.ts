@@ -1,4 +1,5 @@
 import { CollectionConfig } from 'payload/types'
+import { isVisitor } from '../access/isVisitor'
 
 const Archetypes: CollectionConfig = {
   slug: 'archetypes',
@@ -8,6 +9,9 @@ const Archetypes: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
+  },
+  access: {
+    read: isVisitor
   },
   fields: [
     {
