@@ -11,6 +11,18 @@ EXCEPTION
 END $$;
 
 DO $$ BEGIN
+ CREATE TYPE "enum_er_affinities_type" AS ENUM('Physical', 'Magic', 'Flame', 'Golden', 'Occult');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+ CREATE TYPE "enum__er_affinities_v_version_type" AS ENUM('Physical', 'Magic', 'Flame', 'Golden', 'Occult');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
  CREATE TYPE "enum_er_ammunitions_ammunition_type" AS ENUM('Bolt', 'Greatbolt');
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -72,6 +84,7 @@ END $$;
 
 CREATE TABLE IF NOT EXISTS "users" (
 	"id" serial PRIMARY KEY NOT NULL,
+	"name" varchar NOT NULL,
 	"role" "enum_users_role" NOT NULL,
 	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
 	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -98,6 +111,43 @@ CREATE TABLE IF NOT EXISTS "restrictions" (
 	"description" jsonb,
 	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
 	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS "er_affinities" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"name" varchar,
+	"description" jsonb,
+	"type" "enum_er_affinities_type",
+	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS "er_affinities_rels" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"order" integer,
+	"parent_id" integer NOT NULL,
+	"path" varchar NOT NULL,
+	"er_statistics_id" integer
+);
+
+CREATE TABLE IF NOT EXISTS "_er_affinities_v" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"version_name" varchar,
+	"version_description" jsonb,
+	"version_type" "enum__er_affinities_v_version_type",
+	"version_updated_at" timestamp(3) with time zone,
+	"version_created_at" timestamp(3) with time zone,
+	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS "_er_affinities_v_rels" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"order" integer,
+	"parent_id" integer NOT NULL,
+	"path" varchar NOT NULL,
+	"er_affinities_id" integer,
+	"er_statistics_id" integer
 );
 
 CREATE TABLE IF NOT EXISTS "er_ammunitions" (
@@ -220,7 +270,8 @@ CREATE TABLE IF NOT EXISTS "er_ashes_of_war_rels" (
 	"parent_id" integer NOT NULL,
 	"path" varchar NOT NULL,
 	"er_skills_id" integer,
-	"er_weapon_types_id" integer
+	"er_weapon_types_id" integer,
+	"er_affinities_id" integer
 );
 
 CREATE TABLE IF NOT EXISTS "er_builds_mainhand_weapons" (
@@ -279,6 +330,7 @@ CREATE TABLE IF NOT EXISTS "er_classes_statistics" (
 CREATE TABLE IF NOT EXISTS "er_classes" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" varchar,
+	"rune_level" numeric,
 	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
 	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
 );
@@ -289,6 +341,7 @@ CREATE TABLE IF NOT EXISTS "er_classes_rels" (
 	"parent_id" integer NOT NULL,
 	"path" varchar NOT NULL,
 	"er_weapons_id" integer,
+	"er_shields_id" integer,
 	"er_statistics_id" integer
 );
 
@@ -305,6 +358,7 @@ CREATE TABLE IF NOT EXISTS "er_incantations" (
 	"description" jsonb,
 	"effect" jsonb,
 	"slots" numeric,
+	"cost" numeric,
 	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
 	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
 );
@@ -332,6 +386,7 @@ CREATE TABLE IF NOT EXISTS "_er_incantations_v" (
 	"version_description" jsonb,
 	"version_effect" jsonb,
 	"version_slots" numeric,
+	"version_cost" numeric,
 	"version_updated_at" timestamp(3) with time zone,
 	"version_created_at" timestamp(3) with time zone,
 	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -476,6 +531,7 @@ CREATE TABLE IF NOT EXISTS "er_sorceries" (
 	"description" jsonb,
 	"effect" jsonb,
 	"slots" numeric,
+	"cost" numeric,
 	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
 	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
 );
@@ -503,6 +559,7 @@ CREATE TABLE IF NOT EXISTS "_er_sorceries_v" (
 	"version_description" jsonb,
 	"version_effect" jsonb,
 	"version_slots" numeric,
+	"version_cost" numeric,
 	"version_updated_at" timestamp(3) with time zone,
 	"version_created_at" timestamp(3) with time zone,
 	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -710,10 +767,23 @@ CREATE TABLE IF NOT EXISTS "payload_migrations" (
 	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
 );
 
+CREATE UNIQUE INDEX IF NOT EXISTS "users_name_idx" ON "users" ("name");
 CREATE INDEX IF NOT EXISTS "users_created_at_idx" ON "users" ("created_at");
 CREATE UNIQUE INDEX IF NOT EXISTS "users_email_idx" ON "users" ("email");
 CREATE INDEX IF NOT EXISTS "archetypes_created_at_idx" ON "archetypes" ("created_at");
 CREATE INDEX IF NOT EXISTS "restrictions_created_at_idx" ON "restrictions" ("created_at");
+CREATE UNIQUE INDEX IF NOT EXISTS "er_affinities_name_idx" ON "er_affinities" ("name");
+CREATE INDEX IF NOT EXISTS "er_affinities_created_at_idx" ON "er_affinities" ("created_at");
+CREATE INDEX IF NOT EXISTS "er_affinities_rels_order_idx" ON "er_affinities_rels" ("order");
+CREATE INDEX IF NOT EXISTS "er_affinities_rels_parent_idx" ON "er_affinities_rels" ("parent_id");
+CREATE INDEX IF NOT EXISTS "er_affinities_rels_path_idx" ON "er_affinities_rels" ("path");
+CREATE INDEX IF NOT EXISTS "_er_affinities_v_version_version_name_idx" ON "_er_affinities_v" ("version_name");
+CREATE INDEX IF NOT EXISTS "_er_affinities_v_version_version_created_at_idx" ON "_er_affinities_v" ("version_created_at");
+CREATE INDEX IF NOT EXISTS "_er_affinities_v_created_at_idx" ON "_er_affinities_v" ("created_at");
+CREATE INDEX IF NOT EXISTS "_er_affinities_v_updated_at_idx" ON "_er_affinities_v" ("updated_at");
+CREATE INDEX IF NOT EXISTS "_er_affinities_v_rels_order_idx" ON "_er_affinities_v_rels" ("order");
+CREATE INDEX IF NOT EXISTS "_er_affinities_v_rels_parent_idx" ON "_er_affinities_v_rels" ("parent_id");
+CREATE INDEX IF NOT EXISTS "_er_affinities_v_rels_path_idx" ON "_er_affinities_v_rels" ("path");
 CREATE UNIQUE INDEX IF NOT EXISTS "er_ammunitions_name_idx" ON "er_ammunitions" ("name");
 CREATE INDEX IF NOT EXISTS "er_ammunitions_created_at_idx" ON "er_ammunitions" ("created_at");
 CREATE INDEX IF NOT EXISTS "er_ammunitions_rels_order_idx" ON "er_ammunitions_rels" ("order");
@@ -859,6 +929,36 @@ CREATE INDEX IF NOT EXISTS "payload_preferences_rels_parent_idx" ON "payload_pre
 CREATE INDEX IF NOT EXISTS "payload_preferences_rels_path_idx" ON "payload_preferences_rels" ("path");
 CREATE INDEX IF NOT EXISTS "payload_migrations_created_at_idx" ON "payload_migrations" ("created_at");
 DO $$ BEGIN
+ ALTER TABLE "er_affinities_rels" ADD CONSTRAINT "er_affinities_rels_parent_id_er_affinities_id_fk" FOREIGN KEY ("parent_id") REFERENCES "er_affinities"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+ ALTER TABLE "er_affinities_rels" ADD CONSTRAINT "er_affinities_rels_er_statistics_id_er_statistics_id_fk" FOREIGN KEY ("er_statistics_id") REFERENCES "er_statistics"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+ ALTER TABLE "_er_affinities_v_rels" ADD CONSTRAINT "_er_affinities_v_rels_parent_id__er_affinities_v_id_fk" FOREIGN KEY ("parent_id") REFERENCES "_er_affinities_v"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+ ALTER TABLE "_er_affinities_v_rels" ADD CONSTRAINT "_er_affinities_v_rels_er_affinities_id_er_affinities_id_fk" FOREIGN KEY ("er_affinities_id") REFERENCES "er_affinities"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+ ALTER TABLE "_er_affinities_v_rels" ADD CONSTRAINT "_er_affinities_v_rels_er_statistics_id_er_statistics_id_fk" FOREIGN KEY ("er_statistics_id") REFERENCES "er_statistics"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
  ALTER TABLE "er_ammunitions_rels" ADD CONSTRAINT "er_ammunitions_rels_parent_id_er_ammunitions_id_fk" FOREIGN KEY ("parent_id") REFERENCES "er_ammunitions"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -914,6 +1014,12 @@ END $$;
 
 DO $$ BEGIN
  ALTER TABLE "er_ashes_of_war_rels" ADD CONSTRAINT "er_ashes_of_war_rels_er_weapon_types_id_er_weapon_types_id_fk" FOREIGN KEY ("er_weapon_types_id") REFERENCES "er_weapon_types"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+ ALTER TABLE "er_ashes_of_war_rels" ADD CONSTRAINT "er_ashes_of_war_rels_er_affinities_id_er_affinities_id_fk" FOREIGN KEY ("er_affinities_id") REFERENCES "er_affinities"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -1016,6 +1122,12 @@ END $$;
 
 DO $$ BEGIN
  ALTER TABLE "er_classes_rels" ADD CONSTRAINT "er_classes_rels_er_weapons_id_er_weapons_id_fk" FOREIGN KEY ("er_weapons_id") REFERENCES "er_weapons"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+ ALTER TABLE "er_classes_rels" ADD CONSTRAINT "er_classes_rels_er_shields_id_er_shields_id_fk" FOREIGN KEY ("er_shields_id") REFERENCES "er_shields"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -1341,6 +1453,10 @@ await payload.db.drizzle.execute(sql`
 DROP TABLE "users";
 DROP TABLE "archetypes";
 DROP TABLE "restrictions";
+DROP TABLE "er_affinities";
+DROP TABLE "er_affinities_rels";
+DROP TABLE "_er_affinities_v";
+DROP TABLE "_er_affinities_v_rels";
 DROP TABLE "er_ammunitions";
 DROP TABLE "er_ammunitions_rels";
 DROP TABLE "_er_ammunitions_v";

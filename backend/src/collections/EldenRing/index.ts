@@ -1,3 +1,4 @@
+import Affinities from './Affinities';
 import Ammunitions from './Ammunitions';
 import Armors from './Armors';
 import AshesOfWar from './AshesOfWar';
@@ -17,6 +18,7 @@ import WeaponTypes from "./WeaponTypes";
 import Weapons from "./Weapons";
 
 export default [
+  Affinities,
   Ammunitions,
   Armors,
   AshesOfWar,

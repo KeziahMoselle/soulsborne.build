@@ -1,6 +1,6 @@
 import type { PayloadHandler } from 'payload/config'
 
-import type { ErWeapon } from '../payload-types'
+import type { ErAmmunition, ErArmor, ErAshesOfWar, ErIncantation, ErShield, ErSorcery, ErTalisman, ErWeapon } from '../payload-types'
 
 function fetchJSON(url) {
   return fetch(url).then((res) => res.json())
@@ -270,6 +270,88 @@ const WEAPON_TYPES = [
   'Tools'
 ]
 
+const STATUS_EFFECTS = [
+  {
+    name: 'Poison',
+  },
+  {
+    name: 'Scarlet Rot',
+  },
+  {
+    name: 'Blood Loss',
+  },
+  {
+    name: 'Frostbite',
+  },
+  {
+    name: 'Sleep',
+  },
+  {
+    name: 'Madness',
+  },
+  {
+    name: 'Death Blight',
+  },
+]
+
+const AFFINITIES: {
+  name: string;
+  type: 'Physical' | 'Magic' | 'Flame' | 'Golden' | 'Occult'
+}[] = [
+  {
+    name: 'Standard',
+    type: 'Physical'
+  },
+  {
+    name: 'Heavy',
+    type: 'Physical'
+  },
+  {
+    name: 'Keen',
+    type: 'Physical'
+  },
+  {
+    name: 'Quality',
+    type: 'Physical'
+  },
+  {
+    name: 'Magic',
+    type: 'Magic'
+  },
+  {
+    name: 'Cold',
+    type: 'Magic'
+  },
+  {
+    name: 'Fire',
+    type: 'Flame'
+  },
+  {
+    name: 'Flame Art',
+    type: 'Flame'
+  },
+  {
+    name: 'Lightning',
+    type: 'Golden'
+  },
+  {
+    name: 'Sacred',
+    type: 'Golden'
+  },
+  {
+    name: 'Poison',
+    type: 'Occult'
+  },
+  {
+    name: 'Blood',
+    type: 'Occult'
+  },
+  {
+    name: 'Occult',
+    type: 'Occult'
+  },
+]
+
 export const seed: PayloadHandler = async (req, res): Promise<void> => {
   const { user, payload } = req
 
@@ -346,6 +428,29 @@ export const seed: PayloadHandler = async (req, res): Promise<void> => {
       })
     }
 
+    for (const status of STATUS_EFFECTS) {
+      await payload.create({
+        collection: 'er-status-effects',
+        data: {
+          name: status.name
+        }
+      }).catch(() => {
+        // Silence is golden
+      })
+    }
+
+    for (const affinity of AFFINITIES) {
+      await payload.create({
+        collection: 'er-affinities',
+        data: {
+          name: affinity.name,
+          type: affinity.type
+        }
+      }).catch(() => {
+        // Silence is golden
+      })
+    }
+
     const { docs: statistics } = await payload.find({
       collection: 'er-statistics',
       limit: 100,
@@ -353,6 +458,11 @@ export const seed: PayloadHandler = async (req, res): Promise<void> => {
 
     const { docs: weaponTypes } = await payload.find({
       collection: 'er-weapon-types',
+      limit: 100,
+    })
+
+    const { docs: affinities } = await payload.find({
+      collection: 'er-affinities',
       limit: 100,
     })
 
@@ -364,6 +474,22 @@ export const seed: PayloadHandler = async (req, res): Promise<void> => {
       'Int': statistics.find((stat) => stat.name === 'Intelligence'),
     }
 
+    const AFFINITIES_LINK = {
+      'Standard': affinities.find((stat) => stat.name === 'Standard'),
+      'Heavy': affinities.find((stat) => stat.name === 'Heavy'),
+      'Keen': affinities.find((stat) => stat.name === 'Keen'),
+      'Quality': affinities.find((stat) => stat.name === 'Quality'),
+      'Magic': affinities.find((stat) => stat.name === 'Magic'),
+      'Cold': affinities.find((stat) => stat.name === 'Cold'),
+      'Fire': affinities.find((stat) => stat.name === 'Fire'),
+      'Flame Art': affinities.find((stat) => stat.name === 'Flame Art'),
+      'Lightning': affinities.find((stat) => stat.name === 'Lightning'),
+      'Sacred': affinities.find((stat) => stat.name === 'Sacred'),
+      'Poison': affinities.find((stat) => stat.name === 'Poison'),
+      'Blood': affinities.find((stat) => stat.name === 'Blood'),
+      'Occult': affinities.find((stat) => stat.name === 'Occult'),
+    }
+
     /**
      * Weapons
      */
@@ -373,7 +499,7 @@ export const seed: PayloadHandler = async (req, res): Promise<void> => {
       fetchJSON('https://eldenring.fanapis.com/api/weapons?limit=100&page=3')
     ])
 
-    const items = [...first.data, ...second.data, ...third.data].map((item) => ({
+    const wItems = [...first.data, ...second.data, ...third.data].map((item) => ({
       ...item,
       scalesWith: item.scalesWith.filter((i) => {
         if (STAT_LINK[i.name]) return true;
@@ -386,7 +512,7 @@ export const seed: PayloadHandler = async (req, res): Promise<void> => {
       category: item.category !== 'Warhammer' ? item.category : 'Great Hammers'
     }));
 
-    const formattedItems = items.map((item) => {
+    const wformattedItems = wItems.map((item) => {
       const trueWeaponType = weaponTypes.find((type) => type.name.includes(item.category))
 
       const attackValues = item.attack.reduce((acc, curr) => {
@@ -406,7 +532,16 @@ export const seed: PayloadHandler = async (req, res): Promise<void> => {
 
       const a: Partial<ErWeapon> = {
         name: item.name,
-        description: item.description,
+        description: [
+          {
+            children: [
+              {
+                text: item.description
+              },
+            ],
+            type: 'p'
+          }
+        ],
         weight: item.weight,
         scaling: item.scalesWith.map((stat) => {
           const trueStat = STAT_LINK[stat.name]
@@ -460,8 +595,426 @@ export const seed: PayloadHandler = async (req, res): Promise<void> => {
     })
 
 
-    await Promise.all(formattedItems.map((i) => payload.create({
+    await Promise.all(wformattedItems.map((i) => payload.create({
       collection: 'er-weapons',
+      data: i,
+    }).catch((e) => {
+      // silence is golden
+    })))
+
+    /**
+     * Shields
+     */
+    const shieldsData = await fetchJSON(' https://eldenring.fanapis.com/api/shields?limit=100')
+
+    const shieldsItems = shieldsData.data.map((item) => ({
+      ...item,
+      scalesWith: item.scalesWith.filter((i) => {
+        if (STAT_LINK[i.name]) return true;
+        return false;
+      }),
+      requiredAttributes: item.requiredAttributes.filter((i) => {
+        if (STAT_LINK[i.name]) return true;
+        return false;
+      }),
+      category: item.category !== 'Warhammer' ? item.category : 'Great Hammers'
+    }));
+
+    const formattedShieldsItems = shieldsItems.map((item) => {
+      const SHIELDS_TYPE = {
+        'Small Shield': 'Small Shield',
+        'Small Shields': 'Small Shield',
+        'Medium Shield': 'Medium Shield',
+        'Greatshield': 'Greatshield',
+        null: 'Small Shield'
+      }
+
+      const attackValues = item.attack.reduce((acc, curr) => {
+        acc[curr.name] = curr.amount
+        return acc
+      }, {});
+
+      const defenseValues = item.defence.reduce((acc, curr) => {
+        acc[curr.name] = curr.amount
+        return acc
+      }, {});
+
+      const a: Partial<ErShield> = {
+        name: item.name,
+        description: [
+          {
+            children: [
+              {
+                text: item.description
+              },
+            ],
+            type: 'p'
+          }
+        ],
+        weight: item.weight,
+        scaling: item.scalesWith.map((stat) => {
+          const trueStat = STAT_LINK[stat.name]
+
+          if (!trueStat) {
+            console.log(stat, item)
+            throw new Error('Cannot find stat')
+          }
+
+          if (!stat.scaling || stat.scaling.includes('?')) {
+            console.warn('Need checking: ', item.name)
+          }
+
+          return {
+            statistic: trueStat.id,
+            letter: stat.scaling ? stat.scaling?.replace('?', 'TODO') : 'TODO',
+          }
+        }),
+        shield_type: SHIELDS_TYPE[item.category],
+        attack: {
+          physical: attackValues['Phy'],
+          magic: attackValues['Mag'],
+          fire: attackValues['Fire'],
+          lightning: attackValues['Ligt'],
+          holy: attackValues['Holy'],
+          critical: attackValues['Crit'],
+        },
+        defense: {
+          physical: defenseValues['Phy'],
+          magic: defenseValues['Mag'],
+          fire: defenseValues['Fire'],
+          lightning: defenseValues['Ligt'],
+          holy: defenseValues['Holy'],
+          boost: defenseValues['Boost'],
+        },
+        requirements: item.requiredAttributes.map((i) => {
+          const trueStat = STAT_LINK[i.name]
+
+          if (!trueStat) {
+            console.log(i, item)
+            throw new Error('Cannot find stat')
+          }
+
+          return {
+            statistic: trueStat.id,
+            value: i.amount,
+          }
+        })
+      }
+      return a
+    })
+
+
+    await Promise.all(formattedShieldsItems.map((i) => payload.create({
+      collection: 'er-shields',
+      data: i,
+    }).catch((e) => {
+      // silence is golden
+    })))
+
+    /**
+     * Armors
+     */
+    const [aOne, aTwo, aThree, aFour, aFive] = await Promise.all([
+      fetchJSON('https://eldenring.fanapis.com/api/armors?limit=100'),
+      fetchJSON('https://eldenring.fanapis.com/api/armors?limit=100&page=2'),
+      fetchJSON('https://eldenring.fanapis.com/api/armors?limit=100&page=3'),
+      fetchJSON('https://eldenring.fanapis.com/api/armors?limit=100&page=4'),
+      fetchJSON('https://eldenring.fanapis.com/api/armors?limit=100&page=5'),
+    ])
+
+    const aItems = [
+      ...aOne.data,
+      ...aTwo.data,
+      ...aThree.data,
+      ...aFour.data,
+      ...aFive.data
+    ]
+
+    const aFormattedItems = aItems.map((item) => {
+      const ARMOR_CATEGORY = {
+        'Helm': 'Helm',
+        'Chest Armor': 'Chest',
+        'Gauntlets': 'Gauntlet',
+        'Leg Armor': 'Leg',
+      }
+
+      const a: Partial<ErArmor> = {
+        name: item.name,
+        description: [
+          {
+            children: [
+              {
+                text: item.description
+              },
+            ],
+            type: 'p'
+          }
+        ],
+        weight: item.weight,
+        damage_negation: {
+          vs_pierce: item.dmgNegation.find((i) => i.name === 'Pierce')?.amount || 0,
+          vs_slash: item.dmgNegation.find((i) => i.name === 'Slash')?.amount || 0,
+          vs_strike: item.dmgNegation.find((i) => i.name === 'Strike')?.amount || 0,
+          fire: item.dmgNegation.find((i) => i.name === 'Fire')?.amount || 0,
+          holy: item.dmgNegation.find((i) => i.name === 'Holy')?.amount || 0,
+          magic: item.dmgNegation.find((i) => i.name === 'Magic')?.amount || 0,
+          lightning: item.dmgNegation.find((i) => i.name === 'Ligt')?.amount || 0,
+          physical: item.dmgNegation.find((i) => i.name === 'Phy')?.amount || 0,
+        },
+        resistance: {
+          focus: item.resistance.find((i) => i.name === 'Focus')?.amount || 0,
+          immunity: item.resistance.find((i) => i.name === 'Immunity')?.amount || 0,
+          poise: item.resistance.find((i) => i.name === 'Poise')?.amount || 0,
+          robustness: item.resistance.find((i) => i.name === 'Robustness')?.amount || 0,
+          vitality: item.resistance.find((i) => i.name === 'Vitality')?.amount || 0,
+        },
+        armor_type: ARMOR_CATEGORY[item.category],
+      }
+
+      return a
+    })
+
+
+    await Promise.all(aFormattedItems.map((i) => payload.create({
+      collection: 'er-armors',
+      data: i,
+    }).catch((e) => {
+      // silence is golden
+    })))
+
+    /**
+     * Ammunitions
+     */
+    const ammos = await fetchJSON('https://eldenring.fanapis.com/api/ammos?limit=100')
+
+    const ammunitionsFormattedItems = ammos.data.map((item) => {
+      const a: Partial<ErAmmunition> = {
+        name: item.name,
+        description: [
+          {
+            children: [
+              {
+                text: item.description
+              },
+            ],
+            type: 'p'
+          }
+        ],
+        attack: {
+          physical: item.attackPower.find((i) => i.name === 'physical')?.amount || 0,
+          magic: item.attackPower.find((i) => i.name === 'magic')?.amount || 0,
+          fire: item.attackPower.find((i) => i.name === 'fire')?.amount || 0,
+          lightning: item.attackPower.find((i) => i.name === 'lightning')?.amount || 0,
+          holy: item.attackPower.find((i) => i.name === 'holy')?.amount || 0,
+          critical: item.attackPower.find((i) => i.name === 'critical')?.amount || 0,
+        },
+      }
+      return a
+    })
+
+    await Promise.all(ammunitionsFormattedItems.map((i) => payload.create({
+      collection: 'er-ammunitions',
+      data: i,
+    }).catch((e) => {
+      // silence is golden
+    })))
+
+    /**
+     * Talismans
+     */
+    const talismans = await fetchJSON('https://eldenring.fanapis.com/api/talismans?limit=100')
+
+    const talismansFormattedItems = talismans.data.map((item) => {
+      const a: Partial<ErTalisman> = {
+        name: item.name,
+        description: [
+          {
+            children: [
+              {
+                text: item.description
+              },
+            ],
+            type: 'p'
+          }
+        ],
+        effect: [
+          {
+            children: [
+              {
+                text: item.effect
+              },
+            ],
+            type: 'p'
+          }
+        ],
+      }
+      return a
+    })
+
+    await Promise.all(talismansFormattedItems.map((i) => payload.create({
+      collection: 'er-talismans',
+      data: i,
+    }).catch((e) => {
+      // silence is golden
+    })))
+
+    /**
+     * Sorceries
+     */
+    const sorceries = await fetchJSON('https://eldenring.fanapis.com/api/sorceries?limit=100')
+
+    const sorceriesFormattedItems = sorceries.data.map((item) => {
+      const a: Partial<ErSorcery> = {
+        name: item.name,
+        description: [
+          {
+            children: [
+              {
+                text: item.description
+              },
+            ],
+            type: 'p'
+          }
+        ],
+        effect: [
+          {
+            children: [
+              {
+                text: item.effects
+              },
+            ],
+            type: 'p'
+          }
+        ],
+        requirements: [
+          {
+            statistic: STAT_LINK['Int'].id,
+            value: item.requires.find((i) => i.name === 'Intelligence')?.amount || 0,
+          },
+          {
+            statistic: STAT_LINK['Fai'].id,
+            value: item.requires.find((i) => i.name === 'Faith')?.amount || 0,
+          },
+          {
+            statistic: STAT_LINK['Arc'].id,
+            value: item.requires.find((i) => i.name === 'Arcane')?.amount || 0,
+          },
+        ],
+        slots: item.slots,
+        cost: item.cost
+      }
+      return a
+    })
+
+    await Promise.all(sorceriesFormattedItems.map((i) => payload.create({
+      collection: 'er-sorceries',
+      data: i,
+    }).catch((e) => {
+      // silence is golden
+    })))
+
+    /**
+     * Incantations
+     */
+    const incantations = await fetchJSON('https://eldenring.fanapis.com/api/incantations?limit=100')
+
+    const incantationsFormattedItems = incantations.data.map((item) => {
+      const a: Partial<ErIncantation> = {
+        name: item.name,
+        description: [
+          {
+            children: [
+              {
+                text: item.description
+              },
+            ],
+            type: 'p'
+          }
+        ],
+        effect: [
+          {
+            children: [
+              {
+                text: item.effects
+              },
+            ],
+            type: 'p'
+          }
+        ],
+        requirements: [
+          {
+            statistic: STAT_LINK['Int'].id,
+            value: item?.requires?.find((i) => i.name === 'Intelligence')?.amount || 0,
+          },
+          {
+            statistic: STAT_LINK['Fai'].id,
+            value: item?.requires?.find((i) => i.name === 'Faith')?.amount || 0,
+          },
+          {
+            statistic: STAT_LINK['Arc'].id,
+            value: item?.requires?.find((i) => i.name === 'Arcane')?.amount || 0,
+          },
+        ],
+        slots: item.slots,
+        cost: item.cost
+      }
+      return a
+    })
+
+    await Promise.all(incantationsFormattedItems.map((i) => payload.create({
+      collection: 'er-incantations',
+      data: i,
+    }).catch((e) => {
+      // silence is golden
+    })))
+
+    /**
+     * Ashes of War
+     */
+    const ashes = await fetchJSON('https://eldenring.fanapis.com/api/ashes?limit=100')
+
+    const uniqueSkills = new Set<string>()
+    ashes.data.forEach((ash) => uniqueSkills.add(ash.skill))
+
+    for (const skill of Array.from(uniqueSkills).filter(Boolean)) {
+      await payload.create({
+        collection: 'er-skills',
+        data: {
+          name: skill,
+        }
+      }).catch(() => {
+        // Silence is golden
+      })
+    }
+
+    const { docs: allSkills } = await payload.find({
+      collection: 'er-skills',
+      limit: 100,
+    })
+
+    const ashesFormattedItems = ashes.data.map((item) => {
+      const linkedAffinity = AFFINITIES_LINK[item.affinity]
+
+      const a: Partial<ErAshesOfWar> = {
+        name: item.name,
+        description: [
+          {
+            children: [
+              {
+                text: item.description
+              },
+            ],
+            type: 'p'
+          }
+        ],
+        affinity: linkedAffinity ? linkedAffinity?.id : undefined,
+        skill: allSkills.find((skill) => skill.name === item.skill)?.id,
+      }
+      return a
+    })
+
+    await Promise.all(ashesFormattedItems.map((i) => payload.create({
+      collection: 'er-ashes-of-war',
       data: i,
     }).catch((e) => {
       // silence is golden

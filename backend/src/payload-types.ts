@@ -11,6 +11,7 @@ export interface Config {
     users: User;
     archetypes: Archetype;
     restrictions: Restriction;
+    'er-affinities': ErAffinity;
     'er-ammunitions': ErAmmunition;
     'er-armors': ErArmor;
     'er-ashes-of-war': ErAshesOfWar;
@@ -76,6 +77,44 @@ export interface Restriction {
   description?:
     | {
         [k: string]: unknown;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-affinities".
+ */
+export interface ErAffinity {
+  id: number;
+  name?: string | null;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  type?: ('Physical' | 'Magic' | 'Flame' | 'Golden' | 'Occult') | null;
+  affected_statistics?: (number | ErStatistic)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-statistics".
+ */
+export interface ErStatistic {
+  id: number;
+  name?: string | null;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  softcaps?:
+    | {
+        level?: number | null;
+        id?: string | null;
       }[]
     | null;
   updatedAt: string;
@@ -179,6 +218,7 @@ export interface ErAshesOfWar {
       }[]
     | null;
   availability?: (number | ErWeaponType)[] | null;
+  affinity?: (number | null) | ErAffinity;
   updatedAt: string;
   createdAt: string;
 }
@@ -315,27 +355,6 @@ export interface ErWeapon {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-statistics".
- */
-export interface ErStatistic {
-  id: number;
-  name?: string | null;
-  description?:
-    | {
-        [k: string]: unknown;
-      }[]
-    | null;
-  softcaps?:
-    | {
-        level?: number | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "er-shields".
  */
 export interface ErShield {
@@ -411,7 +430,9 @@ export interface ErTalisman {
 export interface ErClass {
   id: number;
   name?: string | null;
+  rune_level?: number | null;
   weapons?: (number | ErWeapon)[] | null;
+  shields?: (number | ErShield)[] | null;
   statistics?:
     | {
         stat?: (number | null) | ErStatistic;
@@ -441,6 +462,7 @@ export interface ErIncantation {
     | null;
   incantation_type?: (number | null) | ErIncantationType;
   slots?: number | null;
+  cost?: number | null;
   requirements?:
     | {
         statistic: number | ErStatistic;
@@ -485,6 +507,7 @@ export interface ErSorcery {
     | null;
   sorcery_type?: (number | null) | ErSorceryType;
   slots?: number | null;
+  cost?: number | null;
   requirements?:
     | {
         statistic: number | ErStatistic;

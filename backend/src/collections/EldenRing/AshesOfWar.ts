@@ -1,7 +1,7 @@
 import { CollectionConfig } from 'payload/types'
 import { isPublic } from '../../access/isPublic'
 
-const ERStatistics: CollectionConfig = {
+const ERAshesOfWar: CollectionConfig = {
   slug: 'er-ashes-of-war',
   labels: {
     singular: 'Ash of War',
@@ -46,8 +46,13 @@ const ERStatistics: CollectionConfig = {
       type: 'relationship',
       relationTo: 'er-weapon-types',
       hasMany: true
+    },
+    {
+      name: 'affinity',
+      type: 'relationship',
+      relationTo: 'er-affinities'
     }
   ],
 }
 
-export default ERStatistics
+export default ERAshesOfWar

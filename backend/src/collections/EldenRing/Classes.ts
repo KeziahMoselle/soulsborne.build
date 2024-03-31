@@ -22,10 +22,22 @@ const ERStatistics: CollectionConfig = {
       unique: true,
     },
     {
+      name: 'rune_level',
+      label: 'Starting Rune Level',
+      type: 'number',
+    },
+    {
       name: 'weapons',
       label: 'Starting Weapons',
       type: 'relationship',
       relationTo: 'er-weapons',
+      hasMany: true
+    },
+    {
+      name: 'shields',
+      label: 'Starting Shields',
+      type: 'relationship',
+      relationTo: 'er-shields',
       hasMany: true
     },
     {

@@ -56,6 +56,14 @@ const ERIncantations: CollectionConfig = {
       }
     },
     {
+      name: 'cost',
+      label: 'FP Cost',
+      type: 'number',
+      admin: {
+        position: 'sidebar'
+      }
+    },
+    {
       name: 'requirements',
       label: 'Requirements',
       type: 'array',

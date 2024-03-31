@@ -1,5 +1,5 @@
 {
-  "id": "b1bdf303-5737-4be8-9f1c-a470d9fe78ac",
+  "id": "b0efe20a-86a9-4d18-b91c-c4c0695c2748",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -207,6 +207,355 @@
         }
       },
       "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "er_affinities": {
+      "name": "er_affinities",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "type": {
+          "name": "type",
+          "type": "enum_er_affinities_type",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "er_affinities_name_idx": {
+          "name": "er_affinities_name_idx",
+          "columns": [
+            "name"
+          ],
+          "isUnique": true
+        },
+        "er_affinities_created_at_idx": {
+          "name": "er_affinities_created_at_idx",
+          "columns": [
+            "created_at"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "er_affinities_rels": {
+      "name": "er_affinities_rels",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "path": {
+          "name": "path",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "er_statistics_id": {
+          "name": "er_statistics_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "er_affinities_rels_order_idx": {
+          "name": "er_affinities_rels_order_idx",
+          "columns": [
+            "order"
+          ],
+          "isUnique": false
+        },
+        "er_affinities_rels_parent_idx": {
+          "name": "er_affinities_rels_parent_idx",
+          "columns": [
+            "parent_id"
+          ],
+          "isUnique": false
+        },
+        "er_affinities_rels_path_idx": {
+          "name": "er_affinities_rels_path_idx",
+          "columns": [
+            "path"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "er_affinities_rels_parent_id_er_affinities_id_fk": {
+          "name": "er_affinities_rels_parent_id_er_affinities_id_fk",
+          "tableFrom": "er_affinities_rels",
+          "tableTo": "er_affinities",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "er_affinities_rels_er_statistics_id_er_statistics_id_fk": {
+          "name": "er_affinities_rels_er_statistics_id_er_statistics_id_fk",
+          "tableFrom": "er_affinities_rels",
+          "tableTo": "er_statistics",
+          "columnsFrom": [
+            "er_statistics_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "_er_affinities_v": {
+      "name": "_er_affinities_v",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "version_name": {
+          "name": "version_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_description": {
+          "name": "version_description",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_type": {
+          "name": "version_type",
+          "type": "enum__er_affinities_v_version_type",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_updated_at": {
+          "name": "version_updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_created_at": {
+          "name": "version_created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "_er_affinities_v_version_version_name_idx": {
+          "name": "_er_affinities_v_version_version_name_idx",
+          "columns": [
+            "version_name"
+          ],
+          "isUnique": false
+        },
+        "_er_affinities_v_version_version_created_at_idx": {
+          "name": "_er_affinities_v_version_version_created_at_idx",
+          "columns": [
+            "version_created_at"
+          ],
+          "isUnique": false
+        },
+        "_er_affinities_v_created_at_idx": {
+          "name": "_er_affinities_v_created_at_idx",
+          "columns": [
+            "created_at"
+          ],
+          "isUnique": false
+        },
+        "_er_affinities_v_updated_at_idx": {
+          "name": "_er_affinities_v_updated_at_idx",
+          "columns": [
+            "updated_at"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "_er_affinities_v_rels": {
+      "name": "_er_affinities_v_rels",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "path": {
+          "name": "path",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "er_affinities_id": {
+          "name": "er_affinities_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_statistics_id": {
+          "name": "er_statistics_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_er_affinities_v_rels_order_idx": {
+          "name": "_er_affinities_v_rels_order_idx",
+          "columns": [
+            "order"
+          ],
+          "isUnique": false
+        },
+        "_er_affinities_v_rels_parent_idx": {
+          "name": "_er_affinities_v_rels_parent_idx",
+          "columns": [
+            "parent_id"
+          ],
+          "isUnique": false
+        },
+        "_er_affinities_v_rels_path_idx": {
+          "name": "_er_affinities_v_rels_path_idx",
+          "columns": [
+            "path"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "_er_affinities_v_rels_parent_id__er_affinities_v_id_fk": {
+          "name": "_er_affinities_v_rels_parent_id__er_affinities_v_id_fk",
+          "tableFrom": "_er_affinities_v_rels",
+          "tableTo": "_er_affinities_v",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_er_affinities_v_rels_er_affinities_id_er_affinities_id_fk": {
+          "name": "_er_affinities_v_rels_er_affinities_id_er_affinities_id_fk",
+          "tableFrom": "_er_affinities_v_rels",
+          "tableTo": "er_affinities",
+          "columnsFrom": [
+            "er_affinities_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_er_affinities_v_rels_er_statistics_id_er_statistics_id_fk": {
+          "name": "_er_affinities_v_rels_er_statistics_id_er_statistics_id_fk",
+          "tableFrom": "_er_affinities_v_rels",
+          "tableTo": "er_statistics",
+          "columnsFrom": [
+            "er_statistics_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -1142,6 +1491,12 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": false
+        },
+        "er_affinities_id": {
+          "name": "er_affinities_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -1200,6 +1555,19 @@
           "tableTo": "er_weapon_types",
           "columnsFrom": [
             "er_weapon_types_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "er_ashes_of_war_rels_er_affinities_id_er_affinities_id_fk": {
+          "name": "er_ashes_of_war_rels_er_affinities_id_er_affinities_id_fk",
+          "tableFrom": "er_ashes_of_war_rels",
+          "tableTo": "er_affinities",
+          "columnsFrom": [
+            "er_affinities_id"
           ],
           "columnsTo": [
             "id"
@@ -1789,6 +2157,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "rune_level": {
+          "name": "rune_level",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp(3) with time zone",
@@ -1858,6 +2232,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "er_shields_id": {
+          "name": "er_shields_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "er_statistics_id": {
           "name": "er_statistics_id",
           "type": "integer",
@@ -1908,6 +2288,19 @@
           "tableTo": "er_weapons",
           "columnsFrom": [
             "er_weapons_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "er_classes_rels_er_shields_id_er_shields_id_fk": {
+          "name": "er_classes_rels_er_shields_id_er_shields_id_fk",
+          "tableFrom": "er_classes_rels",
+          "tableTo": "er_shields",
+          "columnsFrom": [
+            "er_shields_id"
           ],
           "columnsTo": [
             "id"
@@ -2025,6 +2418,12 @@
         },
         "slots": {
           "name": "slots",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cost": {
+          "name": "cost",
           "type": "numeric",
           "primaryKey": false,
           "notNull": false
@@ -2271,6 +2670,12 @@
         },
         "version_slots": {
           "name": "version_slots",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_cost": {
+          "name": "version_cost",
           "type": "numeric",
           "primaryKey": false,
           "notNull": false
@@ -3531,6 +3936,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "cost": {
+          "name": "cost",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp(3) with time zone",
@@ -3773,6 +4184,12 @@
         },
         "version_slots": {
           "name": "version_slots",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_cost": {
+          "name": "version_cost",
           "type": "numeric",
           "primaryKey": false,
           "notNull": false
@@ -5591,6 +6008,26 @@
         "developer": "developer",
         "editor": "editor",
         "user": "user"
+      }
+    },
+    "enum_er_affinities_type": {
+      "name": "enum_er_affinities_type",
+      "values": {
+        "Physical": "Physical",
+        "Magic": "Magic",
+        "Flame": "Flame",
+        "Golden": "Golden",
+        "Occult": "Occult"
+      }
+    },
+    "enum__er_affinities_v_version_type": {
+      "name": "enum__er_affinities_v_version_type",
+      "values": {
+        "Physical": "Physical",
+        "Magic": "Magic",
+        "Flame": "Flame",
+        "Golden": "Golden",
+        "Occult": "Occult"
       }
     },
     "enum_er_ammunitions_ammunition_type": {
