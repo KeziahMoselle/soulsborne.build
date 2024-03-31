@@ -1,5 +1,5 @@
 import { CollectionConfig } from 'payload/types'
-import { isVisitor } from '../access/isVisitor'
+import { isPublic } from '../access/isPublic'
 
 const Restrictions: CollectionConfig = {
   slug: 'restrictions',
@@ -11,7 +11,7 @@ const Restrictions: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    read: isVisitor
+    read: isPublic
   },
   fields: [
     {

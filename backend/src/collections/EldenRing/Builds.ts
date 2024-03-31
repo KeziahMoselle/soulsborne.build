@@ -1,5 +1,5 @@
 import { CollectionConfig } from 'payload/types'
-import { isVisitor } from '../../access/isVisitor'
+import { isPublic } from '../../access/isPublic'
 
 const ERBuilds: CollectionConfig = {
   slug: 'er-builds',
@@ -12,7 +12,7 @@ const ERBuilds: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    read: isVisitor
+    read: isPublic
   },
   fields: [
     /**

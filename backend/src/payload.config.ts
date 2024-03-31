@@ -8,6 +8,7 @@ import { slateEditor } from '@payloadcms/richtext-slate'
 // import { s3Adapter } from '@payloadcms/plugin-cloud-storage/s3'
 
 import { seed } from './endpoints/seed'
+import { register } from './endpoints/register'
 
 import Users from './collections/Users'
 import Archetype from './collections/Archetype'
@@ -71,10 +72,15 @@ export default buildConfig({
   },
   endpoints: [
     {
+      path: '/register',
+      method: 'post',
+      handler: register,
+    },
+    {
       path: '/seed',
       method: 'get',
       handler: seed,
-    }
+    },
   ],
   plugins: [
     /* cloudStorage({

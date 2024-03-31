@@ -1,0 +1,1 @@
+export const isSelf = ({ req: { user }, id }) => user.id === id

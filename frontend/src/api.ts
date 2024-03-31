@@ -4,7 +4,7 @@ import { toast } from 'vue-sonner'
 import type { User, ErWeapon } from '@/payload/payload-types';
 import { $user } from './stores/auth';
 
-function apiFetch(url: string, options: any = {}) {
+async function apiFetch(url: string, options: any = {}) {
   const defaultOptions: RequestInit = {
     headers: {
       'Content-Type': 'application/json',
@@ -17,25 +17,24 @@ function apiFetch(url: string, options: any = {}) {
     ...options,
   };
 
-  return fetch(url, mergedOptions).then((res) => {
+  const result = await fetch(url, mergedOptions).then(async (res) => {
+    const json = await res.json()
+
     if (res.ok) {
-      return res.json();
+      return json
     }
+
     throw new Error(
-      `Error fetching page data: ${res.statusText} (${res.status})}`
+      json.message ? json.message : `Error fetching page data: ${res.statusText} (${res.status})}`
     );
   });
+
+  return result
 }
 
 interface ILoginPayload {
   email: string;
   password: string;
-}
-
-interface ILoginResponse {
-  user: User;
-  token: string;
-  exp: number;
 }
 
 export async function login(payload: ILoginPayload) {
@@ -45,16 +44,45 @@ export async function login(payload: ILoginPayload) {
   })
 
   toast.promise(login, {
-    loading: 'Loading...',
+    loading: 'Logging in...',
     success(response) {
       $user.set(response.user)
       return `Welcome ${response.user.email}!`
     },
     error: () => {
       $user.set(null)
-      return 'There was en error'
+      return 'There was an error'
     }
   })
+}
+
+export interface IRegisterPayload {
+  email: string;
+  name: string;
+  password: string;
+}
+
+export async function register(payload: IRegisterPayload) {
+  const login = apiFetch(`${import.meta.env.PUBLIC_PAYLOAD_URL}/api/register`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  })
+
+  let isSuccess = false
+
+  await toast.promise(login, {
+    loading: 'Creating your account...',
+    success(response) {
+      isSuccess = true
+      return `Successfully registered!`
+    },
+    error: (error) => {
+      $user.set(null)
+      return error.message
+    }
+  })
+
+  return isSuccess
 }
 
 export async function logout() {
@@ -70,7 +98,7 @@ export async function logout() {
     },
     error: () => {
       $user.set(null)
-      return 'There was en error'
+      return 'There was an error'
     }
   })
 }

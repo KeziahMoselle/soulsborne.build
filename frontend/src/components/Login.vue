@@ -3,6 +3,7 @@
   import { useStore } from '@nanostores/vue'
   import { login, logout } from '../api'
   import { $user } from '../stores/auth'
+  import Register from './Register.vue'
 
   const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL
 
@@ -18,7 +19,9 @@
     })
   }
 
-  console.log(user);
+  function switchTab() {
+    console.log('TODO')
+  }
 </script>
 
 <template>
@@ -33,6 +36,10 @@
       <input class="text-slate-900" type="password" name="password" placeholder="password" required />
       <button type="submit">Login</button>
     </form>
+
+    <p>or register</p>
+
+    <Register @registered="switchTab" />
   </div>
   <div v-else>
     Welcome {{ user.email }}

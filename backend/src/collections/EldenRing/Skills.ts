@@ -1,5 +1,5 @@
 import { CollectionConfig } from 'payload/types'
-import { isVisitor } from '../../access/isVisitor'
+import { isPublic } from '../../access/isPublic'
 
 const ERStatistics: CollectionConfig = {
   slug: 'er-skills',
@@ -12,7 +12,7 @@ const ERStatistics: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    read: isVisitor
+    read: isPublic
   },
   fields: [
     {

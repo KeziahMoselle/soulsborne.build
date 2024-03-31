@@ -1,5 +1,5 @@
 import { CollectionConfig } from 'payload/types'
-import { isVisitor } from '../../access/isVisitor'
+import { isPublic } from '../../access/isPublic'
 
 const ERSorceryType: CollectionConfig = {
   slug: 'er-sorcery-types',
@@ -12,7 +12,7 @@ const ERSorceryType: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    read: isVisitor
+    read: isPublic
   },
   fields: [
     /* {

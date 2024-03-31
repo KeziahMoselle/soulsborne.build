@@ -1,5 +1,5 @@
 import { CollectionConfig } from 'payload/types'
-import { isVisitor } from '../../access/isVisitor'
+import { isPublic } from '../../access/isPublic'
 
 const ERArmors: CollectionConfig = {
   slug: 'er-armors',
@@ -12,7 +12,7 @@ const ERArmors: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    read: isVisitor
+    read: isPublic
   },
   timestamps: true,
   versions: true,
