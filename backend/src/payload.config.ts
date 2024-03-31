@@ -7,7 +7,7 @@ import { slateEditor } from '@payloadcms/richtext-slate'
 // import { cloudStorage } from '@payloadcms/plugin-cloud-storage'
 // import { s3Adapter } from '@payloadcms/plugin-cloud-storage/s3'
 
-// import { seed } from './endpoints/seed'
+import { seed } from './endpoints/seed'
 
 import Users from './collections/Users'
 import Archetype from './collections/Archetype'
@@ -15,8 +15,12 @@ import Restrictions from './collections/Restrictions'
 import ERCollections from './collections/EldenRing'
 
 const ALLOWED_URLS = [
+  // Back
+  'https://payload.soulsborne.build',
   'http://j8kk408.51.178.142.187.sslip.io',
   'http://localhost:3000',
+  // Front
+  'https://soulsborne.build',
   'https://soulsborne-build.pages.dev',
   'http://localhost:4321',
 ]
@@ -67,11 +71,11 @@ export default buildConfig({
     schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),
   },
   endpoints: [
-    /* {
+    {
       path: '/seed',
       method: 'get',
       handler: seed,
-    } */
+    }
   ],
   plugins: [
     /* cloudStorage({

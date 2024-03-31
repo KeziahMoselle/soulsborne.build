@@ -471,9 +471,11 @@ export const seed: PayloadHandler = async (req, res): Promise<void> => {
   } catch (error: unknown) {
     console.log(error)
     const message = error instanceof Error ? error.message : 'Unknown error'
+    // @ts-ignore
     payload.logger.error(`${message} ${error?.data?.map((e) => e.message).join(', ')}`)
     res.json({
       error: message,
+      // @ts-ignore
       message: error?.data?.map((e) => e.message).join(', ')
     })
   }
