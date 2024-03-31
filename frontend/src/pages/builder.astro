@@ -10,7 +10,7 @@ const erWeapons = await getWeapons();
 
   <select>
     { erWeapons.docs.map((weapon) => (
-        <option value={weapon.id}>{weapon.name}</option>
+      <option value={weapon.id}>{weapon.name}</option>
     ))}
   </select>
 </Layout>

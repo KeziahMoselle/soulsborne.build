@@ -67,15 +67,11 @@ export default buildConfig({
     schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),
   },
   endpoints: [
-    process.env.NODE_ENV === 'development' ? {
+    /* {
       path: '/seed',
       method: 'get',
       handler: seed,
-    } : {
-      path: '/seed',
-      method: 'get',
-      handler: () => {},
-    },
+    } */
   ],
   plugins: [
     /* cloudStorage({
