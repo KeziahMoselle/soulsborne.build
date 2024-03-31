@@ -1,11 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
+---
+import Layout from "../layouts/Layout.astro";
+import { getWeapons } from '../api'
+
+const erWeapons = await getWeapons();
+---
+
+<Layout title="Builder">
+  <h1>Builder</h1>
+
+  <select>
+    { erWeapons.docs.map((weapon) => (
+        <option value={weapon.id}>{weapon.name}</option>
+    ))}
+  </select>
+</Layout>

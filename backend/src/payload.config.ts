@@ -14,6 +14,13 @@ import Archetype from './collections/Archetype'
 import Restrictions from './collections/Restrictions'
 import ERCollections from './collections/EldenRing'
 
+const ALLOWED_URLS = [
+  'http://j8kk408.51.178.142.187.sslip.io',
+  'http://localhost:3000',
+  'https://soulsborne-build.pages.dev',
+  'http://localhost:4321',
+]
+
 // const mockModulePath = path.resolve(__dirname, 'mocks/emptyObject.js')
 
 
@@ -49,13 +56,8 @@ export default buildConfig({
       }
     }, */
   },
-  csrf: [
-    // whitelist of domains to allow cookie auth from
-    'http://j8kk408.51.178.142.187.sslip.io',
-    'http://localhost:3000',
-    'https://soulsborne-build.pages.dev',
-    'http://localhost:4321',
-  ],
+  cors: ALLOWED_URLS,
+  csrf: ALLOWED_URLS,
   editor: slateEditor({}),
   collections: [Users, Archetype, Restrictions, ...ERCollections],
   typescript: {
