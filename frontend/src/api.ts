@@ -1,6 +1,8 @@
 import type { PayloadCollection } from './types';
 import qs from "qs";
+import { toast } from 'vue-sonner'
 import type { User, ErWeapon } from '@/payload/payload-types';
+import { $user } from './stores/auth';
 
 function apiFetch(url: string, options: any = {}) {
   const defaultOptions: RequestInit = {
@@ -32,18 +34,44 @@ interface ILoginPayload {
 
 interface ILoginResponse {
   user: User;
+  token: string;
+  exp: number;
 }
 
-export function login(payload: ILoginPayload): Promise<ILoginResponse> {
-  return apiFetch(`${import.meta.env.PUBLIC_PAYLOAD_URL}/api/users/login`, {
+export async function login(payload: ILoginPayload) {
+  const login = apiFetch(`${import.meta.env.PUBLIC_PAYLOAD_URL}/api/users/login`, {
     method: 'POST',
     body: JSON.stringify(payload),
   })
+
+  toast.promise(login, {
+    loading: 'Loading...',
+    success(response) {
+      $user.set(response.user)
+      return `Welcome ${response.user.email}!`
+    },
+    error: () => {
+      $user.set(null)
+      return 'There was en error'
+    }
+  })
 }
 
-export function logout() {
-  return apiFetch(`${import.meta.env.PUBLIC_PAYLOAD_URL}/api/users/logout`, {
+export async function logout() {
+  const logout = apiFetch(`${import.meta.env.PUBLIC_PAYLOAD_URL}/api/users/logout`, {
     method: 'POST',
+  })
+
+  toast.promise(logout, {
+    loading: 'Loading...',
+    success() {
+      $user.set(null)
+      return `You have been logged out.`
+    },
+    error: () => {
+      $user.set(null)
+      return 'There was en error'
+    }
   })
 }
 

@@ -17,7 +17,6 @@ import ERCollections from './collections/EldenRing'
 const ALLOWED_URLS = [
   // Back
   'https://payload.soulsborne.build',
-  'http://j8kk408.51.178.142.187.sslip.io',
   'http://localhost:3000',
   // Front
   'https://soulsborne.build',
