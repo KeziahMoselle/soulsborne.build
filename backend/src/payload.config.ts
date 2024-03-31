@@ -7,7 +7,7 @@ import { slateEditor } from '@payloadcms/richtext-slate'
 // import { cloudStorage } from '@payloadcms/plugin-cloud-storage'
 // import { s3Adapter } from '@payloadcms/plugin-cloud-storage/s3'
 
-import { seed } from './endpoints/seed'
+// import { seed } from './endpoints/seed'
 
 import Users from './collections/Users'
 import Archetype from './collections/Archetype'
