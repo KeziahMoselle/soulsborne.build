@@ -1,10 +1,10 @@
 import type { PayloadCollection } from './types';
 import qs from "qs";
 import { toast } from 'vue-sonner'
-import type { User, ErWeapon } from '@/payload/payload-types';
+import type { ErWeapon } from '~/payload-types';
 import { $user } from './stores/auth';
 
-async function apiFetch(url: string, options: any = {}) {
+export async function apiFetch(url: string, options: any = {}) {
   const defaultOptions: RequestInit = {
     headers: {
       'Content-Type': 'application/json',
@@ -17,7 +17,7 @@ async function apiFetch(url: string, options: any = {}) {
     ...options,
   };
 
-  const result = await fetch(url, mergedOptions).then(async (res) => {
+  const result = await fetch(`${import.meta.env.PUBLIC_PAYLOAD_URL}${url}`, mergedOptions).then(async (res) => {
     const json = await res.json()
 
     if (res.ok) {
@@ -38,7 +38,7 @@ interface ILoginPayload {
 }
 
 export async function login(payload: ILoginPayload) {
-  const login = apiFetch(`${import.meta.env.PUBLIC_PAYLOAD_URL}/api/users/login`, {
+  const login = apiFetch(`/api/users/login`, {
     method: 'POST',
     body: JSON.stringify(payload),
   })
@@ -63,7 +63,7 @@ export interface IRegisterPayload {
 }
 
 export async function register(payload: IRegisterPayload) {
-  const login = apiFetch(`${import.meta.env.PUBLIC_PAYLOAD_URL}/api/register`, {
+  const login = apiFetch(`/api/register`, {
     method: 'POST',
     body: JSON.stringify(payload),
   })
@@ -86,7 +86,7 @@ export async function register(payload: IRegisterPayload) {
 }
 
 export async function logout() {
-  const logout = apiFetch(`${import.meta.env.PUBLIC_PAYLOAD_URL}/api/users/logout`, {
+  const logout = apiFetch(`/api/users/logout`, {
     method: 'POST',
   })
 
@@ -110,6 +110,6 @@ export async function getWeapons(query: any = null): Promise<PayloadCollection<E
   );
 
   return apiFetch(
-    `${import.meta.env.PUBLIC_PAYLOAD_URL}/api/er-weapons${stringifiedQuery}`
+    `/api/er-weapons${stringifiedQuery}`
   )
 }

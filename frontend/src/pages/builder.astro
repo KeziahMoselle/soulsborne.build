@@ -1,16 +1,15 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import { getWeapons } from '../api'
-
-const erWeapons = await getWeapons();
+import ERBuilder from "@/components/EldenRing/Builder.vue";
+import Layout from "@/layouts/Layout.astro";
 ---
 
 <Layout title="Builder">
   <h1>Builder</h1>
 
-  <select>
-    { erWeapons.docs.map((weapon) => (
-      <option value={weapon.id}>{weapon.name}</option>
-    ))}
-  </select>
+  {/*
+    Switch the builder depending on the current selected game
+    Data are fetched in the component loaded to avoid loading
+    too much data
+  */}
+  <ERBuilder client:load />
 </Layout>
