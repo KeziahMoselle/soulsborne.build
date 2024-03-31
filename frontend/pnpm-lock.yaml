@@ -17,6 +17,9 @@ dependencies:
   '@astrojs/vue':
     specifier: ^4.0.9
     version: 4.0.9(@babel/core@7.24.3)(astro@4.5.10)(vite@5.2.6)(vue@3.4.21)
+  '@types/qs':
+    specifier: ^6.9.14
+    version: 6.9.14
   astro:
     specifier: ^4.5.10
     version: 4.5.10(sass@1.72.0)(typescript@5.4.3)
@@ -1498,6 +1501,10 @@ packages:
     resolution: {integrity: sha512-zQ0NYO87hyN6Xrclcqp7f8ZbXNbRfoGWNcMvHTPQp9UUrwI0mI7XBz+cu7/W6/VClYo2g63B0cjull/srU7LgQ==}
     dependencies:
       undici-types: 5.26.5
+    dev: false
+
+  /@types/qs@6.9.14:
+    resolution: {integrity: sha512-5khscbd3SwWMhFqylJBLQ0zIu7c1K6Vz0uBIt915BI3zV0q1nfjRQD3RqSBcPaO6PHEF4ov/t9y89fSiyThlPA==}
     dev: false
 
   /@types/unist@2.0.10:
