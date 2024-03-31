@@ -273,7 +273,7 @@ const WEAPON_TYPES = [
 export const seed: PayloadHandler = async (req, res): Promise<void> => {
   const { user, payload } = req
 
-  if (!user) {
+  if (!user || user.role !== 'admin') {
     res.status(401).json({ error: 'Unauthorized' })
     return
   }
@@ -373,7 +373,7 @@ export const seed: PayloadHandler = async (req, res): Promise<void> => {
       fetchJSON('https://eldenring.fanapis.com/api/weapons?limit=100&page=3')
     ])
 
-    const items = [...first, ...second, ...third].map((item) => ({
+    const items = [...first.data, ...second.data, ...third.data].map((item) => ({
       ...item,
       scalesWith: item.scalesWith.filter((i) => {
         if (STAT_LINK[i.name]) return true;
