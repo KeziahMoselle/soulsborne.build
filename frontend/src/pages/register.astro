@@ -1,0 +1,11 @@
+---
+import Layout from "../layouts/Layout.astro";
+import RegisterForm from '@/components/Auth/Register.vue'
+
+const { user } = Astro.locals;
+---
+
+<Layout title="Login">
+  { !user && <RegisterForm /> }
+  { user && <h1>You are already logged in.</h1>}
+</Layout>

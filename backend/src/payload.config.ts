@@ -61,6 +61,7 @@ export default buildConfig({
     }, */
   },
   cors: ALLOWED_URLS,
+  telemetry: false,
   csrf: ALLOWED_URLS,
   editor: slateEditor({}),
   collections: [Users, Archetype, Restrictions, ...ERCollections],

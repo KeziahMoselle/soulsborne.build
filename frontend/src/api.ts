@@ -1,10 +1,6 @@
-import type { PayloadCollection } from './types';
-import qs from "qs";
 import { toast } from 'vue-sonner'
-import type { ErWeapon } from '~/payload-types';
-import { $user } from './stores/auth';
 
-export async function apiFetch(url: string, options: any = {}) {
+export async function apiFetch(url: string, options: RequestInit = {}) {
   const defaultOptions: RequestInit = {
     headers: {
       'Content-Type': 'application/json',
@@ -17,7 +13,7 @@ export async function apiFetch(url: string, options: any = {}) {
     ...options,
   };
 
-  const result = await fetch(`${import.meta.env.PUBLIC_PAYLOAD_URL}${url}`, mergedOptions).then(async (res) => {
+  const result = await fetch(`${url}`, mergedOptions).then(async (res) => {
     const json = await res.json()
 
     if (res.ok) {
@@ -43,17 +39,20 @@ export async function login(payload: ILoginPayload) {
     body: JSON.stringify(payload),
   })
 
-  toast.promise(login, {
+  let isSuccess = false
+
+  await toast.promise(login, {
     loading: 'Logging in...',
     success(response) {
-      $user.set(response.user)
-      return `Welcome ${response.user.email}!`
+      isSuccess = true
+      return `Welcome ${response.user.name}!`
     },
     error: () => {
-      $user.set(null)
       return 'There was an error'
     }
   })
+
+  return isSuccess
 }
 
 export interface IRegisterPayload {
@@ -72,12 +71,11 @@ export async function register(payload: IRegisterPayload) {
 
   await toast.promise(login, {
     loading: 'Creating your account...',
-    success(response) {
+    success() {
       isSuccess = true
       return `Successfully registered!`
     },
     error: (error) => {
-      $user.set(null)
       return error.message
     }
   })
@@ -90,26 +88,13 @@ export async function logout() {
     method: 'POST',
   })
 
-  toast.promise(logout, {
+  await toast.promise(logout, {
     loading: 'Loading...',
     success() {
-      $user.set(null)
       return `You have been logged out.`
     },
     error: () => {
-      $user.set(null)
       return 'There was an error'
     }
   })
-}
-
-export async function getWeapons(query: any = null): Promise<PayloadCollection<ErWeapon>> {
-  const stringifiedQuery = qs.stringify(
-    query,
-    { addQueryPrefix: true }
-  );
-
-  return apiFetch(
-    `/api/er-weapons${stringifiedQuery}`
-  )
 }

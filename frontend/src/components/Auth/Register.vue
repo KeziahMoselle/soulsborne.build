@@ -1,6 +1,7 @@
 <script setup>
   import { ref } from 'vue'
-  import { register, login } from '../api'
+  import { register } from '../../api'
+  import Button from '@/components/ui/button/Button.vue';
 
   const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL
 
@@ -25,14 +26,16 @@
 
 <template>
   <form
-    class="flex flex-col gap-y-2"
+    class="bg-slate-800 border border-slate-600 p-4 m-4 flex flex-col gap-y-2"
     ref="form"
     method="POST"
-    :action="`${PAYLOAD_URL}/register`"
+    :action="`${PAYLOAD_URL}/api/register`"
     @submit.prevent="submit">
     <input class="text-slate-900" type="text" name="name" placeholder="Name" required />
     <input class="text-slate-900" type="email" name="email" placeholder="your@email.com" required />
     <input class="text-slate-900" type="password" name="password" placeholder="password" required />
-    <button type="submit">Register</button>
+    <div class="text-center">
+      <Button type="submit">Register</Button>
+    </div>
   </form>
 </template>

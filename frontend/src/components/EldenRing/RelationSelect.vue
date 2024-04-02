@@ -43,7 +43,7 @@
       return cached
     }
 
-    const response = await apiFetch(`/api/${relation}`)
+    const response = await apiFetch(`${import.meta.env.PUBLIC_PAYLOAD_URL}/api/${relation}`)
     inMemoryCache.set(relation, response)
     return response
   }
