@@ -1,7 +1,5 @@
 /// <reference types="astro/client" />
 
-import type { User } from "~/payload-types";
-
 interface ImportMetaEnv {
   readonly PUBLIC_PAYLOAD_URL: string;
 }
@@ -12,6 +10,6 @@ interface ImportMeta {
 
 declare namespace App {
   interface Locals {
-      user: User,
+      user: import('~/payload-types').User,
   }
 }
