@@ -6,6 +6,6 @@ const { user } = Astro.locals;
 ---
 
 <Layout title="Login">
-  { !user && <RegisterForm /> }
+  { !user && <RegisterForm client:load /> }
   { user && <h1>You are already logged in.</h1>}
 </Layout>
