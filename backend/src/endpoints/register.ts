@@ -15,7 +15,7 @@ export const register: PayloadHandler = async (req, res): Promise<void> => {
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
-        role: 'user'
+        roles: ['user']
       }
     })
 
