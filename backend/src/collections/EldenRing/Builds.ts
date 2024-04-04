@@ -1,5 +1,6 @@
 import { CollectionConfig } from 'payload/types'
 import { isPublic } from '../../access/isPublic'
+import { isUser } from '../../access/isUser'
 
 const ERBuilds: CollectionConfig = {
   slug: 'er-builds',
@@ -12,7 +13,8 @@ const ERBuilds: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    read: isPublic
+    read: isPublic,
+    create: isUser
   },
   fields: [
     /**
@@ -116,13 +118,7 @@ const ERBuilds: CollectionConfig = {
                   name: 'weapon',
                   label: 'Weapon',
                   type: 'relationship',
-                  relationTo: 'er-weapons',
-                },
-                {
-                  name: 'shield',
-                  label: 'Shield',
-                  type: 'relationship',
-                  relationTo: 'er-shields',
+                  relationTo: ['er-weapons', 'er-shields'],
                 },
                 {
                   name: 'ash_of_war',

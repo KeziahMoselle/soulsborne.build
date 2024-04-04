@@ -7,128 +7,195 @@ import RelationSelect from '@/components/EldenRing/RelationSelect.vue'
 import { Button } from '@/components/ui/button'
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import { apiFetch } from '@/api'
+import type { ErBuild } from '~/payload-types'
+import { toast } from 'vue-sonner'
+
+
+export interface IFormItem {
+  name: string;
+  type: string;
+  relationTo: string[] | {
+    slug: string;
+    query: any;
+  }[];
+}
 
 const FORM = [
   [
     {
       name: 'mainhand-1',
       type: 'mainhand',
-      relations: ['er-weapons'],
+      relationTo: ['er-weapons'],
     },
     {
       name: 'mainhand-2',
       type: 'mainhand',
-      relations: ['er-weapons'],
+      relationTo: ['er-weapons'],
     },
     {
       name: 'mainhand-3',
       type: 'mainhand',
-      relations: ['er-weapons'],
+      relationTo: ['er-weapons'],
     },
     {
       name: 'bolt-1',
       type: 'bolt',
-      relations: ['er-ammunitions'],
-      filter: (item) => item.ammunition_type === 'Bolt'
+      relationTo: [
+        {
+          slug: 'er-ammunitions',
+          /* query: {
+            ammunition_type: {
+              equals: 'Bolt'
+            }
+          } */
+        }
+      ],
     },
     {
       name: 'bolt-2',
       type: 'bolt',
-      relations: ['er-ammunitions'],
-      filter: (item) => item.ammunition_type === 'Bolt'
+      relationTo: [
+        {
+          slug: 'er-ammunitions',
+          /* query: {
+            ammunition_type: {
+              equals: 'Bolt'
+            }
+          } */
+        }
+      ],
     },
   ],
   [
     {
       name: 'offhand-1',
       type: 'offhand',
-      relations: ['er-weapons', 'er-shields'],
+      relationTo: ['er-weapons', 'er-shields'],
     },
     {
       name: 'offhand-2',
       type: 'offhand',
-      relations: ['er-weapons', 'er-shields'],
+      relationTo: ['er-weapons', 'er-shields'],
     },
     {
       name: 'offhand-3',
       type: 'offhand',
-      relations: ['er-weapons', 'er-shields'],
+      relationTo: ['er-weapons', 'er-shields'],
     },
     {
       name: 'greatbolt-1',
       type: 'greatbolt',
-      relations: ['er-ammunitions'],
-      filter: (item) => item.ammunition_type === 'Greatbolt'
+      relationTo: [
+        {
+          slug: 'er-ammunitions',
+          /* query: {
+            ammunition_type: {
+              equals: 'Greatbolt'
+            }
+          } */
+        }
+      ],
     },
     {
       name: 'greatbolt-2',
       type: 'greatbolt',
-      relations: ['er-ammunitions'],
-      filter: (item) => item.ammunition_type === 'Greatbolt'
+      relationTo: [
+        {
+          slug: 'er-ammunitions',
+          /* query: {
+            ammunition_type: {
+              equals: 'Greatbolt'
+            }
+          } */
+        }
+      ],
     },
   ],
   [
     {
       name: 'helm',
       type: 'helm',
-      relations: ['er-armors'],
-      filter: (armor) => armor.armor_type === 'Helm'
+      relationTo: [
+        {
+          slug: 'er-armors',
+          query: {
+            armor_type: {
+              equals: 'Helm'
+            },
+          }
+        },
+      ],
     },
     {
       name: 'chest',
       type: 'chest',
-      relations: ['er-armors'],
-      filter: (armor) => armor.armor_type === 'Chest'
+      relationTo: [
+        {
+          slug: 'er-armors',
+          query: {
+            armor_type: {
+              equals: 'Chest'
+            },
+          }
+        },
+      ],
     },
     {
       name: 'gauntlet',
       type: 'gauntlet',
-      relations: ['er-armors'],
-      filter: (armor) => armor.armor_type === 'Gauntlet'
+      relationTo: [
+        {
+          slug: 'er-armors',
+          query: {
+            armor_type: {
+              equals: 'Gauntlet'
+            },
+          }
+        },
+      ],
     },
     {
       name: 'leg',
       type: 'leg',
-      relations: ['er-armors'],
-      filter: (armor) => armor.armor_type === 'Leg'
+      relationTo: [
+        {
+          slug: 'er-armors',
+          query: {
+            armor_type: {
+              equals: 'Leg'
+            },
+          }
+        },
+      ],
     },
   ],
   [
     {
       name: 'talisman-1',
       type: 'talisman',
-      relations: ['er-talismans'],
+      relationTo: ['er-talismans'],
     },
     {
       name: 'talisman-2',
       type: 'talisman',
-      relations: ['er-talismans'],
+      relationTo: ['er-talismans'],
     },
     {
       name: 'talisman-3',
       type: 'talisman',
-      relations: ['er-talismans'],
+      relationTo: ['er-talismans'],
     },
     {
       name: 'talisman-4',
       type: 'talisman',
-      relations: ['er-talismans'],
+      relationTo: ['er-talismans'],
     },
   ],
 ]
@@ -161,6 +228,54 @@ const form = useForm({
 
 const onSubmit = form.handleSubmit((values) => {
   console.log('Form submitted!', values)
+
+  const mainhands = [values['mainhand-1'], values['mainhand-2'], values['mainhand-3']].filter(Boolean).map((item) => {
+    const [collectionSlug, id] = item.split(':')
+    return {
+      collectionSlug,
+      name: collectionSlug.split('er-')[1],
+      id
+    }
+  })
+  const offhands = [values['mainhand-1'], values['mainhand-2'], values['mainhand-3']].filter(Boolean).map((item) => {
+    const [collectionSlug, id] = item.split(':')
+    return {
+      collectionSlug,
+      name: collectionSlug.split('er-')[1],
+      id
+    }
+  })
+  const armorIds = [values.helm, values.chest, values.gauntlet, values.leg].filter(Boolean).map((armor) => Number(armor.split(':')[1]))
+  const talismanIds = [values['talisman-1'], values['talisman-2'], values['talisman-3'], values['talisman-4']].filter(Boolean).map((talisman) => Number(talisman.split(':')[1]))
+
+  const build: Partial<ErBuild> = {
+    name: values.name,
+    mainhand_weapons: mainhands.map((item) => ({
+      weapon: Number(item.id)
+    })),
+    offhand_weapons: offhands.map((item) => ({
+      [item.name]: Number(item.id)
+    })),
+    armors: armorIds,
+    talismans: talismanIds,
+  }
+
+  const createBuild = apiFetch(`/api/er-builds`, {
+    method: 'POST',
+    body: JSON.stringify(build)
+  })
+
+  toast.promise(createBuild, {
+    loading: 'Creating your build...',
+    success(response) {
+      console.log(response)
+      return `Successfully created! Redirecting to your build...`
+    },
+    error: (error) => {
+      console.error(error)
+      return 'There was an error'
+    }
+  })
 })
 </script>
 
@@ -180,7 +295,7 @@ const onSubmit = form.handleSubmit((values) => {
     <!-- Equipment -->
     <div class="grid grid-cols-5" v-for="row in FORM">
       <div v-for="input in row">
-        <RelationSelect v-bind="input" />
+        <RelationSelect :key="input.name" v-bind="input" />
       </div>
     </div>
 

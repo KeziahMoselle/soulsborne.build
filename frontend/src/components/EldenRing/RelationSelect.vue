@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import qs from 'qs'
   import { ref } from 'vue';
   import { inMemoryCache } from '@/lib/Cache'
   import { apiFetch } from '@/api';
@@ -24,22 +25,27 @@
   const props = defineProps<{
     name: string;
     type: string;
-    relations: string[];
-    filter?: (item: any) => boolean;
+    relationTo: any;
   }>()
 
   const loading = ref(false)
   const optionsGroups = ref([])
 
-  async function getOptions(relation) {
+  async function getOptions(relation, query = {}) {
     const cached = inMemoryCache.get(relation)
 
     if (cached) {
       return cached
     }
 
-    const response = await apiFetch(`/api/${relation}`)
-    inMemoryCache.set(relation, response)
+    const stringifiedQuery = qs.stringify({
+        where: query,
+      },
+      { addQueryPrefix: true },
+    )
+    const url = `/api/${relation}${stringifiedQuery}`
+    const response = await apiFetch(url)
+    inMemoryCache.set(url, response)
     return response
   }
 
@@ -52,15 +58,23 @@
 
     loading.value = true;
 
-    for (const relation of props.relations) {
-      const options = await getOptions(relation)
-      optionsGroups.value.push({
-        relation,
-        docs: options.docs
-      })
-    }
+    for (const relation of props.relationTo) {
+      if (typeof relation === 'string') {
+        const options = await getOptions(relation)
+        optionsGroups.value.push({
+          relation,
+          docs: options.docs
+        })
+      }
 
-    loading.value = false;
+      if (typeof relation === 'object') {
+        const options = await getOptions(relation.slug, relation.query)
+        optionsGroups.value.push({
+          relation: relation.slug,
+          docs: options.docs
+        })
+      }
+    }
   }
 </script>
 

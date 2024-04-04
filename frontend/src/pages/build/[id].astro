@@ -1,0 +1,16 @@
+---
+import { apiFetch } from '@/api';
+import Layout from '../../layouts/Layout.astro';
+import type { ErBuild } from '~/payload-types';
+
+const { id } = Astro.params
+
+const build: ErBuild = await apiFetch(`/api/er-builds/${id}`)
+---
+
+<Layout title={`${build.name} - Build`}>
+  <h1>{ build.name }</h1>
+  <pre>
+    {JSON.stringify(build, null, 2)}
+  </pre>
+</Layout>
