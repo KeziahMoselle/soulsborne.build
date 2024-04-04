@@ -1,6 +1,10 @@
 import { toast } from 'vue-sonner'
 
-export async function apiFetch(url: string, options: RequestInit = {}) {
+export async function apiFetch(endpoint: string, options: RequestInit = {}) {
+  return fetchJSON(`${import.meta.env.PUBLIC_PAYLOAD_URL}${endpoint}`, options)
+}
+
+export async function fetchJSON(url: string, options: RequestInit = {}) {
   const defaultOptions: RequestInit = {
     headers: {
       'Content-Type': 'application/json',
@@ -35,7 +39,7 @@ interface ILoginPayload {
 }
 
 export async function login(payload: ILoginPayload) {
-  const login = apiFetch(`/api/users/login`, {
+  const login = fetchJSON(`/api/users/login`, {
     method: 'POST',
     body: JSON.stringify(payload),
   })
@@ -64,7 +68,7 @@ export interface IRegisterPayload {
 }
 
 export async function register(payload: IRegisterPayload) {
-  const login = apiFetch(`/api/register`, {
+  const login = fetchJSON(`/api/register`, {
     method: 'POST',
     body: JSON.stringify(payload),
   })
@@ -87,7 +91,7 @@ export async function register(payload: IRegisterPayload) {
 }
 
 export async function logout() {
-  const logout = apiFetch(`/api/users/logout`, {
+  const logout = fetchJSON(`/api/users/logout`, {
     method: 'POST',
   })
 

@@ -184,8 +184,8 @@ const onSubmit = form.handleSubmit((values) => {
       </div>
     </div>
 
-    <Button type="submit">
+    <button type="submit">
       Create
-    </Button>
+    </button>
   </form>
 </template>

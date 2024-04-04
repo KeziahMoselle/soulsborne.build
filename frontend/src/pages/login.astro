@@ -1,11 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import LoginForm from '@/components/Auth/Login.vue'
-
-const { user } = Astro.locals;
 ---
 
 <Layout title="Login">
-  { !user && <LoginForm client:load /> }
-  { user && <h1>You are already logged in.</h1>}
+  <LoginForm client:load />
 </Layout>

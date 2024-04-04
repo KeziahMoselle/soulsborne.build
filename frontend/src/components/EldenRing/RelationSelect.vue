@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue';
+  import { ref } from 'vue';
   import { inMemoryCache } from '@/lib/Cache'
   import { apiFetch } from '@/api';
 
@@ -21,7 +21,6 @@
     SelectValue,
   } from '@/components/ui/select'
 
-
   const props = defineProps<{
     name: string;
     type: string;
@@ -29,12 +28,8 @@
     filter?: (item: any) => boolean;
   }>()
 
-  const loading = ref(true)
+  const loading = ref(false)
   const optionsGroups = ref([])
-
-  onMounted(() => {
-    loading.value = false;
-  })
 
   async function getOptions(relation) {
     const cached = inMemoryCache.get(relation)
@@ -43,7 +38,7 @@
       return cached
     }
 
-    const response = await apiFetch(`${import.meta.env.PUBLIC_PAYLOAD_URL}/api/${relation}`)
+    const response = await apiFetch(`/api/${relation}`)
     inMemoryCache.set(relation, response)
     return response
   }
@@ -55,6 +50,8 @@
   async function getAllOptions() {
     if (optionsGroups.value.length > 0) return;
 
+    loading.value = true;
+
     for (const relation of props.relations) {
       const options = await getOptions(relation)
       optionsGroups.value.push({
@@ -62,6 +59,8 @@
         docs: options.docs
       })
     }
+
+    loading.value = false;
   }
 </script>
 
