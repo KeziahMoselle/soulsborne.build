@@ -6,12 +6,12 @@ export async function apiFetch(url: string, options: RequestInit = {}) {
       'Content-Type': 'application/json',
     },
     credentials: 'include',
-  };
+  }
 
   const mergedOptions = {
     ...defaultOptions,
     ...options,
-  };
+  }
 
   const result = await fetch(`${url}`, mergedOptions).then(async (res) => {
     const json = await res.json()
@@ -21,16 +21,17 @@ export async function apiFetch(url: string, options: RequestInit = {}) {
     }
 
     throw new Error(
+      // @ts-ignore
       json.message ? json.message : `Error fetching page data: ${res.statusText} (${res.status})}`
-    );
-  });
+    )
+  })
 
   return result
 }
 
 interface ILoginPayload {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 export async function login(payload: ILoginPayload) {
@@ -41,10 +42,11 @@ export async function login(payload: ILoginPayload) {
 
   let isSuccess = false
 
-  await toast.promise(login, {
+  toast.promise(login, {
     loading: 'Logging in...',
     success(response) {
       isSuccess = true
+      // @ts-ignore
       return `Welcome ${response.user.name}!`
     },
     error: () => {
@@ -56,9 +58,9 @@ export async function login(payload: ILoginPayload) {
 }
 
 export interface IRegisterPayload {
-  email: string;
-  name: string;
-  password: string;
+  email: string
+  name: string
+  password: string
 }
 
 export async function register(payload: IRegisterPayload) {
@@ -69,13 +71,14 @@ export async function register(payload: IRegisterPayload) {
 
   let isSuccess = false
 
-  await toast.promise(login, {
+  toast.promise(login, {
     loading: 'Creating your account...',
     success() {
       isSuccess = true
       return `Successfully registered!`
     },
     error: (error) => {
+      // @ts-ignore
       return error.message
     }
   })
@@ -88,7 +91,7 @@ export async function logout() {
     method: 'POST',
   })
 
-  await toast.promise(logout, {
+  toast.promise(logout, {
     loading: 'Loading...',
     success() {
       return `You have been logged out.`
