@@ -1,3 +1,5 @@
+import type { User } from "~/payload-types"
+
 export interface PayloadCollection<CollectionType> {
   totalDocs: number
   limit: number
@@ -9,4 +11,11 @@ export interface PayloadCollection<CollectionType> {
   docs: CollectionType[]
   prevPage: number | null
   nextPage: number | null
+}
+
+export interface PayloadUserResponse {
+  user: User
+  collection: string
+  token: string
+  exp: string
 }

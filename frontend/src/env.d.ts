@@ -1,4 +1,5 @@
 /// <reference types="astro/client" />
+type Runtime = import("@astrojs/cloudflare").Runtime<Env>;
 
 interface ImportMetaEnv {
   readonly PUBLIC_PAYLOAD_URL: string;
@@ -9,7 +10,7 @@ interface ImportMeta {
 }
 
 declare namespace App {
-  interface Locals {
+  interface Locals extends Runtime {
       user: import('~/payload-types').User,
   }
 }
