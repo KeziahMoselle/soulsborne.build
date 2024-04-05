@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+button {
+  @apply bg-white text-slate-900 rounded-lg py-2 px-4;
+}

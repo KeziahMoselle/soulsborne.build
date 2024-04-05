@@ -1,7 +1,6 @@
 <script setup>
   import { ref } from 'vue'
   import { register } from '../../api'
-  import Button from '@/components/ui/button/Button.vue';
 
   const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL
 
@@ -35,7 +34,7 @@
     <input class="text-slate-900" type="email" name="email" placeholder="your@email.com" required />
     <input class="text-slate-900" type="password" name="password" placeholder="password" required />
     <div class="text-center">
-      <Button type="submit">Register</Button>
+      <button type="submit">Register</button>
     </div>
   </form>
 </template>

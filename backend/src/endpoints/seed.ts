@@ -355,7 +355,7 @@ const AFFINITIES: {
 export const seed: PayloadHandler = async (req, res): Promise<void> => {
   const { user, payload } = req
 
-  if (!user || user.role !== 'admin') {
+  if (!user || !user.roles.includes('admin')) {
     res.status(401).json({ error: 'Unauthorized' })
     return
   }

@@ -38,6 +38,10 @@ Install globally:
 2. Install the dependencies via NPM
 
 ```bash
+pnpm install
+```
+
+```bash
 pnpm run setup
 ```
 

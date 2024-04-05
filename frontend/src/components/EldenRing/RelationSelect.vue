@@ -1,5 +1,6 @@
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue';
+  import qs from 'qs'
+  import { ref } from 'vue';
   import { inMemoryCache } from '@/lib/Cache'
   import { apiFetch } from '@/api';
 
@@ -21,30 +22,30 @@
     SelectValue,
   } from '@/components/ui/select'
 
-
   const props = defineProps<{
     name: string;
     type: string;
-    relations: string[];
-    filter?: (item: any) => boolean;
+    relationTo: any;
   }>()
 
-  const loading = ref(true)
+  const loading = ref(false)
   const optionsGroups = ref([])
 
-  onMounted(() => {
-    loading.value = false;
-  })
-
-  async function getOptions(relation) {
+  async function getOptions(relation, query = {}) {
     const cached = inMemoryCache.get(relation)
 
     if (cached) {
       return cached
     }
 
-    const response = await apiFetch(`${import.meta.env.PUBLIC_PAYLOAD_URL}/api/${relation}`)
-    inMemoryCache.set(relation, response)
+    const stringifiedQuery = qs.stringify({
+        where: query,
+      },
+      { addQueryPrefix: true },
+    )
+    const url = `/api/${relation}${stringifiedQuery}`
+    const response = await apiFetch(url)
+    inMemoryCache.set(url, response)
     return response
   }
 
@@ -55,12 +56,24 @@
   async function getAllOptions() {
     if (optionsGroups.value.length > 0) return;
 
-    for (const relation of props.relations) {
-      const options = await getOptions(relation)
-      optionsGroups.value.push({
-        relation,
-        docs: options.docs
-      })
+    loading.value = true;
+
+    for (const relation of props.relationTo) {
+      if (typeof relation === 'string') {
+        const options = await getOptions(relation)
+        optionsGroups.value.push({
+          relation,
+          docs: options.docs
+        })
+      }
+
+      if (typeof relation === 'object') {
+        const options = await getOptions(relation.slug, relation.query)
+        optionsGroups.value.push({
+          relation: relation.slug,
+          docs: options.docs
+        })
+      }
     }
   }
 </script>

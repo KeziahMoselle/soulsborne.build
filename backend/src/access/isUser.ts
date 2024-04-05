@@ -1,0 +1,1 @@
+export const isUser = ({ req: { user } }) => Boolean(user)

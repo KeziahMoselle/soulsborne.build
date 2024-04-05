@@ -1,20 +1,18 @@
-import { defineMiddleware } from "astro:middleware";
+import type { PayloadUserResponse } from "@/types";
+import { defineMiddleware } from "astro:middleware"
 
 export const onRequest = defineMiddleware(async ({ cookies, locals }, next) => {
-  const token = cookies.get("payload-token")?.value;
-
-  if (!token) {
-    locals.user = null;
+  if (!cookies.has('payload-token')) {
+    locals.user = null
     return next()
   }
 
-  const data = await fetch(`${import.meta.env.PUBLIC_PAYLOAD_URL}/api/users/me`, {
-    credentials: 'include',
+  const data: PayloadUserResponse = await fetch(`${import.meta.env.PUBLIC_PAYLOAD_URL}/api/users/me`, {
     headers: {
-      'Cookie': `payload-token=${token}`
+      'Cookie': `payload-token=${cookies.get('payload-token')}`
     },
   }).then((res) => res.json())
 
-  locals.user = data?.user;
-  return next();
-});
+  locals.user = data?.user
+  return next()
+})
