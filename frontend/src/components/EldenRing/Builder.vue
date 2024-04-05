@@ -203,6 +203,7 @@ const formSchema = toTypedSchema(z.object({
   // Build informations
   name: z.string().min(2).max(255),
   is_two_handed: z.boolean().default(false).optional(),
+  youtube_url: z.string().url({ message: "Invalid url" }).optional(),
   // Equipment
   'mainhand-1': z.string().optional(),
   'mainhand-2': z.string().optional(),
@@ -257,6 +258,7 @@ const onSubmit = form.handleSubmit((values) => {
   const build: Partial<ErBuild> = {
     name: values.name,
     is_two_handed: values.is_two_handed,
+    youtube_url: values.youtube_url,
     mainhand_weapons: mainhands.map((item) => ({
       weapon: Number(item.id)
     })),
@@ -304,6 +306,19 @@ const onSubmit = form.handleSubmit((values) => {
           <Checkbox :checked="value" @update:checked="handleChange" />
         </FormControl>
         <FormLabel>two handed</FormLabel>
+        <FormMessage />
+      </FormItem>
+    </FormField>
+    <FormField v-slot="{ componentField }" name="youtube_url">
+      <FormItem>
+        <FormLabel>Build demo (youtube video)</FormLabel>
+        <FormControl>
+          <Input 
+            type="url" 
+            placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ" 
+            pattern="https://.*" 
+            v-bind="componentField" />
+        </FormControl>
         <FormMessage />
       </FormItem>
     </FormField>
