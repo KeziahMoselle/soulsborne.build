@@ -5,7 +5,7 @@ import type { ErBuild } from '~/payload-types';
 
 const { id } = Astro.params
 
-const build: ErBuild = await apiFetch(`/api/er-builds/${id}`)
+const build: Partial<ErBuild> = await apiFetch(`/api/er-builds/${id}`)
 ---
 
 <Layout title={`${build.name} - Build`}>
