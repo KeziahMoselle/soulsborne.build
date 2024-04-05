@@ -1,6 +1,6 @@
 ---
-import '@/styles/globals.css'
-import { Toaster } from 'vue-sonner'
+import "@/styles/globals.css";
+import { Toaster } from "vue-sonner";
 
 interface Props {
   title: string;
@@ -11,7 +11,7 @@ const { user } = Astro.locals;
 ---
 
 <!doctype html>
-<html lang="en">
+<html class="h-full" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content="Astro description" />
@@ -20,9 +20,19 @@ const { user } = Astro.locals;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body class="bg-slate-900 text-white">
-    { user && <h1>Welcome {user.name}!</h1>}
+  <body class="bg-slate-900 text-white flex min-h-full flex-col">
+    <header class="flex justify-between">
+      <a class='href="/"'><img src="/img/logo.png" class="size-20" /></a>
+      <nav>
+        <ul class="flex flex-row py-7">
+          <li><a href="/builds/">Builds</a></li>
+          <lic><a href="/builder/">Create a build</a></lic>
+        </ul>
+      </nav>
+    </header>
+    {user && <h1>Welcome {user.name}!</h1>}
     <slot />
     <Toaster client:load />
+    <footer><p>footer</p></footer>
   </body>
 </html>
