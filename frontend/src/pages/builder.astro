@@ -4,12 +4,12 @@ import Layout from "@/layouts/Layout.astro";
 ---
 
 <Layout title="Builder">
-  <h1>Builder</h1>
-
   {/*
     Switch the builder depending on the current selected game
     Data are fetched in the component loaded to avoid loading
     too much data
   */}
-  <ERBuilder client:only />
+  <div class="container">
+    <ERBuilder client:only />
+  </div>
 </Layout>

@@ -22,6 +22,11 @@
     SelectValue,
   } from '@/components/ui/select'
 
+  const SELECT_IMAGES = {
+    'mainhand': '/elden-ring/builder/mainhand.png',
+    'offhand': '/elden-ring/builder/offhand.png'
+  }
+
   const props = defineProps<{
     name: string;
     type: string;
@@ -54,9 +59,9 @@
    * if optionsGroups already contains data do nothing
    */
   async function getAllOptions() {
-    if (optionsGroups.value.length > 0) return;
+    if (optionsGroups.value.length > 0) return
 
-    loading.value = true;
+    loading.value = true
 
     for (const relation of props.relationTo) {
       if (typeof relation === 'string') {
@@ -75,6 +80,8 @@
         })
       }
     }
+
+    loading.value = false
   }
 </script>
 
@@ -84,12 +91,37 @@
       <FormLabel>{{ name }}</FormLabel>
 
       <Select v-bind="componentField" @update:open="getAllOptions">
-        <img class="size-32" height="128" width="128" src="/elden-ring/builder/select-background.png" alt="" />
 
         <FormControl>
-          <SelectTrigger>
-            <SelectValue
-              :placeholder="loading ? 'Loading...' : '- Select -'" />
+          <SelectTrigger class="size-32 relative">
+            <img
+              class="size-32 transition-opacity ease-in z-[1]"
+              :class="{ 'opacity-0': loading }"
+              height="128"
+              width="128"
+              src="/elden-ring/builder/select-background.png"
+              alt="" />
+            <img
+              v-if="SELECT_IMAGES[type]"
+              class="absolute transform scale-75 size-32 transition-opacity ease-in z-[2]"
+              :class="{ 'opacity-0': loading }"
+              height="128"
+              width="128"
+              :src="SELECT_IMAGES[type]"
+              alt="" />
+            <img
+              class="absolute size-32 transition-opacity opacity-0 ease-in z-[3] peer-focus:opacity-50"
+              height="128"
+              width="128"
+              src="/elden-ring/builder/select-active.png"
+              alt="" />
+            <div
+              class="loader absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 transition-opacity ease-in z-[2]"
+              :class="{
+                'opacity-0': !loading
+              }">
+            </div>
+            <input type="select" class="hidden" />
           </SelectTrigger>
         </FormControl>
         <SelectContent>

@@ -283,8 +283,15 @@ export interface ErBuild {
     | null;
   offhand_weapons?:
     | {
-        weapon?: (number | null) | ErWeapon;
-        shield?: (number | null) | ErShield;
+        weapon?:
+          | ({
+              relationTo: 'er-weapons';
+              value: number | ErWeapon;
+            } | null)
+          | ({
+              relationTo: 'er-shields';
+              value: number | ErShield;
+            } | null);
         ash_of_war?: (number | null) | ErAshesOfWar;
         id?: string | null;
       }[]

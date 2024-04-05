@@ -32,7 +32,7 @@
     <input class="text-slate-900" type="email" name="email" placeholder="your@email.com" required />
     <input class="text-slate-900" type="password" name="password" placeholder="password" required />
     <div class="text-center">
-      <button type="submit">Login</button>
+      <button class="button" type="submit">Login</button>
     </div>
   </form>
 </template>

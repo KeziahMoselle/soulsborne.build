@@ -1,6 +1,7 @@
 ---
 import '@/styles/globals.scss'
 import { Toaster } from 'vue-sonner'
+import { SquareMenu } from 'lucide-vue-next'
 
 interface Props {
   title: string;
@@ -20,19 +21,45 @@ const { user } = Astro.locals;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body class="bg-slate-900 text-white flex min-h-full flex-col">
-    <header class="flex justify-between">
-      <a href="/"><img src="/img/logo.png" class="h-20 w-auto"/></a>
-      <nav>
-        <ul class="flex flex-row py-7">
-          <li><a href="/builds/">Builds</a></li>
-          <li><a href="/builder/">Create a build</a></li>
-        </ul>
-      </nav>
-    </header>
-    {user && <h1>Welcome {user.name}!</h1>}
-    <slot />
+  <body class="flex flex-col justify-between min-h-full bg-slate-900 text-white">
+    <div class="container">
+      <header class="flex justify-between border-b border-slate-800">
+        <div class="bg-slate-950 px-4">
+          <a href="/">
+            <picture>
+              <source media="(max-width: 767px)" srcset="/img/elden-ring-icon.png" />
+              <source media="(min-width: 768px)" srcset="/img/logo.png" />
+              <img class="h-16 py-2 md:h-20 md:w-auto md:py-0" src="/img/logo.png" alt="Current dataset is Elden Ring" />
+            </picture>
+          </a>
+        </div>
+
+        <!-- Desktop nav -->
+        <nav class="hidden md:block">
+          <ul class="flex flex-row gap-x-8 py-7">
+            <li><a href="/builds">Builds</a></li>
+            <li><a class="button" href="/builder">Create a build</a></li>
+          </ul>
+        </nav>
+
+        <!-- Mobile nav -->
+        <button class="md:hidden">
+          <SquareMenu class="size-8" />
+        </button>
+      </header>
+    </div>
+
+    <main class="grow">
+      {user && <h1>Welcome {user.name}!</h1>}
+      <slot />
+    </main>
+
+    <footer class="p-4 bg-slate-950 border-t border-slate-800">
+      <div class="container ">
+        <p>footer</p>
+      </div>
+    </footer>
+
     <Toaster client:load />
-    <footer><p>footer</p></footer>
   </body>
 </html>

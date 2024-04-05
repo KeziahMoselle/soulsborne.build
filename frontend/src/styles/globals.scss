@@ -2,6 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
-button {
-  @apply bg-white text-slate-900 rounded-lg py-2 px-4;
+.button {
+  @apply bg-white text-slate-900 rounded-md py-2 px-4;
+}
+
+.container {
+  @apply max-w-7xl mx-auto px-4;
+}
+
+.loader {
+  width: 80px;
+  aspect-ratio: 1;
+  border: 10px solid #000;
+  box-sizing: border-box;
+  background:
+    radial-gradient(farthest-side,#fff 98%,#0000) 50%/20px 20px,
+    radial-gradient(farthest-side,#fff 98%,#0000) 50%/20px 20px,
+    radial-gradient(farthest-side,#fff 98%,#0000) 50%/20px 20px,
+    radial-gradient(farthest-side,#fff 98%,#0000) 50%/20px 20px,
+    radial-gradient(farthest-side,#fff 98%,#0000) 50%/20px 20px,
+    linear-gradient(#fff 0 0) 50%/100% 10px,
+    linear-gradient(#fff 0 0) 50%/10px 100%,
+    #000;
+  background-repeat: no-repeat;
+  filter: blur(4px) contrast(10);
+  animation: l13 0.8s infinite;
+}
+
+@keyframes l13 {
+  100%  {background-position:50% -20px,-20px 50%,60px 50%,50% 60px,50%,50%,50%}
 }

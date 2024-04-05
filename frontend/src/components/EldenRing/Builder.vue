@@ -4,7 +4,6 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 import RelationSelect from '@/components/EldenRing/RelationSelect.vue'
 
-import { Button } from '@/components/ui/button'
 import {
   FormControl,
   FormField,
@@ -16,7 +15,6 @@ import { Input } from '@/components/ui/input'
 import { apiFetch } from '@/api'
 import type { ErBuild } from '~/payload-types'
 import { toast } from 'vue-sonner'
-
 
 export interface IFormItem {
   name: string;
@@ -201,7 +199,9 @@ const FORM = [
 ]
 
 const formSchema = toTypedSchema(z.object({
+  // Build informations
   name: z.string().min(2).max(255),
+  // Equipment
   'mainhand-1': z.string().optional(),
   'mainhand-2': z.string().optional(),
   'mainhand-3': z.string().optional(),
@@ -248,6 +248,10 @@ const onSubmit = form.handleSubmit((values) => {
   const armorIds = [values.helm, values.chest, values.gauntlet, values.leg].filter(Boolean).map((armor) => Number(armor.split(':')[1]))
   const talismanIds = [values['talisman-1'], values['talisman-2'], values['talisman-3'], values['talisman-4']].filter(Boolean).map((talisman) => Number(talisman.split(':')[1]))
 
+  /**
+   * Request body
+   * Will be sent to PayloadCMS
+   */
   const build: Partial<ErBuild> = {
     name: values.name,
     mainhand_weapons: mainhands.map((item) => ({
@@ -299,8 +303,10 @@ const onSubmit = form.handleSubmit((values) => {
       </div>
     </div>
 
-    <button type="submit">
-      Create
-    </button>
+    <div class="flex justify-center mt-12">
+      <button class="button" type="submit">
+        Create
+      </button>
+    </div>
   </form>
 </template>
