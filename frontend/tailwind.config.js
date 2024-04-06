@@ -10,6 +10,9 @@ export default {
     ],
   theme: {
     extend: {
+      gridTemplateColumns: {
+        'er-builder': 'repeat(auto-fill, 128px)'
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

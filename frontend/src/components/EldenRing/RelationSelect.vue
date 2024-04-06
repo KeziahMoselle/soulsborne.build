@@ -24,7 +24,14 @@
 
   const SELECT_IMAGES = {
     'mainhand': '/elden-ring/builder/mainhand.png',
-    'offhand': '/elden-ring/builder/offhand.png'
+    'offhand': '/elden-ring/builder/offhand.png',
+    'bolt': '/elden-ring/builder/arrows.png',
+    'greatbolt': '/elden-ring/builder/bolts.png',
+    'helm': '/elden-ring/builder/helmet.png',
+    'chest': '/elden-ring/builder/chest.png',
+    'gauntlet': '/elden-ring/builder/gauntlet.png',
+    'leg': '/elden-ring/builder/leg.png',
+    'talisman': '/elden-ring/builder/talismans.png',
   }
 
   const props = defineProps<{
@@ -86,29 +93,29 @@
 </script>
 
 <template>
-  <FormField :name="name" v-slot="{ componentField }">
+  <FormField :name="name" v-slot="{ componentField, value }">
     <FormItem>
-      <FormLabel>{{ name }}</FormLabel>
-
       <Select v-bind="componentField" @update:open="getAllOptions">
-
         <FormControl>
           <SelectTrigger class="size-32 relative">
             <img
               class="size-32 transition-opacity ease-in z-[1]"
-              :class="{ 'opacity-0': loading }"
+              :class="{ 'opacity-50': loading }"
               height="128"
               width="128"
               src="/elden-ring/builder/select-background.png"
               alt="" />
+              <!-- Placeholder -->
             <img
-              v-if="SELECT_IMAGES[type]"
-              class="absolute transform scale-75 size-32 transition-opacity ease-in z-[2]"
+              v-if="SELECT_IMAGES[type] && !value"
+              class="absolute transform scale-75 size-32 p-1 object-contain transition-opacity ease-in z-[2]"
               :class="{ 'opacity-0': loading }"
               height="128"
               width="128"
               :src="SELECT_IMAGES[type]"
               alt="" />
+            <!-- Item's image here -->
+            <p v-if="value" class="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 z-[2]">todo image</p>
             <img
               class="absolute size-32 transition-opacity opacity-0 ease-in z-[3] peer-focus:opacity-50"
               height="128"

@@ -301,7 +301,7 @@ const onSubmit = form.handleSubmit((values) => {
       </FormItem>
     </FormField>
     <FormField v-slot="{ value, handleChange }" type="checkbox" name="is_two_handed">
-      <FormItem class="flex flex-row items-start gap-x-3 space-y-0 rounded-md border p-4 shadow">
+      <FormItem class="flex flex-row items-center gap-x-3 p-4 space-y-0">
         <FormControl>
           <Checkbox :checked="value" @update:checked="handleChange" />
         </FormControl>
@@ -313,10 +313,10 @@ const onSubmit = form.handleSubmit((values) => {
       <FormItem>
         <FormLabel>Build demo (youtube video)</FormLabel>
         <FormControl>
-          <Input 
-            type="url" 
-            placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ" 
-            pattern="https://.*" 
+          <Input
+            type="url"
+            placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            pattern="https://.*"
             v-bind="componentField" />
         </FormControl>
         <FormMessage />
@@ -324,10 +324,17 @@ const onSubmit = form.handleSubmit((values) => {
     </FormField>
 
     <!-- Equipment -->
-    <div class="grid grid-cols-5" v-for="row in FORM">
-      <div v-for="input in row">
-        <RelationSelect :key="input.name" v-bind="input" />
+    <div class="grid md:first:grid-cols-2">
+      <!-- Mainhand, offhand, armor, talismans... -->
+      <div>
+        <div class="grid grid-cols-er-builder" v-for="row in FORM">
+          <div v-for="input in row">
+            <RelationSelect :key="input.name" v-bind="input" />
+          </div>
+        </div>
       </div>
+
+      <!-- Statistics -->
     </div>
 
     <div class="flex justify-center mt-12">

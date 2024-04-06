@@ -65,6 +65,7 @@ const ERBuilds: CollectionConfig = {
       label: 'Archetype',
       type: 'relationship',
       relationTo: 'archetypes',
+      hasMany: true,
       admin: {
         position: 'sidebar',
       }
