@@ -23,7 +23,7 @@ async function auth({ cookies, locals }, next) {
 }
 
 function alreadyLoggedIn(context, next) {
-  if (FORBID_ALREADY_LOGGED_ROUTES.includes(context.url.pathname)) {
+  if (context.locals.user && FORBID_ALREADY_LOGGED_ROUTES.includes(context.url.pathname)) {
     return context.redirect('/', 301)
   }
 
