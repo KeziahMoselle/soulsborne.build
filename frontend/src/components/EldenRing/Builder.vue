@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input'
 import { apiFetch } from '@/api'
 import type { ErBuild } from '~/payload-types'
 import { toast } from 'vue-sonner'
+import { Checkbox } from '@/components/ui/checkbox'
 
 export interface IFormItem {
   name: string;
@@ -201,6 +202,8 @@ const FORM = [
 const formSchema = toTypedSchema(z.object({
   // Build informations
   name: z.string().min(2).max(255),
+  is_two_handed: z.boolean().default(false).optional(),
+  youtube_url: z.string().url({ message: "Invalid url" }).optional(),
   // Equipment
   'mainhand-1': z.string().optional(),
   'mainhand-2': z.string().optional(),
@@ -254,6 +257,8 @@ const onSubmit = form.handleSubmit((values) => {
    */
   const build: Partial<ErBuild> = {
     name: values.name,
+    is_two_handed: values.is_two_handed,
+    youtube_url: values.youtube_url,
     mainhand_weapons: mainhands.map((item) => ({
       weapon: Number(item.id)
     })),
@@ -291,6 +296,28 @@ const onSubmit = form.handleSubmit((values) => {
         <FormLabel>Name</FormLabel>
         <FormControl>
           <Input type="text" placeholder="My awesome build" v-bind="componentField" />
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    </FormField>
+    <FormField v-slot="{ value, handleChange }" type="checkbox" name="is_two_handed">
+      <FormItem class="flex flex-row items-start gap-x-3 space-y-0 rounded-md border p-4 shadow">
+        <FormControl>
+          <Checkbox :checked="value" @update:checked="handleChange" />
+        </FormControl>
+        <FormLabel>two handed</FormLabel>
+        <FormMessage />
+      </FormItem>
+    </FormField>
+    <FormField v-slot="{ componentField }" name="youtube_url">
+      <FormItem>
+        <FormLabel>Build demo (youtube video)</FormLabel>
+        <FormControl>
+          <Input 
+            type="url" 
+            placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ" 
+            pattern="https://.*" 
+            v-bind="componentField" />
         </FormControl>
         <FormMessage />
       </FormItem>
