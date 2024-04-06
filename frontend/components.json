@@ -4,9 +4,9 @@
   "typescript": true,
   "tailwind": {
     "config": "tailwind.config.js",
-    "css": "src/styles/globals.css",
-    "baseColor": "slate",
-    "cssVariables": false
+    "css": "src/styles/globals.scss",
+    "baseColor": "neutral",
+    "cssVariables": true
   },
   "framework": "astro",
   "aliases": {

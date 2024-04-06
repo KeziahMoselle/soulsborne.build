@@ -21,7 +21,7 @@ defineProps<{
       <FormItem class="flex items-center justify-between gap-4">
         <FormLabel class="flex flex-col">
           <span :class="{
-            'text-red-400': errors.length
+            'text-destructive': errors.length
           }">{{ stat.name }}</span>
           <span class="text-xs text-slate-400" v-if="stat.softcaps.find((cap) => cap.level > Number(value || 0))">
             Next cap: {{ stat.softcaps.find((cap) => cap.level > Number(value || 0)).level }}

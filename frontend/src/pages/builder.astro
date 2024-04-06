@@ -13,7 +13,7 @@ const stats: PayloadCollection<ErStatistic> = await apiFetch('/api/er-statistics
 
 <Layout title="Create a build">
   { !user && (
-    <p class="container text-red-400">⚠️ You cannot create a build because you are not logged in.</p>
+    <p class="container text-destructive">⚠️ You cannot create a build because you are not logged in.</p>
   )}
   {/*
     Switch the builder depending on the current selected game

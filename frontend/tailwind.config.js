@@ -1,3 +1,4 @@
+import defaultTheme from 'tailwindcss/defaultTheme'
 import animate from "tailwindcss-animate"
 
 /** @type {import('tailwindcss').Config} */
@@ -47,6 +48,10 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+      },
+      fontFamily: {
+        display: ['garamond-premier-pro', ...defaultTheme.fontFamily.serif],
+        body: ['mantinia', ...defaultTheme.fontFamily.sans],
       },
       borderRadius: {
       	xl: "calc(var(--radius) + 4px)",

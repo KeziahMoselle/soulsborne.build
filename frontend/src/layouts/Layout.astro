@@ -20,12 +20,13 @@ const { user } = Astro.locals;
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title} | soulsborne.build</title>
+    <link rel="stylesheet" href="https://use.typekit.net/okw0knf.css">
   </head>
-  <body class="flex flex-col justify-between min-h-full bg-slate-900 text-white">
-    <div class="container">
-      <header class="flex justify-between border-b border-slate-800">
+  <body class="flex flex-col justify-between min-h-full bg-background text-white">
+    <header class="border-b bg-secondary">
+      <div class="container flex justify-between">
         <div class="flex items-center gap-x-4">
-          <a class="bg-slate-950 px-4" href="/">
+          <a class="px-4" href="/">
             <picture>
               <source media="(max-width: 767px)" srcset="/img/elden-ring-icon.png" />
               <source media="(min-width: 768px)" srcset="/img/logo.png" />
@@ -40,11 +41,11 @@ const { user } = Astro.locals;
         <nav class="hidden md:block">
           <ul class="flex flex-row gap-x-8 py-7">
             {!user && (
-              <li><a href="/register">Register</a></li>
-              <li><a href="/login">Login</a></li>
+              <li class="font-display text-xl"><a href="/register">Register</a></li>
+              <li class="font-display text-xl"><a href="/login">Login</a></li>
             )}
-            <li><a href="/builds">Builds</a></li>
-            <li><a class="button" href="/builder">Create a build</a></li>
+            <li class="font-display text-xl"><a href="/builds">Builds</a></li>
+            <li class="font-display text-xl"><a class="button" href="/builder">Create a build</a></li>
           </ul>
         </nav>
 
@@ -52,14 +53,14 @@ const { user } = Astro.locals;
         <button class="md:hidden">
           <SquareMenu class="size-8" />
         </button>
-      </header>
-    </div>
+      </div>
+    </header>
 
     <main class="grow">
       <slot />
     </main>
 
-    <footer class="p-4 bg-slate-950 border-t border-slate-800">
+    <footer class="p-4 bg-secondary border-t">
       <div class="container ">
         <p>footer</p>
       </div>
