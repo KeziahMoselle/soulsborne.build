@@ -198,11 +198,8 @@ const STATS = [
     ]
   },
   {
-    name: 'Arcane',
+    name: 'Intelligence',
     softcaps: [
-      {
-        level: 20,
-      },
       {
         level: 60,
       },
@@ -223,8 +220,11 @@ const STATS = [
     ]
   },
   {
-    name: 'Intelligence',
+    name: 'Arcane',
     softcaps: [
+      {
+        level: 20,
+      },
       {
         level: 60,
       },

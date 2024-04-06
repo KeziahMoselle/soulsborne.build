@@ -9,7 +9,7 @@ export const onRequest = defineMiddleware(async ({ cookies, locals }, next) => {
 
   const data: PayloadUserResponse = await fetch(`${import.meta.env.PUBLIC_PAYLOAD_URL}/api/users/me`, {
     headers: {
-      'Cookie': `payload-token=${cookies.get('payload-token')}`
+      'Cookie': `payload-token=${cookies.get('payload-token').value}`
     },
   }).then((res) => res.json())
 

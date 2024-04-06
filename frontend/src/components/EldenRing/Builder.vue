@@ -13,10 +13,15 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { apiFetch } from '@/api'
-import type { ErBuild } from '~/payload-types'
+import type { ErBuild, ErStatistic } from '~/payload-types'
 import { toast } from 'vue-sonner'
 import { Checkbox } from '@/components/ui/checkbox'
 import Statistics from '@/components/EldenRing/Statistics.vue'
+import type { PayloadCollection } from '@/types'
+
+const props = defineProps<{
+  stats: PayloadCollection<ErStatistic>
+}>()
 
 const FORM = [
   [
@@ -191,20 +196,40 @@ const FORM = [
   ],
 ]
 
+const statsSchema = props.stats.docs.reduce((acc, value) => {
+  acc[`stat-${value.id}`] = z.number().min(0).max(99)
+  return acc
+}, {})
+
 const formSchema = toTypedSchema(z.object({
   // Build informations
   name: z.string().min(2).max(255),
   is_two_handed: z.boolean().default(false).optional(),
   youtube_url: z.string().url({ message: "Invalid url" }).optional(),
+  'stat-1': z.number().min(0).max(99),
+  'stat-2': z.number().min(0).max(99),
+  'stat-3': z.number().min(0).max(99),
+  'stat-4': z.number().min(0).max(99),
+  'stat-5': z.number().min(0).max(99),
+  'stat-6': z.number().min(0).max(99),
+  'stat-7': z.number().min(0).max(99),
+  'stat-8': z.number().min(0).max(99),
+  ...statsSchema,
   // Equipment
   'mainhand-1': z.string().optional(),
+  'mainhand-ash-1': z.string().optional(),
   'mainhand-2': z.string().optional(),
+  'mainhand-ash-2': z.string().optional(),
   'mainhand-3': z.string().optional(),
+  'mainhand-ash-3': z.string().optional(),
   'bolt-1': z.string().optional(),
   'bolt-2': z.string().optional(),
   'offhand-1': z.string().optional(),
+  'offhand-ash-1': z.string().optional(),
   'offhand-2': z.string().optional(),
+  'offhand-ash-2': z.string().optional(),
   'offhand-3': z.string().optional(),
+  'offhand-ash-3': z.string().optional(),
   'greatbolt-1': z.string().optional(),
   'greatbolt-2': z.string().optional(),
   helm: z.string().optional(),
@@ -219,29 +244,52 @@ const formSchema = toTypedSchema(z.object({
 
 const { handleSubmit, values, setValues } = useForm({
   validationSchema: formSchema,
+  initialValues: {
+    "stat-1": 10,
+    "stat-2": 10,
+    "stat-3": 10,
+    "stat-4": 10,
+    "stat-5": 10,
+    "stat-6": 10,
+    "stat-7": 10,
+    "stat-8": 10,
+  }
 })
 
 const onSubmit = handleSubmit((values) => {
   console.log('Form submitted!', values)
 
-  const mainhands = [values['mainhand-1'], values['mainhand-2'], values['mainhand-3']].filter(Boolean).map((item) => {
+  const mainhands = [values['mainhand-1'], values['mainhand-2'], values['mainhand-3']].filter(Boolean).map((item, index) => {
     const [collectionSlug, id] = item.split(':')
     return {
       collectionSlug,
       name: collectionSlug.split('er-')[1],
-      id
+      id,
+      ashId: values[`mainhand-ash-${index + 1}`]?.split(':')[1]
     }
   })
-  const offhands = [values['mainhand-1'], values['mainhand-2'], values['mainhand-3']].filter(Boolean).map((item) => {
+  const offhands = [values['offhand-1'], values['offhand-2'], values['offhand-3']].filter(Boolean).map((item, index) => {
     const [collectionSlug, id] = item.split(':')
     return {
       collectionSlug,
       name: collectionSlug.split('er-')[1],
-      id
+      id,
+      ashId: values[`offhand-ash-${index + 1}`]?.split(':')[1]
     }
   })
   const armorIds = [values.helm, values.chest, values.gauntlet, values.leg].filter(Boolean).map((armor) => Number(armor.split(':')[1]))
   const talismanIds = [values['talisman-1'], values['talisman-2'], values['talisman-3'], values['talisman-4']].filter(Boolean).map((talisman) => Number(talisman.split(':')[1]))
+
+  console.log(mainhands, offhands)
+
+  const statistics = props.stats.docs.map((stat) => {
+    const value = values[`stat-${stat.id}`]
+
+    return {
+      stat: stat.id,
+      value
+    }
+  })
 
   /**
    * Request body
@@ -252,13 +300,16 @@ const onSubmit = handleSubmit((values) => {
     is_two_handed: values.is_two_handed,
     youtube_url: values.youtube_url,
     mainhand_weapons: mainhands.map((item) => ({
-      weapon: Number(item.id)
+      weapon: Number(item.id),
+      ash_of_war: Number(item.ashId)
     })),
     offhand_weapons: offhands.map((item) => ({
-      [item.name]: Number(item.id)
+      [item.name]: Number(item.id),
+      ash_of_war: Number(item.ashId)
     })),
     armors: armorIds,
     talismans: talismanIds,
+    statistics
   }
 
   const createBuild = apiFetch(`/api/er-builds`, {
@@ -320,18 +371,28 @@ const onSubmit = handleSubmit((values) => {
       <!-- Mainhand, offhand, armor, talismans... -->
       <div class="md:col-span-6">
         <div class="grid grid-cols-er-builder" v-for="row in FORM">
-          <RelationSelect
-            v-for="input in row"
-            :key="input.name"
-            v-bind="input"
-            :values="values"
-            :set-values="setValues" />
+          <div v-for="input in row" class="relative">
+            <RelationSelect
+              :key="input.name"
+              v-bind="input"
+              :values="values"
+              :set-values="setValues" />
+
+              <RelationSelect
+                v-if="input.type === 'mainhand' || input.type === 'offhand'"
+                :key="`${input.name.split('-')[0]}-ash-${input.name.split('-')[1]}`"
+                :name="`${input.name.split('-')[0]}-ash-${input.name.split('-')[1]}`"
+                type="ash"
+                :relation-to="['er-ashes-of-war']"
+                :values="values"
+                :set-values="setValues" />
+          </div>
         </div>
       </div>
 
       <!-- Statistics -->
-      <div class="md:col-start-10 md:col-span-3">
-        <Statistics />
+      <div class="md:col-start-11 md:col-span-2">
+        <Statistics :stats="stats.docs" />
       </div>
     </div>
 

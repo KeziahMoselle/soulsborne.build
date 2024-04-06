@@ -1,11 +1,17 @@
 ---
+import { apiFetch } from "@/api";
 import ERBuilder from "@/components/EldenRing/Builder.vue";
 import Layout from "@/layouts/Layout.astro";
+import type { PayloadCollection } from "@/types";
+import type { ErStatistic } from "~/payload-types";
 
-const { user } = Astro.locals
+const { user } = Astro.locals;
+
+// @ts-ignore
+const stats: PayloadCollection<ErStatistic> = await apiFetch('/api/er-statistics?sort=id')
 ---
 
-<Layout title="Builder">
+<Layout title="Create a build">
   { !user && (
     <p class="container text-red-400">⚠️ You cannot create a build because you are not logged in.</p>
   )}
@@ -15,6 +21,8 @@ const { user } = Astro.locals
     too much data
   */}
   <div class="container">
-    <ERBuilder client:only />
+    <ERBuilder
+      client:only
+      stats={stats} />
   </div>
 </Layout>
