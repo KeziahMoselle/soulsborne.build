@@ -16,15 +16,7 @@ import { apiFetch } from '@/api'
 import type { ErBuild } from '~/payload-types'
 import { toast } from 'vue-sonner'
 import { Checkbox } from '@/components/ui/checkbox'
-
-export interface IFormItem {
-  name: string;
-  type: string;
-  relationTo: string[] | {
-    slug: string;
-    query: any;
-  }[];
-}
+import Statistics from '@/components/EldenRing/Statistics.vue'
 
 const FORM = [
   [
@@ -225,11 +217,11 @@ const formSchema = toTypedSchema(z.object({
   'talisman-4': z.string().optional(),
 }))
 
-const form = useForm({
+const { handleSubmit, values, setValues } = useForm({
   validationSchema: formSchema,
 })
 
-const onSubmit = form.handleSubmit((values) => {
+const onSubmit = handleSubmit((values) => {
   console.log('Form submitted!', values)
 
   const mainhands = [values['mainhand-1'], values['mainhand-2'], values['mainhand-3']].filter(Boolean).map((item) => {
@@ -324,17 +316,23 @@ const onSubmit = form.handleSubmit((values) => {
     </FormField>
 
     <!-- Equipment -->
-    <div class="grid md:first:grid-cols-2">
+    <div class="grid md:grid-cols-12">
       <!-- Mainhand, offhand, armor, talismans... -->
-      <div>
+      <div class="md:col-span-6">
         <div class="grid grid-cols-er-builder" v-for="row in FORM">
-          <div v-for="input in row">
-            <RelationSelect :key="input.name" v-bind="input" />
-          </div>
+          <RelationSelect
+            v-for="input in row"
+            :key="input.name"
+            v-bind="input"
+            :values="values"
+            :set-values="setValues" />
         </div>
       </div>
 
       <!-- Statistics -->
+      <div class="md:col-start-10 md:col-span-3">
+        <Statistics />
+      </div>
     </div>
 
     <div class="flex justify-center mt-12">

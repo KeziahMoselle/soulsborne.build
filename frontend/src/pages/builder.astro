@@ -1,9 +1,14 @@
 ---
 import ERBuilder from "@/components/EldenRing/Builder.vue";
 import Layout from "@/layouts/Layout.astro";
+
+const { user } = Astro.locals
 ---
 
 <Layout title="Builder">
+  { !user && (
+    <p class="container text-red-400">⚠️ You cannot create a build because you are not logged in.</p>
+  )}
   {/*
     Switch the builder depending on the current selected game
     Data are fetched in the component loaded to avoid loading
