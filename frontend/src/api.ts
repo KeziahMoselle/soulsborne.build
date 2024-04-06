@@ -9,7 +9,11 @@ export async function fetchJSON(url: string, options: RequestInit = {}) {
     headers: {
       'Content-Type': 'application/json',
     },
-    credentials: 'include',
+  }
+
+  // Add credentials on client only
+  if (!import.meta.env.SSR) {
+    defaultOptions['credentials'] = 'include'
   }
 
   const mergedOptions = {
