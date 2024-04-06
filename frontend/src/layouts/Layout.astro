@@ -24,19 +24,25 @@ const { user } = Astro.locals;
   <body class="flex flex-col justify-between min-h-full bg-slate-900 text-white">
     <div class="container">
       <header class="flex justify-between border-b border-slate-800">
-        <div class="bg-slate-950 px-4">
-          <a href="/">
+        <div class="flex items-center gap-x-4">
+          <a class="bg-slate-950 px-4" href="/">
             <picture>
               <source media="(max-width: 767px)" srcset="/img/elden-ring-icon.png" />
               <source media="(min-width: 768px)" srcset="/img/logo.png" />
               <img class="h-16 py-2 md:h-20 md:w-auto md:py-0" src="/img/logo.png" alt="Current dataset is Elden Ring" />
             </picture>
           </a>
+
+          {user && <h1>Welcome {user.name}!</h1>}
         </div>
 
         <!-- Desktop nav -->
         <nav class="hidden md:block">
           <ul class="flex flex-row gap-x-8 py-7">
+            {!user && (
+              <li><a href="/register">Register</a></li>
+              <li><a href="/login">Login</a></li>
+            )}
             <li><a href="/builds">Builds</a></li>
             <li><a class="button" href="/builder">Create a build</a></li>
           </ul>
@@ -50,7 +56,6 @@ const { user } = Astro.locals;
     </div>
 
     <main class="grow">
-      {user && <h1>Welcome {user.name}!</h1>}
       <slot />
     </main>
 

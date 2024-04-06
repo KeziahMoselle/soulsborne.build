@@ -1,7 +1,12 @@
 import type { PayloadUserResponse } from "@/types";
-import { defineMiddleware } from "astro:middleware"
+import { sequence } from "astro:middleware"
 
-export const onRequest = defineMiddleware(async ({ cookies, locals }, next) => {
+const FORBID_ALREADY_LOGGED_ROUTES = [
+  '/register',
+  '/login'
+]
+
+async function auth({ cookies, locals }, next) {
   if (!cookies.has('payload-token')) {
     locals.user = null
     return next()
@@ -15,4 +20,14 @@ export const onRequest = defineMiddleware(async ({ cookies, locals }, next) => {
 
   locals.user = data?.user
   return next()
-})
+}
+
+function alreadyLoggedIn(context, next) {
+  if (FORBID_ALREADY_LOGGED_ROUTES.includes(context.url.pathname)) {
+    return context.redirect('/', 301)
+  }
+
+  return next()
+}
+
+export const onRequest = sequence(auth, alreadyLoggedIn)
