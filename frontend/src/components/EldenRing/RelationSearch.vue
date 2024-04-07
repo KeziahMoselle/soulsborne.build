@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import qs from 'qs'
-  import { computed, ref } from 'vue';
+  import { computed, reactive, ref } from 'vue';
   import { inMemoryCache } from '@/lib/Cache'
   import { apiFetch } from '@/api';
   import { Check } from 'lucide-vue-next'
@@ -53,17 +53,20 @@
 
   const isOpen = ref(false)
   const loading = ref(false)
-  const optionsByRelations = ref<{
+  const hasFetchedAllPages = ref(false)
+  const optionsByRelations = reactive<{
     [key: string]: IPayloadOptionLike[]
   }>({})
+  const optionsGroups = computed(() => Object.entries(optionsByRelations))
   const isSmall = computed(() => props.type === 'ash' || props.type === 'affinity')
 
-  async function getOptions(relation, query = {}) {
+  async function getOptions({ relation, query = {}, page = 1 }) {
     const stringifiedQuery = qs.stringify(
       {
         where: query,
         sort: 'name',
-        limit: 20,
+        limit: 100,
+        page
       },
       { addQueryPrefix: true },
     )
@@ -84,17 +87,40 @@
    * Get all options from all loaded relations
    */
   async function getAllOptions() {
+    if (hasFetchedAllPages.value) return console.log('skipped')
+
     loading.value = true
+
+    let hasNextPage = false
+    let page = 0
 
     for (const relation of props.relationTo) {
       if (typeof relation === 'string') {
-        const options = await getOptions(relation)
-        optionsByRelations.value[relation] = options.docs
+        do {
+          const options = await getOptions({
+            relation,
+            page,
+          })
+          if (Array.isArray(optionsByRelations[relation])) {
+            optionsByRelations[relation] = [...optionsByRelations[relation], ...options.docs]
+          } else {
+            optionsByRelations[relation] = options.docs
+          }
+          page = options.nextPage
+          hasNextPage = options.hasNextPage
+
+          if (!hasNextPage) {
+            hasFetchedAllPages.value = true
+          }
+        } while (hasNextPage)
       }
 
       if (typeof relation === 'object') {
-        const options = await getOptions(relation.slug, relation.query)
-        optionsByRelations.value[relation.slug] = options.docs
+        const options = await getOptions({
+          relation: relation.slug,
+          query: relation.query
+        })
+        optionsByRelations[relation.slug] = options.docs
       }
     }
 
@@ -170,11 +196,12 @@
               </span>
             </CommandEmpty>
             <CommandList>
-              <CommandGroup v-for="[relation, options] in Object.entries(optionsByRelations)">
-                <CommandItem
+              <CommandGroup v-for="[relation, options] in optionsGroups">
+               <CommandItem
+                  v-if="options.length > 0"
                   v-for="option in options"
                   :key="option.id"
-                  :value="`${relation}:${option.id}`"
+                  :value="option.name"
                   @select="() => {
                     isOpen = false
                     if (values[name] === `${relation}:${option.id}`) {
