@@ -302,6 +302,8 @@ export interface ErBuild {
   bolts?: (number | ErAmmunition)[] | null;
   armors?: (number | ErArmor)[] | null;
   talismans?: (number | ErTalisman)[] | null;
+  sorceries?: (number | ErSorcery)[] | null;
+  incantations?: (number | ErIncantation)[] | null;
   level?: number | null;
   starting_class?: (number | null) | ErClass;
   statistics?:
@@ -435,19 +437,44 @@ export interface ErTalisman {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-classes".
+ * via the `definition` "er-sorceries".
  */
-export interface ErClass {
+export interface ErSorcery {
   id: number;
   name?: string | null;
-  rune_level?: number | null;
-  weapons?: (number | ErWeapon)[] | null;
-  shields?: (number | ErShield)[] | null;
-  statistics?:
+  description?:
     | {
-        stat?: (number | null) | ErStatistic;
-        value?: number | null;
+        [k: string]: unknown;
+      }[]
+    | null;
+  effect?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  sorcery_type?: (number | null) | ErSorceryType;
+  slots?: number | null;
+  cost?: number | null;
+  requirements?:
+    | {
+        statistic: number | ErStatistic;
+        value: number;
         id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-sorcery-types".
+ */
+export interface ErSorceryType {
+  id: number;
+  name?: string | null;
+  description?:
+    | {
+        [k: string]: unknown;
       }[]
     | null;
   updatedAt: string;
@@ -500,44 +527,19 @@ export interface ErIncantationType {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-sorceries".
+ * via the `definition` "er-classes".
  */
-export interface ErSorcery {
+export interface ErClass {
   id: number;
   name?: string | null;
-  description?:
+  rune_level?: number | null;
+  weapons?: (number | ErWeapon)[] | null;
+  shields?: (number | ErShield)[] | null;
+  statistics?:
     | {
-        [k: string]: unknown;
-      }[]
-    | null;
-  effect?:
-    | {
-        [k: string]: unknown;
-      }[]
-    | null;
-  sorcery_type?: (number | null) | ErSorceryType;
-  slots?: number | null;
-  cost?: number | null;
-  requirements?:
-    | {
-        statistic: number | ErStatistic;
-        value: number;
+        stat?: (number | null) | ErStatistic;
+        value?: number | null;
         id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-sorcery-types".
- */
-export interface ErSorceryType {
-  id: number;
-  name?: string | null;
-  description?:
-    | {
-        [k: string]: unknown;
       }[]
     | null;
   updatedAt: string;

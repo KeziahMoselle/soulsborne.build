@@ -169,6 +169,20 @@ const ERBuilds: CollectionConfig = {
               relationTo: 'er-talismans',
               hasMany: true
             },
+            {
+              name: 'sorceries',
+              label: 'Sorceries',
+              type: 'relationship',
+              relationTo: 'er-sorceries',
+              hasMany: true
+            },
+            {
+              name: 'incantations',
+              label: 'Incantations',
+              type: 'relationship',
+              relationTo: 'er-incantations',
+              hasMany: true
+            },
           ]
         },
         {

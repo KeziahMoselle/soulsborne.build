@@ -18,6 +18,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import Statistics from '@/components/EldenRing/Statistics.vue'
 import type { PayloadCreateResponse, PayloadCollection } from '@/types'
 import Tags from '@/components/Form/Tags.vue'
+import { computed } from 'vue'
 
 const props = defineProps<{
   stats: PayloadCollection<ErStatistic>,
@@ -198,6 +199,14 @@ const FORM = [
   ],
 ]
 
+const magicInputs = computed(() => {
+  return Array.from({ length: 10 }).map((_, id) => ({
+    name: `magic-${id + 1}`,
+    type: 'magic',
+    relationTo: ['er-sorceries', 'er-incantations'],
+  }))
+})
+
 const statsSchema = props.stats.docs.reduce((acc, value) => {
   acc[`stat-${value.id}`] = z.number().min(0).max(99)
   return acc
@@ -251,6 +260,16 @@ const formSchema = toTypedSchema(z.object({
   'talisman-2': z.string().optional(),
   'talisman-3': z.string().optional(),
   'talisman-4': z.string().optional(),
+  'magic-1': z.string().optional(),
+  'magic-2': z.string().optional(),
+  'magic-3': z.string().optional(),
+  'magic-4': z.string().optional(),
+  'magic-5': z.string().optional(),
+  'magic-6': z.string().optional(),
+  'magic-7': z.string().optional(),
+  'magic-8': z.string().optional(),
+  'magic-9': z.string().optional(),
+  'magic-10': z.string().optional(),
 }))
 
 const { handleSubmit, values, setValues } = useForm({
@@ -269,8 +288,6 @@ const { handleSubmit, values, setValues } = useForm({
 })
 
 const onSubmit = handleSubmit((values) => {
-  console.log('Form submitted!', values)
-
   const mainhands = [values['mainhand-1'], values['mainhand-2'], values['mainhand-3']].filter(Boolean).map((item, index) => {
     const [collectionSlug, id] = item.split(':')
     return {
@@ -293,6 +310,27 @@ const onSubmit = handleSubmit((values) => {
   })
   const armorIds = [values.helm, values.chest, values.gauntlet, values.leg].filter(Boolean).map((armor) => Number(armor.split(':')[1]))
   const talismanIds = [values['talisman-1'], values['talisman-2'], values['talisman-3'], values['talisman-4']].filter(Boolean).map((talisman) => Number(talisman.split(':')[1]))
+
+  const magicIds = [
+    values['magic-1'],
+    values['magic-2'],
+    values['magic-3'],
+    values['magic-4'],
+    values['magic-5'],
+    values['magic-6'],
+    values['magic-7'],
+    values['magic-8'],
+    values['magic-9'],
+    values['magic-10'],
+  ]
+
+  const sorceriesIds = magicIds
+    .filter((id) => id.startsWith('er-sorceries'))
+    .map((id) => Number(id.split(':')[1]))
+
+  const incantationsIds = magicIds
+    .filter((id) => id.startsWith('er-incantations'))
+    .map((id) => Number(id.split(':')[1]))
 
   const statistics = props.stats.docs.map((stat) => {
     const value = values[`stat-${stat.id}`]
@@ -325,6 +363,8 @@ const onSubmit = handleSubmit((values) => {
     })),
     armors: armorIds,
     talismans: talismanIds,
+    sorceries: sorceriesIds,
+    incantations: incantationsIds,
     level: values.level,
     statistics
   }
@@ -357,7 +397,7 @@ const onSubmit = handleSubmit((values) => {
 <template>
   <form class="mt-4" @submit.prevent="onSubmit">
     <!-- Build informations -->
-    <div class="grid grid-cols-2">
+    <div class="grid md:grid-cols-2">
       <FormField v-slot="{ componentField }" name="name">
         <FormItem>
           <FormLabel class="flex justify-between">
@@ -370,7 +410,7 @@ const onSubmit = handleSubmit((values) => {
         </FormItem>
       </FormField>
 
-      <div class="flex justify-end items-end">
+      <div class="flex flex-col md:flex-row md:justify-end md:items-end gap-2 mt-2 md:mt-0">
         <Tags
           label="archetypes"
           name="archetypes"
@@ -426,7 +466,17 @@ const onSubmit = handleSubmit((values) => {
                 :set-values="setValues" />
           </div>
         </div>
+        <div class="grid grid-cols-er-builder">
+          <div v-for="input in magicInputs" class="relative">
+            <RelationSelect
+              :key="input.name"
+              v-bind="input"
+              :values="values"
+              :set-values="setValues" />
+          </div>
+        </div>
       </div>
+
 
       <!-- Statistics -->
       <div class="md:col-start-11 md:col-span-2 mt-4">

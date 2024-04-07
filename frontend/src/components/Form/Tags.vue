@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { Archetype } from '~/payload-types'
 import type { PayloadCollection } from '@/types'
 import { computed, ref } from 'vue'
 import { ComboboxAnchor, ComboboxInput, ComboboxPortal, ComboboxRoot } from 'radix-vue'
@@ -40,7 +39,7 @@ function onSelect(ev) {
 <template>
   <TagsInput
     ref="input"
-    class="px-0 gap-0 w-80"
+    class="px-0 gap-0 w-full md:w-80"
     @click="open = true">
     <div class="flex gap-2 flex-wrap items-center px-3">
       <TagsInputItem v-for="(field, idx) in fields" :key="field.key" :value="docs.docs.find((doc) => doc.id === field.value).name">

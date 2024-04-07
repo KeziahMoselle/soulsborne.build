@@ -35,6 +35,7 @@
     'leg': '/elden-ring/builder/leg.png',
     'talisman': '/elden-ring/builder/talismans.png',
     'ash': '/elden-ring/builder/ash.png',
+    'magic': '/elden-ring/builder/sorceries.png'
   }
 
   const props = defineProps<{
@@ -61,7 +62,8 @@
     const stringifiedQuery = qs.stringify(
       {
         where: query,
-        sort: 'name'
+        sort: 'name',
+        limit: 20,
       },
       { addQueryPrefix: true },
     )
