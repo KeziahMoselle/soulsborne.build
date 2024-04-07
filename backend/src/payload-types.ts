@@ -535,6 +535,9 @@ export interface ErClass {
   rune_level?: number | null;
   weapons?: (number | ErWeapon)[] | null;
   shields?: (number | ErShield)[] | null;
+  sorceries?: (number | ErSorcery)[] | null;
+  incantations?: (number | ErIncantation)[] | null;
+  ammunitions?: (number | ErAmmunition)[] | null;
   statistics?:
     | {
         stat?: (number | null) | ErStatistic;

@@ -1,6 +1,6 @@
 import type { PayloadHandler } from 'payload/config'
 
-import type { ErAmmunition, ErArmor, ErAshesOfWar, ErIncantation, ErShield, ErSorcery, ErTalisman, ErWeapon } from '../payload-types'
+import type { ErAmmunition, ErArmor, ErAshesOfWar, ErClass, ErIncantation, ErShield, ErSorcery, ErTalisman, ErWeapon } from '../payload-types'
 
 function fetchJSON(url) {
   return fetch(url).then((res) => res.json())
@@ -467,6 +467,9 @@ export const seed: PayloadHandler = async (req, res): Promise<void> => {
     })
 
     const STAT_LINK = {
+      'Vig': statistics.find((stat) => stat.name === 'Vigor'),
+      'Mind': statistics.find((stat) => stat.name === 'Mind'),
+      'Endurance': statistics.find((stat) => stat.name === 'Endurance'),
       'Str': statistics.find((stat) => stat.name === 'Strength'),
       'Dex': statistics.find((stat) => stat.name === 'Dexterity'),
       'Arc': statistics.find((stat) => stat.name === 'Arcane'),
@@ -490,9 +493,6 @@ export const seed: PayloadHandler = async (req, res): Promise<void> => {
       'Occult': affinities.find((stat) => stat.name === 'Occult'),
     }
 
-    /**
-     * Weapons
-     */
     const [first, second, third] = await Promise.all([
       fetchJSON('https://eldenring.fanapis.com/api/weapons?limit=100'),
       fetchJSON('https://eldenring.fanapis.com/api/weapons?limit=100&page=2'),
@@ -602,9 +602,6 @@ export const seed: PayloadHandler = async (req, res): Promise<void> => {
       // silence is golden
     })))
 
-    /**
-     * Shields
-     */
     const shieldsData = await fetchJSON(' https://eldenring.fanapis.com/api/shields?limit=100')
 
     const shieldsItems = shieldsData.data.map((item) => ({
@@ -711,9 +708,6 @@ export const seed: PayloadHandler = async (req, res): Promise<void> => {
       // silence is golden
     })))
 
-    /**
-     * Armors
-     */
     const [aOne, aTwo, aThree, aFour, aFive] = await Promise.all([
       fetchJSON('https://eldenring.fanapis.com/api/armors?limit=100'),
       fetchJSON('https://eldenring.fanapis.com/api/armors?limit=100&page=2'),
@@ -782,9 +776,6 @@ export const seed: PayloadHandler = async (req, res): Promise<void> => {
       // silence is golden
     })))
 
-    /**
-     * Ammunitions
-     */
     const ammos = await fetchJSON('https://eldenring.fanapis.com/api/ammos?limit=100')
 
     const ammunitionsFormattedItems = ammos.data.map((item) => {
@@ -819,9 +810,6 @@ export const seed: PayloadHandler = async (req, res): Promise<void> => {
       // silence is golden
     })))
 
-    /**
-     * Talismans
-     */
     const talismans = await fetchJSON('https://eldenring.fanapis.com/api/talismans?limit=100')
 
     const talismansFormattedItems = talismans.data.map((item) => {
@@ -858,9 +846,6 @@ export const seed: PayloadHandler = async (req, res): Promise<void> => {
       // silence is golden
     })))
 
-    /**
-     * Sorceries
-     */
     const sorceries = await fetchJSON('https://eldenring.fanapis.com/api/sorceries?limit=100')
 
     const sorceriesFormattedItems = sorceries.data.map((item) => {
@@ -913,9 +898,6 @@ export const seed: PayloadHandler = async (req, res): Promise<void> => {
       // silence is golden
     })))
 
-    /**
-     * Incantations
-     */
     const incantations = await fetchJSON('https://eldenring.fanapis.com/api/incantations?limit=100')
 
     const incantationsFormattedItems = incantations.data.map((item) => {
@@ -968,9 +950,6 @@ export const seed: PayloadHandler = async (req, res): Promise<void> => {
       // silence is golden
     })))
 
-    /**
-     * Ashes of War
-     */
     const ashes = await fetchJSON('https://eldenring.fanapis.com/api/ashes?limit=100')
 
     const uniqueSkills = new Set<string>()
@@ -1019,6 +998,456 @@ export const seed: PayloadHandler = async (req, res): Promise<void> => {
     }).catch((e) => {
       // silence is golden
     })))
+
+    const CLASSES: Partial<ErClass>[] = [
+      {
+        name: 'Hero',
+        rune_level: 7,
+        statistics: [
+          {
+            stat: STAT_LINK['Vig'].id,
+            value: 14,
+          },
+          {
+            stat: STAT_LINK['Mind'].id,
+            value: 9,
+          },
+          {
+            stat: STAT_LINK['Endurance'].id,
+            value: 12,
+          },
+          {
+            stat: STAT_LINK['Str'].id,
+            value: 16,
+          },
+          {
+            stat: STAT_LINK['Dex'].id,
+            value: 9,
+          },
+          {
+            stat: STAT_LINK['Int'].id,
+            value: 7,
+          },
+          {
+            stat: STAT_LINK['Fai'].id,
+            value: 8,
+          },
+          {
+            stat: STAT_LINK['Arc'].id,
+            value: 11,
+          },
+        ],
+        weapons: [
+        ],
+        shields: [],
+        sorceries: [],
+        incantations: [],
+        ammunitions: [],
+      },
+      {
+        name: 'Bandit',
+        rune_level: 5,
+        statistics: [
+          {
+            stat: STAT_LINK['Vig'].id,
+            value: 10,
+          },
+          {
+            stat: STAT_LINK['Mind'].id,
+            value: 11,
+          },
+          {
+            stat: STAT_LINK['Endurance'].id,
+            value: 10,
+          },
+          {
+            stat: STAT_LINK['Str'].id,
+            value: 9,
+          },
+          {
+            stat: STAT_LINK['Dex'].id,
+            value: 13,
+          },
+          {
+            stat: STAT_LINK['Int'].id,
+            value: 9,
+          },
+          {
+            stat: STAT_LINK['Fai'].id,
+            value: 8,
+          },
+          {
+            stat: STAT_LINK['Arc'].id,
+            value: 14,
+          },
+        ],
+        weapons: [
+        ],
+        shields: [],
+        sorceries: [],
+        incantations: [],
+        ammunitions: [],
+      },
+      {
+        name: 'Astrologer',
+        rune_level: 6,
+        statistics: [
+          {
+            stat: STAT_LINK['Vig'].id,
+            value: 9,
+          },
+          {
+            stat: STAT_LINK['Mind'].id,
+            value: 15,
+          },
+          {
+            stat: STAT_LINK['Endurance'].id,
+            value: 9,
+          },
+          {
+            stat: STAT_LINK['Str'].id,
+            value: 8,
+          },
+          {
+            stat: STAT_LINK['Dex'].id,
+            value: 12,
+          },
+          {
+            stat: STAT_LINK['Int'].id,
+            value: 16,
+          },
+          {
+            stat: STAT_LINK['Fai'].id,
+            value: 7,
+          },
+          {
+            stat: STAT_LINK['Arc'].id,
+            value: 9,
+          },
+        ],
+        weapons: [
+        ],
+        shields: [],
+        sorceries: [],
+        incantations: [],
+        ammunitions: [],
+      },
+      {
+        name: 'Warrior',
+        rune_level: 8,
+        statistics: [
+          {
+            stat: STAT_LINK['Vig'].id,
+            value: 11,
+          },
+          {
+            stat: STAT_LINK['Mind'].id,
+            value: 12,
+          },
+          {
+            stat: STAT_LINK['Endurance'].id,
+            value: 11,
+          },
+          {
+            stat: STAT_LINK['Str'].id,
+            value: 10,
+          },
+          {
+            stat: STAT_LINK['Dex'].id,
+            value: 16,
+          },
+          {
+            stat: STAT_LINK['Int'].id,
+            value: 10,
+          },
+          {
+            stat: STAT_LINK['Fai'].id,
+            value: 8,
+          },
+          {
+            stat: STAT_LINK['Arc'].id,
+            value: 9,
+          },
+        ],
+        weapons: [
+        ],
+        shields: [],
+        sorceries: [],
+        incantations: [],
+        ammunitions: [],
+      },
+      {
+        name: 'Prisoner',
+        rune_level: 9,
+        statistics: [
+          {
+            stat: STAT_LINK['Vig'].id,
+            value: 11,
+          },
+          {
+            stat: STAT_LINK['Mind'].id,
+            value: 12,
+          },
+          {
+            stat: STAT_LINK['Endurance'].id,
+            value: 11,
+          },
+          {
+            stat: STAT_LINK['Str'].id,
+            value: 11,
+          },
+          {
+            stat: STAT_LINK['Dex'].id,
+            value: 14,
+          },
+          {
+            stat: STAT_LINK['Int'].id,
+            value: 14,
+          },
+          {
+            stat: STAT_LINK['Fai'].id,
+            value: 6,
+          },
+          {
+            stat: STAT_LINK['Arc'].id,
+            value: 9,
+          },
+        ],
+        weapons: [
+        ],
+        shields: [],
+        sorceries: [],
+        incantations: [],
+        ammunitions: [],
+      },
+      {
+        name: 'Confessor',
+        rune_level: 10,
+        statistics: [
+          {
+            stat: STAT_LINK['Vig'].id,
+            value: 10,
+          },
+          {
+            stat: STAT_LINK['Mind'].id,
+            value: 13,
+          },
+          {
+            stat: STAT_LINK['Endurance'].id,
+            value: 10,
+          },
+          {
+            stat: STAT_LINK['Str'].id,
+            value: 12,
+          },
+          {
+            stat: STAT_LINK['Dex'].id,
+            value: 12,
+          },
+          {
+            stat: STAT_LINK['Int'].id,
+            value: 9,
+          },
+          {
+            stat: STAT_LINK['Fai'].id,
+            value: 14,
+          },
+          {
+            stat: STAT_LINK['Arc'].id,
+            value: 9,
+          },
+        ],
+        weapons: [
+        ],
+        shields: [],
+        sorceries: [],
+        incantations: [],
+        ammunitions: [],
+      },
+      {
+        name: 'Wretch',
+        rune_level: 1,
+        statistics: [
+          {
+            stat: STAT_LINK['Vig'].id,
+            value: 10,
+          },
+          {
+            stat: STAT_LINK['Mind'].id,
+            value: 10,
+          },
+          {
+            stat: STAT_LINK['Endurance'].id,
+            value: 10,
+          },
+          {
+            stat: STAT_LINK['Str'].id,
+            value: 10,
+          },
+          {
+            stat: STAT_LINK['Dex'].id,
+            value: 10,
+          },
+          {
+            stat: STAT_LINK['Int'].id,
+            value: 10,
+          },
+          {
+            stat: STAT_LINK['Fai'].id,
+            value: 10,
+          },
+          {
+            stat: STAT_LINK['Arc'].id,
+            value: 10,
+          },
+        ],
+        weapons: [
+        ],
+        shields: [],
+        sorceries: [],
+        incantations: [],
+        ammunitions: [],
+      },
+      {
+        name: 'Vagabond',
+        rune_level: 9,
+        statistics: [
+          {
+            stat: STAT_LINK['Vig'].id,
+            value: 15,
+          },
+          {
+            stat: STAT_LINK['Mind'].id,
+            value: 10,
+          },
+          {
+            stat: STAT_LINK['Endurance'].id,
+            value: 11,
+          },
+          {
+            stat: STAT_LINK['Str'].id,
+            value: 14,
+          },
+          {
+            stat: STAT_LINK['Dex'].id,
+            value: 13,
+          },
+          {
+            stat: STAT_LINK['Int'].id,
+            value: 9,
+          },
+          {
+            stat: STAT_LINK['Fai'].id,
+            value: 9,
+          },
+          {
+            stat: STAT_LINK['Arc'].id,
+            value: 7,
+          },
+        ],
+        weapons: [
+        ],
+        shields: [],
+        sorceries: [],
+        incantations: [],
+        ammunitions: [],
+      },
+      {
+        name: 'Prophet',
+        rune_level: 7,
+        statistics: [
+          {
+            stat: STAT_LINK['Vig'].id,
+            value: 10,
+          },
+          {
+            stat: STAT_LINK['Mind'].id,
+            value: 14,
+          },
+          {
+            stat: STAT_LINK['Endurance'].id,
+            value: 8,
+          },
+          {
+            stat: STAT_LINK['Str'].id,
+            value: 11,
+          },
+          {
+            stat: STAT_LINK['Dex'].id,
+            value: 10,
+          },
+          {
+            stat: STAT_LINK['Int'].id,
+            value: 7,
+          },
+          {
+            stat: STAT_LINK['Fai'].id,
+            value: 16,
+          },
+          {
+            stat: STAT_LINK['Arc'].id,
+            value: 10,
+          },
+        ],
+        weapons: [
+        ],
+        shields: [],
+        sorceries: [],
+        incantations: [],
+        ammunitions: [],
+      },
+      {
+        name: 'Samurai',
+        rune_level: 9,
+        statistics: [
+          {
+            stat: STAT_LINK['Vig'].id,
+            value: 12,
+          },
+          {
+            stat: STAT_LINK['Mind'].id,
+            value: 11,
+          },
+          {
+            stat: STAT_LINK['Endurance'].id,
+            value: 13,
+          },
+          {
+            stat: STAT_LINK['Str'].id,
+            value: 12,
+          },
+          {
+            stat: STAT_LINK['Dex'].id,
+            value: 15,
+          },
+          {
+            stat: STAT_LINK['Int'].id,
+            value: 9,
+          },
+          {
+            stat: STAT_LINK['Fai'].id,
+            value: 8,
+          },
+          {
+            stat: STAT_LINK['Arc'].id,
+            value: 8,
+          },
+        ],
+        weapons: [
+        ],
+        shields: [],
+        sorceries: [],
+        incantations: [],
+        ammunitions: [],
+      },
+    ]
+
+    for (const erClass of CLASSES) {
+      await payload.create({
+        collection: 'er-classes',
+        data: erClass
+      })
+    }
 
     res.json({ success: true })
   } catch (error: unknown) {

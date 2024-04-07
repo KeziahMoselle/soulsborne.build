@@ -41,6 +41,27 @@ const ERStatistics: CollectionConfig = {
       hasMany: true
     },
     {
+      name: 'sorceries',
+      label: 'Starting Sorceries',
+      type: 'relationship',
+      relationTo: 'er-sorceries',
+      hasMany: true
+    },
+    {
+      name: 'incantations',
+      label: 'Starting Incantations',
+      type: 'relationship',
+      relationTo: 'er-incantations',
+      hasMany: true
+    },
+    {
+      name: 'ammunitions',
+      label: 'Starting Ammunitions',
+      type: 'relationship',
+      relationTo: 'er-ammunitions',
+      hasMany: true
+    },
+    {
       name: 'statistics',
       label: 'Starting Statistics',
       type: 'array',
@@ -58,8 +79,6 @@ const ERStatistics: CollectionConfig = {
         }
       ]
     }
-    // todo: sorceries
-    // todo: incantations
   ],
 }
 
