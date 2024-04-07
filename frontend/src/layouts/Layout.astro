@@ -2,6 +2,7 @@
 import '@/styles/globals.scss'
 import { Toaster } from 'vue-sonner'
 import { SquareMenu } from 'lucide-vue-next'
+import Logout from '@/components/Auth/Logout.vue'
 
 interface Props {
   title: string;
@@ -34,7 +35,12 @@ const { user } = Astro.locals;
             </picture>
           </a>
 
-          {user && <h1>Welcome {user.name}!</h1>}
+          {user && (
+            <div class="flex gap-x-4 items-center">
+              <h1>Welcome {user.name}!</h1>
+              <Logout client:visible />
+            </div>
+          )}
         </div>
 
         <!-- Desktop nav -->

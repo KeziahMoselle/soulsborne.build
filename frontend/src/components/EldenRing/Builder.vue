@@ -444,7 +444,7 @@ const onSubmit = handleSubmit((values) => {
       </div>
     </div>
 
-    <div class="flex justify-center mt-12">
+    <div class="flex justify-center my-12">
       <button class="button" type="submit">
         Create
       </button>

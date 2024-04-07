@@ -54,6 +54,7 @@ export async function login(payload: ILoginPayload) {
     loading: 'Logging in...',
     success(response) {
       isSuccess = true
+      location.href = '/'
       // @ts-ignore
       return `Welcome ${response.user.name}!`
     },
@@ -83,6 +84,7 @@ export async function register(payload: IRegisterPayload) {
     loading: 'Creating your account...',
     success() {
       isSuccess = true
+      location.href = '/login'
       return `Successfully registered!`
     },
     error: (error) => {
@@ -102,6 +104,7 @@ export async function logout() {
   toast.promise(logout, {
     loading: 'Loading...',
     success() {
+      location.href = '/'
       return `You have been logged out.`
     },
     error: () => {
