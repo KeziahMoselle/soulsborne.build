@@ -176,6 +176,13 @@ const ERBuilds: CollectionConfig = {
           description: 'Required attributes to use this build',
           fields: [
             {
+              name: 'level',
+              label: 'Rune Level',
+              type: 'number',
+              max: 713,
+              min: 1,
+            },
+            {
               name: 'starting_class',
               label: 'Starting Class',
               type: 'relationship',

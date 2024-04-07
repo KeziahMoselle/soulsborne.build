@@ -208,16 +208,17 @@ const formSchema = toTypedSchema(z.object({
   name: z.string().min(2).max(255),
   is_two_handed: z.boolean().default(false).optional(),
   youtube_url: z.string().url({ message: "Invalid url" }).optional(),
-  archetypes: z.array(z.number()),
-  restrictions: z.array(z.number()),
-  'stat-1': z.number().min(0).max(99),
-  'stat-2': z.number().min(0).max(99),
-  'stat-3': z.number().min(0).max(99),
-  'stat-4': z.number().min(0).max(99),
-  'stat-5': z.number().min(0).max(99),
-  'stat-6': z.number().min(0).max(99),
-  'stat-7': z.number().min(0).max(99),
-  'stat-8': z.number().min(0).max(99),
+  archetypes: z.array(z.number()).optional(),
+  restrictions: z.array(z.number()).optional(),
+  level: z.number().min(1).max(713),
+  'stat-1': z.number().min(1).max(99),
+  'stat-2': z.number().min(1).max(99),
+  'stat-3': z.number().min(1).max(99),
+  'stat-4': z.number().min(1).max(99),
+  'stat-5': z.number().min(1).max(99),
+  'stat-6': z.number().min(1).max(99),
+  'stat-7': z.number().min(1).max(99),
+  'stat-8': z.number().min(1).max(99),
   ...statsSchema,
   // Equipment
   'mainhand-1': z.string().optional(),
@@ -255,6 +256,7 @@ const formSchema = toTypedSchema(z.object({
 const { handleSubmit, values, setValues } = useForm({
   validationSchema: formSchema,
   initialValues: {
+    level: 1,
     "stat-1": 10,
     "stat-2": 10,
     "stat-3": 10,
@@ -323,6 +325,7 @@ const onSubmit = handleSubmit((values) => {
     })),
     armors: armorIds,
     talismans: talismanIds,
+    level: values.level,
     statistics
   }
 

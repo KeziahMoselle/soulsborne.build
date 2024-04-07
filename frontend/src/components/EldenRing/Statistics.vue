@@ -15,6 +15,27 @@ defineProps<{
 <template>
   <div>
     <FormField
+      v-slot="{ componentField, errors }"
+      name="level">
+      <FormItem class="flex items-center justify-between gap-4">
+        <FormLabel class="flex flex-col">
+          <span :class="{
+            'text-destructive': errors.length
+          }">Rune Level</span>
+        </FormLabel>
+        <FormControl>
+          <Input
+            v-bind="componentField"
+            type="number"
+            placeholder="10"
+            min="1"
+            max="713"
+            class="w-20" />
+        </FormControl>
+      </FormItem>
+      <FormMessage />
+    </FormField>
+    <FormField
       v-for="stat in stats"
       v-slot="{ componentField, value, errors }"
       :name="`stat-${stat.id}`">
@@ -29,9 +50,11 @@ defineProps<{
         </FormLabel>
         <FormControl>
           <Input
+            v-bind="componentField"
             type="number"
             placeholder="10"
-            v-bind="componentField"
+            min="1"
+            max="99"
             class="w-20" />
         </FormControl>
       </FormItem>

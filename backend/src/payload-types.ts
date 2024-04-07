@@ -302,6 +302,7 @@ export interface ErBuild {
   bolts?: (number | ErAmmunition)[] | null;
   armors?: (number | ErArmor)[] | null;
   talismans?: (number | ErTalisman)[] | null;
+  level?: number | null;
   starting_class?: (number | null) | ErClass;
   statistics?:
     | {
