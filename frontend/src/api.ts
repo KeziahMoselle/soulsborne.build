@@ -1,10 +1,10 @@
 import { toast } from 'vue-sonner'
 
-export async function apiFetch(endpoint: string, options: RequestInit = {}) {
+export async function apiFetch<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   return fetchJSON(`${import.meta.env.PUBLIC_PAYLOAD_URL}${endpoint}`, options)
 }
 
-export async function fetchJSON(url: string, options: RequestInit = {}) {
+export async function fetchJSON<T>(url: string, options: RequestInit = {}): Promise<T> {
   const defaultOptions: RequestInit = {
     headers: {
       'Content-Type': 'application/json',
@@ -22,7 +22,7 @@ export async function fetchJSON(url: string, options: RequestInit = {}) {
   }
 
   const result = await fetch(`${url}`, mergedOptions).then(async (res) => {
-    const json = await res.json()
+  const json = await res.json() as T
 
     if (res.ok) {
       return json

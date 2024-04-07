@@ -3,12 +3,15 @@ import { apiFetch } from "@/api";
 import ERBuilder from "@/components/EldenRing/Builder.vue";
 import Layout from "@/layouts/Layout.astro";
 import type { PayloadCollection } from "@/types";
-import type { ErStatistic } from "~/payload-types";
+import type { Archetype, ErStatistic, Restriction } from "~/payload-types";
 
 const { user } = Astro.locals;
 
-// @ts-ignore
-const stats: PayloadCollection<ErStatistic> = await apiFetch('/api/er-statistics?sort=id')
+const [stats, archetypes, restrictions] = await Promise.all([
+  apiFetch<PayloadCollection<ErStatistic>>('/api/er-statistics?sort=id'),
+  apiFetch<PayloadCollection<Archetype>>('/api/archetypes?sort=id'),
+  apiFetch<PayloadCollection<Restriction>>('/api/restrictions?sort=id')
+])
 ---
 
 <Layout title="Create a build">
@@ -23,6 +26,8 @@ const stats: PayloadCollection<ErStatistic> = await apiFetch('/api/er-statistics
   <div class="container">
     <ERBuilder
       client:only
-      stats={stats} />
+      stats={stats}
+      archetypes={archetypes}
+      restrictions={restrictions} />
   </div>
 </Layout>

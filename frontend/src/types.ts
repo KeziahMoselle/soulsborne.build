@@ -13,6 +13,11 @@ export interface PayloadCollection<CollectionType> {
   nextPage: number | null
 }
 
+export interface PayloadCreateResponse<CollectionType> {
+  message: string;
+  doc: CollectionType;
+}
+
 export interface PayloadUserResponse {
   user: User
   collection: string

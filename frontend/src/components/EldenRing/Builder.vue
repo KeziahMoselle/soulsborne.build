@@ -3,7 +3,6 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 import RelationSelect from '@/components/EldenRing/RelationSelect.vue'
-
 import {
   FormControl,
   FormField,
@@ -13,14 +12,17 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { apiFetch } from '@/api'
-import type { ErBuild, ErStatistic } from '~/payload-types'
+import type { Archetype, ErBuild, ErStatistic, Restriction } from '~/payload-types'
 import { toast } from 'vue-sonner'
 import { Checkbox } from '@/components/ui/checkbox'
 import Statistics from '@/components/EldenRing/Statistics.vue'
-import type { PayloadCollection } from '@/types'
+import type { PayloadCreateResponse, PayloadCollection } from '@/types'
+import Tags from '@/components/Form/Tags.vue'
 
 const props = defineProps<{
-  stats: PayloadCollection<ErStatistic>
+  stats: PayloadCollection<ErStatistic>,
+  archetypes: PayloadCollection<Archetype>,
+  restrictions: PayloadCollection<Restriction>
 }>()
 
 const FORM = [
@@ -206,6 +208,8 @@ const formSchema = toTypedSchema(z.object({
   name: z.string().min(2).max(255),
   is_two_handed: z.boolean().default(false).optional(),
   youtube_url: z.string().url({ message: "Invalid url" }).optional(),
+  archetypes: z.array(z.number()),
+  restrictions: z.array(z.number()),
   'stat-1': z.number().min(0).max(99),
   'stat-2': z.number().min(0).max(99),
   'stat-3': z.number().min(0).max(99),
@@ -280,8 +284,6 @@ const onSubmit = handleSubmit((values) => {
   const armorIds = [values.helm, values.chest, values.gauntlet, values.leg].filter(Boolean).map((armor) => Number(armor.split(':')[1]))
   const talismanIds = [values['talisman-1'], values['talisman-2'], values['talisman-3'], values['talisman-4']].filter(Boolean).map((talisman) => Number(talisman.split(':')[1]))
 
-  console.log(mainhands, offhands)
-
   const statistics = props.stats.docs.map((stat) => {
     const value = values[`stat-${stat.id}`]
 
@@ -299,6 +301,8 @@ const onSubmit = handleSubmit((values) => {
     name: values.name,
     is_two_handed: values.is_two_handed,
     youtube_url: values.youtube_url,
+    archetype: values.archetypes,
+    restrictions: values.restrictions,
     mainhand_weapons: mainhands.map((item) => ({
       weapon: Number(item.id),
       ash_of_war: Number(item.ashId)
@@ -312,7 +316,7 @@ const onSubmit = handleSubmit((values) => {
     statistics
   }
 
-  const createBuild = apiFetch(`/api/er-builds`, {
+  const createBuild = apiFetch<PayloadCreateResponse<ErBuild>>(`/api/er-builds`, {
     method: 'POST',
     body: JSON.stringify(build)
   })
@@ -320,7 +324,13 @@ const onSubmit = handleSubmit((values) => {
   toast.promise(createBuild, {
     loading: 'Creating your build...',
     success(response) {
-      console.log(response)
+      if (import.meta.env.PROD) {
+        setTimeout(() => {
+          location.href = `/build/${response.doc.id}`
+        }, 2000);
+      } else {
+        toast.info('Skipped redirection because of DEV mode.')
+      }
       return `Successfully created! Redirecting to your build...`
     },
     error: (error) => {
@@ -334,24 +344,28 @@ const onSubmit = handleSubmit((values) => {
 <template>
   <form @submit.prevent="onSubmit">
     <!-- Build informations -->
-    <FormField v-slot="{ componentField }" name="name">
-      <FormItem>
-        <FormLabel>Name</FormLabel>
-        <FormControl>
-          <Input type="text" placeholder="My awesome build" v-bind="componentField" />
-        </FormControl>
-        <FormMessage />
-      </FormItem>
-    </FormField>
-    <FormField v-slot="{ value, handleChange }" type="checkbox" name="is_two_handed">
-      <FormItem class="flex flex-row items-center gap-x-3 p-4 space-y-0">
-        <FormControl>
-          <Checkbox :checked="value" @update:checked="handleChange" />
-        </FormControl>
-        <FormLabel>two handed</FormLabel>
-        <FormMessage />
-      </FormItem>
-    </FormField>
+    <div class="grid grid-cols-2">
+      <FormField v-slot="{ componentField }" name="name">
+        <FormItem>
+          <FormLabel>Name</FormLabel>
+          <FormControl>
+            <Input type="text" placeholder="My awesome build" v-bind="componentField" />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+
+      <div class="flex justify-end items-end">
+        <Tags
+          label="archetypes"
+          name="archetypes"
+          :docs="archetypes" />
+        <Tags
+          label="restrictions"
+          name="restrictions"
+          :docs="restrictions" />
+      </div>
+    </div>
     <FormField v-slot="{ componentField }" name="youtube_url">
       <FormItem>
         <FormLabel>Build demo (youtube video)</FormLabel>
@@ -391,7 +405,17 @@ const onSubmit = handleSubmit((values) => {
       </div>
 
       <!-- Statistics -->
-      <div class="md:col-start-11 md:col-span-2">
+      <div class="md:col-start-11 md:col-span-2 mt-4">
+        <FormField v-slot="{ value, handleChange }" type="checkbox" name="is_two_handed">
+          <FormItem class="flex flex-row items-center gap-x-3 mb-2 space-y-0">
+            <FormControl>
+              <Checkbox :checked="value" @update:checked="handleChange" />
+            </FormControl>
+            <FormLabel>two handed</FormLabel>
+            <FormMessage />
+          </FormItem>
+        </FormField>
+
         <Statistics :stats="stats.docs" />
       </div>
     </div>

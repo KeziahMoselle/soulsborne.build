@@ -272,7 +272,7 @@ export interface ErBuild {
     | null;
   youtube_url?: string | null;
   restrictions?: (number | Restriction)[] | null;
-  archetype?: (number | null) | Archetype;
+  archetype?: (number | Archetype)[] | null;
   is_two_handed?: boolean | null;
   mainhand_weapons?:
     | {
