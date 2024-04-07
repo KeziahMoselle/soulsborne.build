@@ -278,6 +278,7 @@ export interface ErBuild {
     | {
         weapon?: (number | null) | ErWeapon;
         ash_of_war?: (number | null) | ErAshesOfWar;
+        affinity?: (number | null) | ErAffinity;
         id?: string | null;
       }[]
     | null;
@@ -293,6 +294,7 @@ export interface ErBuild {
               value: number | ErShield;
             } | null);
         ash_of_war?: (number | null) | ErAshesOfWar;
+        affinity?: (number | null) | ErAffinity;
         id?: string | null;
       }[]
     | null;

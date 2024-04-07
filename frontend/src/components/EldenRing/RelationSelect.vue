@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import qs from 'qs'
-  import { ref } from 'vue';
+  import { computed, ref } from 'vue';
   import { inMemoryCache } from '@/lib/Cache'
   import { apiFetch } from '@/api';
   import { Check } from 'lucide-vue-next'
@@ -55,6 +55,7 @@
   const optionsByRelations = ref<{
     [key: string]: IPayloadOptionLike[]
   }>({})
+  const isSmall = computed(() => props.type === 'ash' || props.type === 'affinity')
 
   async function getOptions(relation, query = {}) {
     const stringifiedQuery = qs.stringify(
@@ -101,7 +102,10 @@
 
 <template>
   <FormField :name="name">
-    <FormItem :class="{ 'absolute bottom-0 right-0': type === 'ash' }">
+    <FormItem
+      :class="{
+        'absolute bottom-0 right-0': type === 'ash'
+      }">
       <Popover
         v-model:open="isOpen"
         @update:open="getAllOptions">
@@ -110,8 +114,8 @@
             <img
               class="transition-opacity ease-in z-[1]"
               :class="{
-                'size-32': type !== 'ash',
-                'size-16': type === 'ash'
+                'size-32': !isSmall,
+                'size-16': isSmall,
               }"
               height="128"
               width="128"
@@ -122,8 +126,8 @@
               v-if="SELECT_IMAGES[type]"
               class="absolute top-0 transform scale-75 p-1 object-contain transition-opacity ease-in z-[2]"
               :class="{
-                'size-32': type !== 'ash',
-                'size-16': type === 'ash',
+                'size-32': !isSmall,
+                'size-16': isSmall,
                 'opacity-50': loading
               }"
               height="128"
@@ -135,8 +139,8 @@
             <img
               class="absolute top-0 transition-opacity ease-in z-[3]"
               :class="{
-                'size-32': type !== 'ash',
-                'size-16': type === 'ash',
+                'size-32': !isSmall,
+                'size-16': isSmall,
                 'opacity-0': !false,
                 'opacity-50': false
               }"

@@ -222,18 +222,24 @@ const formSchema = toTypedSchema(z.object({
   // Equipment
   'mainhand-1': z.string().optional(),
   'mainhand-ash-1': z.string().optional(),
+  'mainhand-affinity-1': z.string().optional(),
   'mainhand-2': z.string().optional(),
   'mainhand-ash-2': z.string().optional(),
+  'mainhand-affinity-2': z.string().optional(),
   'mainhand-3': z.string().optional(),
   'mainhand-ash-3': z.string().optional(),
+  'mainhand-affinity-3': z.string().optional(),
   'bolt-1': z.string().optional(),
   'bolt-2': z.string().optional(),
   'offhand-1': z.string().optional(),
   'offhand-ash-1': z.string().optional(),
+  'offhand-affinity-1': z.string().optional(),
   'offhand-2': z.string().optional(),
   'offhand-ash-2': z.string().optional(),
+  'offhand-affinity-2': z.string().optional(),
   'offhand-3': z.string().optional(),
   'offhand-ash-3': z.string().optional(),
+  'offhand-affinity-3': z.string().optional(),
   'greatbolt-1': z.string().optional(),
   'greatbolt-2': z.string().optional(),
   helm: z.string().optional(),
@@ -269,7 +275,8 @@ const onSubmit = handleSubmit((values) => {
       collectionSlug,
       name: collectionSlug.split('er-')[1],
       id,
-      ashId: values[`mainhand-ash-${index + 1}`]?.split(':')[1]
+      ashId: values[`mainhand-ash-${index + 1}`]?.split(':')[1],
+      affinityId: values[`mainhand-affinity-${index + 1}`]?.split(':')[1],
     }
   })
   const offhands = [values['offhand-1'], values['offhand-2'], values['offhand-3']].filter(Boolean).map((item, index) => {
@@ -278,7 +285,8 @@ const onSubmit = handleSubmit((values) => {
       collectionSlug,
       name: collectionSlug.split('er-')[1],
       id,
-      ashId: values[`offhand-ash-${index + 1}`]?.split(':')[1]
+      ashId: values[`offhand-ash-${index + 1}`]?.split(':')[1],
+      affinityId: values[`offhand-affinity-${index + 1}`]?.split(':')[1],
     }
   })
   const armorIds = [values.helm, values.chest, values.gauntlet, values.leg].filter(Boolean).map((armor) => Number(armor.split(':')[1]))
@@ -305,11 +313,13 @@ const onSubmit = handleSubmit((values) => {
     restrictions: values.restrictions,
     mainhand_weapons: mainhands.map((item) => ({
       weapon: Number(item.id),
-      ash_of_war: Number(item.ashId)
+      ash_of_war: Number(item.ashId),
+      affinity: Number(item.affinityId)
     })),
     offhand_weapons: offhands.map((item) => ({
       [item.name]: Number(item.id),
-      ash_of_war: Number(item.ashId)
+      ash_of_war: Number(item.ashId),
+      affinity: Number(item.affinityId)
     })),
     armors: armorIds,
     talismans: talismanIds,
@@ -342,16 +352,18 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <form @submit.prevent="onSubmit">
+  <form class="mt-4" @submit.prevent="onSubmit">
     <!-- Build informations -->
     <div class="grid grid-cols-2">
       <FormField v-slot="{ componentField }" name="name">
         <FormItem>
-          <FormLabel>Name</FormLabel>
+          <FormLabel class="flex justify-between">
+            <span>Name</span>
+            <FormMessage />
+          </FormLabel>
           <FormControl>
             <Input type="text" placeholder="My awesome build" v-bind="componentField" />
           </FormControl>
-          <FormMessage />
         </FormItem>
       </FormField>
 
@@ -398,6 +410,15 @@ const onSubmit = handleSubmit((values) => {
                 :name="`${input.name.split('-')[0]}-ash-${input.name.split('-')[1]}`"
                 type="ash"
                 :relation-to="['er-ashes-of-war']"
+                :values="values"
+                :set-values="setValues" />
+
+              <RelationSelect
+                v-if="input.type === 'mainhand' || input.type === 'offhand'"
+                :key="`${input.name.split('-')[0]}-affinity-${input.name.split('-')[1]}`"
+                :name="`${input.name.split('-')[0]}-affinity-${input.name.split('-')[1]}`"
+                type="affinity"
+                :relation-to="['er-affinities']"
                 :values="values"
                 :set-values="setValues" />
           </div>

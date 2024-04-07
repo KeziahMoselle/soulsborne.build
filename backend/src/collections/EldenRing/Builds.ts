@@ -106,7 +106,13 @@ const ERBuilds: CollectionConfig = {
                   label: 'Ash of War',
                   type: 'relationship',
                   relationTo: 'er-ashes-of-war'
-                }
+                },
+                {
+                  name: 'affinity',
+                  label: 'Affinity',
+                  type: 'relationship',
+                  relationTo: 'er-affinities'
+                },
               ]
             },
             {
@@ -126,7 +132,13 @@ const ERBuilds: CollectionConfig = {
                   label: 'Ash of War',
                   type: 'relationship',
                   relationTo: 'er-ashes-of-war'
-                }
+                },
+                {
+                  name: 'affinity',
+                  label: 'Affinity',
+                  type: 'relationship',
+                  relationTo: 'er-affinities'
+                },
               ]
             },
             {
