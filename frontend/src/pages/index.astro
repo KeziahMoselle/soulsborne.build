@@ -1,7 +1,49 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "../layouts/Layout.astro"
+import TranslateImages from '@/components/atoms/TranslateImages.vue'
 ---
 
 <Layout title="Home">
-	<h1>Index</h1>
+	<div class="relative">
+		<img class="-z-10 absolute top-0" src="/hero/gideon.webp" alt="" />
+	</div>
+	<section class="container px-4">
+		<h1 class="text-center font-display text-3xl md:text-7xl md:leading-xl my-20 md:mt-44">
+			<span class="flex justify-center items-center gap-x-4">
+				Share your <TranslateImages class="w-[100px] h-[20px] transform scale-125 md:transform-none md:w-[412px] md:h-[100px]" images={[
+					{
+						src: '/img/eldenring-logo.png',
+						alt: 'Elden Ring'
+					},
+					{
+						src: '/img/darksouls-logo.png',
+						alt: 'Dark Souls'
+					},
+					{
+						src: '/img/bloodborne-logo.png',
+						alt: 'Bloodborne'
+					},
+				]} client:load /> builds
+			</span>
+			<span class="block text-center">with the world</span>
+		</h1>
+	</section>
+
+	<section class="container">
+		<div class="bg-secondary px-4 py-8 my-8 md:px-16 md:my-16">
+			<h2 class="type-h2 mb-7">About the project</h2>
+
+			<p>
+				Congue gravida condimentum porttitor habitant neque ac tempus suspendisse tristique. Eget enim vestibulum ridiculus elit sed in. Turpis lobortis malesuada convallis urna fermentum convallis. In in faucibus amet ac habitasse quis commodo congue. Etiam justo nisi leo odio volutpat. Egestas quis sed quis sagittis neque. Ornare vitae maecenas hac maecenas sapien tortor. Nunc id morbi massa volutpat tellus tortor. Praesent sit quis arcu vulputate et aliquet elit. Feugiat integer. senectus. Congue gravida condimentum porttitor habitant neque ac tempus suspendisse tristique. Eget enim vestibulum ridiculus elit sed in. Turpis lobortis malesuada convallis urna fermentum convallis. In in faucibus amet ac habitasse quis commodo congue. Etiam justo nisi leo odio volutpat. Egestas quis sed quis sagittis neque. <a class="link" href="#">Ornare vitae maecenas hac maecenas sapien tortor</a>. Nunc id morbi massa volutpat tellus tortor. Praesent sit quis arcu vulputate et aliquet elit. Feugiat integer.
+			</p>
+		</div>
+	</section>
+
+	<section class="mb-16">
+		<h2 class="type-h2 text-center mb-16">Most popular builds</h2>
+
+		<div class="flex justify-center mt-16">
+			<a href="/builds" class="button">View more builds</a>
+		</div>
+	</section>
 </Layout>
