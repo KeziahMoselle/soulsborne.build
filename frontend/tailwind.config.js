@@ -61,6 +61,7 @@ export default {
         xl: '84px'
       },
       borderRadius: {
+        DEFAULT: '3px',
       	xl: "calc(var(--radius) + 4px)",
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

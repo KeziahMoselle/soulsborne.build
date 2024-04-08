@@ -1,4 +1,5 @@
 ---
+import BuildCard from "@/components/molecules/EldenRing/BuildCard.vue"
 import Layout from "../layouts/Layout.astro"
 import TranslateImages from '@/components/atoms/TranslateImages.vue'
 ---
@@ -41,6 +42,12 @@ import TranslateImages from '@/components/atoms/TranslateImages.vue'
 
 	<section class="mb-16">
 		<h2 class="type-h2 text-center mb-16">Most popular builds</h2>
+
+		<div class="grid gap-5 md:grid-cols-3">
+			<BuildCard />
+			<BuildCard />
+			<BuildCard />
+		</div>
 
 		<div class="flex justify-center mt-16">
 			<a href="/builds" class="button">View more builds</a>
