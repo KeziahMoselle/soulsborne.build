@@ -107,6 +107,11 @@
     @apply mx-auto px-4;
   }
 
+  .container--xl {
+    max-width: 1440px;
+    @apply mx-auto px-4;
+  }
+
   .container--small {
     @apply max-w-lg mx-auto px-4;
   }

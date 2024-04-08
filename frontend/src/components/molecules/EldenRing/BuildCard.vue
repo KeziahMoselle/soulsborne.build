@@ -2,6 +2,7 @@
   import type { ErBuild } from '~/payload-types'
   import Tag from '@/components/molecules/EldenRing/Tag.vue'
   import { ThumbsUpIcon } from 'lucide-vue-next'
+import EquipmentImage from '@/components/molecules/EldenRing/EquipmentImage.vue';
 
   defineProps<{
     build?: ErBuild
@@ -9,15 +10,15 @@
 </script>
 
 <template>
-  <article class="z-0 relative pr-7 pt-3 pb-5 border border-accent bg-background">
+  <article class="z-0 relative pr-5 pt-3 pb-5 border border-accent bg-background max-w-[451px]">
     <img
-      class="-z-10 absolute inset-0 object-cover object-center h-full"
+      class="-z-10 absolute inset-0 object-cover object-center h-full w-full"
       src="/build-background.png"
       alt=""
       loading="lazy" />
     <!-- Build title and like -->
     <header class="flex justify-between">
-      <div class="relative h-10">
+      <div class="relative h-[44px]">
         <div
           class="
             absolute top-1/2 transform -translate-y-1/2 left-8
@@ -26,10 +27,10 @@
           <img class="h-6 w-auto" src="https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/test%2Fbleed.png" alt="bleed" />
           <h3>Bleed build</h3>
         </div>
-        <img class="w-full h-auto" src="/build-title.png" alt="" />
+        <img class="w-full h-[44px]" src="/build-title.png" alt="" />
       </div>
 
-      <button class="flex items-center self-start gap-x-1 bg-accent-foreground text-sm leading-4 px-2 py-1 rounded">
+      <button class="flex items-center self-center gap-x-2 bg-accent-foreground text-sm leading-4 px-3 py-1 rounded transition hover:bg-accent">
         <span class="type-h5">15</span>
         <ThumbsUpIcon class="w-3" />
       </button>
@@ -42,33 +43,19 @@
     </div>
 
     <!-- Build preview -->
-    <div class="grid ml-8 mt-8 md:grid-cols-3">
-      <img
-        class="h-full w-full border"
+    <div class="grid ml-8 mt-8 gap-2 md:grid-cols-3">
+      <EquipmentImage
         src="https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/test%2Fmainhand.png"
-        alt="" />
-      <img
-        class="h-full w-full border"
+        alt="Mainhand 1" />
+      <EquipmentImage
         src="https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/test%2Fmainhand.png"
-        alt="" />
+        alt="Mainhand 2" />
 
-      <div class="grid grid-cols-2 grid-rows-2">
-        <img
-          class="h-full w-full border"
-          src="https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/test%2Ftalisman1.png"
-          alt="" />
-        <img
-          class="h-full w-full border"
-          src="https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/test%2Ftalisman2.png"
-          alt="" />
-        <img
-          class="h-full w-full border"
-          src="https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/test%2Ftalisman3.png"
-          alt="" />
-        <img
-          class="h-full w-full border"
-          src="https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/test%2Ftalisman4.png"
-          alt="" />
+      <div class="grid grid-cols-2 gap-2 grid-rows-2">
+        <EquipmentImage
+          v-for="(_, i) in Array.from({ length: 4 })"
+          :src="`https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/test%2Ftalisman${i + 1}.png`"
+          :alt="`Mainhand ${i + 1}`" />
       </div>
     </div>
   </article>
