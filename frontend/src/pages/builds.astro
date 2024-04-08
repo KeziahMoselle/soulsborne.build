@@ -1,7 +1,21 @@
 ---
+import type { ErBuild } from '~/payload-types';
+import type { PayloadCollection } from '@/types'
 import Layout from "../layouts/Layout.astro";
+import { apiFetch } from '@/api';
+
+const builds: PayloadCollection<ErBuild> = await apiFetch('/api/er-builds')
 ---
 
 <Layout title="Explore builds">
   <h1>Builds</h1>
+  <pre>
+    {JSON.stringify(builds, null, 2)}
+  </pre>
+  {
+    builds.docs.map((post) => (
+        <h2 set:html={post} />
+        <p set:html={post} />
+    ))
+  }
 </Layout>
