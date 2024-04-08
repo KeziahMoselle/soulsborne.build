@@ -77,6 +77,9 @@ dependencies:
   vue-sonner:
     specifier: ^1.1.2
     version: 1.1.2
+  vue3-marquee:
+    specifier: ^4.2.0
+    version: 4.2.0(vue@3.4.21)
   zod:
     specifier: ^3.22.4
     version: 3.22.4
@@ -5495,6 +5498,15 @@ packages:
 
   /vue-sonner@1.1.2:
     resolution: {integrity: sha512-yg4f5s0a3oiiI7cNvO0Dajux1Y7s04lxww3vnQtnwQawJ3KqaKA9RIRMdI9wGTosRGIOwgYFniFRGl4+IuKPZw==}
+    dev: false
+
+  /vue3-marquee@4.2.0(vue@3.4.21):
+    resolution: {integrity: sha512-Ij4iyvHZjTHMrsPqblpJjq6TYbEFq3utihUllAOfuy0E6W2QKX1vX4E7e7qV/ShmHbCbG0pljcEDq3y0FtzBGw==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      vue: ^3.2
+    dependencies:
+      vue: 3.4.21(typescript@5.4.3)
     dev: false
 
   /vue@3.4.21(typescript@5.4.3):

@@ -2,7 +2,9 @@
   import type { ErBuild } from '~/payload-types'
   import Tag from '@/components/molecules/EldenRing/Tag.vue'
   import { ThumbsUpIcon } from 'lucide-vue-next'
-import EquipmentImage from '@/components/molecules/EldenRing/EquipmentImage.vue';
+  import EquipmentImage from '@/components/molecules/EldenRing/EquipmentImage.vue';
+
+  import { Vue3Marquee } from 'vue3-marquee'
 
   defineProps<{
     build?: ErBuild
@@ -10,13 +12,13 @@ import EquipmentImage from '@/components/molecules/EldenRing/EquipmentImage.vue'
 </script>
 
 <template>
-  <article class="z-0 relative pr-5 pt-3 pb-5 border border-accent bg-background max-w-[451px]">
+  <article class="z-0 relative pr-5 pt-3 pb-5 border border-accent bg-background max-w-[451px] overflow-hidden">
     <img
       class="-z-10 absolute inset-0 object-cover object-center h-full w-full"
       src="/build-background.png"
       alt=""
       loading="lazy" />
-    <!-- Build title and like -->
+    <!-- Build title and Actions -->
     <header class="flex justify-between">
       <div class="relative h-[44px]">
         <div
@@ -25,7 +27,16 @@ import EquipmentImage from '@/components/molecules/EldenRing/EquipmentImage.vue'
             flex items-center gap-x-4
           ">
           <img class="h-6 w-auto" src="https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/test%2Fbleed.png" alt="bleed" />
-          <h3>Bleed build</h3>
+          <p class="-ml-4 w-40">
+            <Vue3Marquee
+                gradient
+                :gradient-color="[29, 29, 24]"
+                gradient-length="10%"
+                animate-on-overflow-only
+            >
+              <h3 class="ml-4">Bleed build</h3>
+            </Vue3Marquee>
+          </p>
         </div>
         <img class="w-full h-[44px]" src="/build-title.png" alt="" />
       </div>
@@ -43,7 +54,7 @@ import EquipmentImage from '@/components/molecules/EldenRing/EquipmentImage.vue'
     </div>
 
     <!-- Build preview -->
-    <div class="grid ml-8 mt-8 gap-2 md:grid-cols-3">
+    <div class="grid ml-8 mt-8 gap-2 grid-cols-2 md:grid-cols-3">
       <EquipmentImage
         src="https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/test%2Fmainhand.png"
         alt="Mainhand 1" />
@@ -51,7 +62,7 @@ import EquipmentImage from '@/components/molecules/EldenRing/EquipmentImage.vue'
         src="https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/test%2Fmainhand.png"
         alt="Mainhand 2" />
 
-      <div class="grid grid-cols-2 gap-2 grid-rows-2">
+      <div class="grid gap-2 col-span-4 grid-cols-4 md:col-span-1 md:grid-cols-2">
         <EquipmentImage
           v-for="(_, i) in Array.from({ length: 4 })"
           :src="`https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/test%2Ftalisman${i + 1}.png`"

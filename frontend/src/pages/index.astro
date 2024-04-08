@@ -6,7 +6,7 @@ import TranslateImages from '@/components/atoms/TranslateImages.vue'
 
 <Layout title="Home">
 	<div class="relative">
-		<img class="-z-10 absolute top-0" src="/hero/gideon.webp" alt="" />
+		<img class="-z-10 absolute top-0 w-full max-h-screen object-cover object-top" src="/hero/gideon.webp" alt="" />
 	</div>
 	<section class="container px-4">
 		<h1 class="text-center font-display text-3xl md:text-7xl md:leading-xl my-20 md:mt-44">
@@ -43,10 +43,10 @@ import TranslateImages from '@/components/atoms/TranslateImages.vue'
 	<section class="mb-16">
 		<h2 class="type-h2 text-center mb-16">Most popular builds</h2>
 
-		<div class="container--xl grid gap-5 md:grid-cols-3">
-			<BuildCard />
-			<BuildCard />
-			<BuildCard />
+		<div class="container--xl grid gap-5 justify-center md:grid-cols-3">
+			<BuildCard client:idle />
+			<BuildCard client:idle />
+			<BuildCard client:idle />
 		</div>
 
 		<div class="flex justify-center mt-16">
