@@ -18,6 +18,7 @@ import ERCollections from './collections/EldenRing'
 const ALLOWED_URLS = [
   // Back
   'https://payload.soulsborne.build',
+  'https://dev-payload.soulsborne.build',
   'http://localhost:3000',
   // Front
   'https://soulsborne.build',
@@ -63,6 +64,11 @@ export default buildConfig({
   cors: ALLOWED_URLS,
   telemetry: false,
   csrf: ALLOWED_URLS,
+  localization: {
+    locales: ['en', 'fr'],
+    defaultLocale: 'en',
+    fallback: true,
+  },
   editor: slateEditor({}),
   collections: [Users, Archetype, Restrictions, ...ERCollections],
   typescript: {

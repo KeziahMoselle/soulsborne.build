@@ -41,6 +41,9 @@ export interface User {
   id: number;
   name: string;
   roles: ('admin' | 'editor' | 'user')[];
+  votes?: {
+    eldenring?: (number | ErBuild)[] | null;
+  };
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -51,212 +54,6 @@ export interface User {
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "archetypes".
- */
-export interface Archetype {
-  id: number;
-  name?: string | null;
-  description?:
-    | {
-        [k: string]: unknown;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "restrictions".
- */
-export interface Restriction {
-  id: number;
-  name?: string | null;
-  description?:
-    | {
-        [k: string]: unknown;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-affinities".
- */
-export interface ErAffinity {
-  id: number;
-  name?: string | null;
-  description?:
-    | {
-        [k: string]: unknown;
-      }[]
-    | null;
-  type?: ('Physical' | 'Magic' | 'Flame' | 'Golden' | 'Occult') | null;
-  affected_statistics?: (number | ErStatistic)[] | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-statistics".
- */
-export interface ErStatistic {
-  id: number;
-  name?: string | null;
-  description?:
-    | {
-        [k: string]: unknown;
-      }[]
-    | null;
-  softcaps?:
-    | {
-        level?: number | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-ammunitions".
- */
-export interface ErAmmunition {
-  id: number;
-  ammunition_type?: ('Bolt' | 'Greatbolt') | null;
-  name?: string | null;
-  description?:
-    | {
-        [k: string]: unknown;
-      }[]
-    | null;
-  attack?: {
-    physical?: number | null;
-    magic?: number | null;
-    fire?: number | null;
-    lightning?: number | null;
-    holy?: number | null;
-    critical?: number | null;
-  };
-  passives?: (number | null) | ErStatusEffect;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-status-effects".
- */
-export interface ErStatusEffect {
-  id: number;
-  name?: string | null;
-  description?:
-    | {
-        [k: string]: unknown;
-      }[]
-    | null;
-  effect?:
-    | {
-        [k: string]: unknown;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-armors".
- */
-export interface ErArmor {
-  id: number;
-  armor_type?: ('Helm' | 'Chest' | 'Gauntlet' | 'Leg') | null;
-  name?: string | null;
-  description?:
-    | {
-        [k: string]: unknown;
-      }[]
-    | null;
-  weight?: number | null;
-  damage_negation?: {
-    physical?: number | null;
-    vs_strike?: number | null;
-    vs_slash?: number | null;
-    vs_pierce?: number | null;
-    magic?: number | null;
-    fire?: number | null;
-    lightning?: number | null;
-    holy?: number | null;
-  };
-  resistance?: {
-    immunity?: number | null;
-    robustness?: number | null;
-    focus?: number | null;
-    vitality?: number | null;
-    poise?: number | null;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-ashes-of-war".
- */
-export interface ErAshesOfWar {
-  id: number;
-  name?: string | null;
-  skill?: (number | null) | ErSkill;
-  description?:
-    | {
-        [k: string]: unknown;
-      }[]
-    | null;
-  location?:
-    | {
-        [k: string]: unknown;
-      }[]
-    | null;
-  availability?: (number | ErWeaponType)[] | null;
-  affinity?: (number | null) | ErAffinity;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-skills".
- */
-export interface ErSkill {
-  id: number;
-  name?: string | null;
-  fp_cost?: number | null;
-  description?:
-    | {
-        [k: string]: unknown;
-      }[]
-    | null;
-  location?:
-    | {
-        [k: string]: unknown;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-weapon-types".
- */
-export interface ErWeaponType {
-  id: number;
-  name?: string | null;
-  description?:
-    | {
-        [k: string]: unknown;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -313,6 +110,37 @@ export interface ErBuild {
         id?: string | null;
       }[]
     | null;
+  created_by?: (number | null) | User;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "restrictions".
+ */
+export interface Restriction {
+  id: number;
+  name?: string | null;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "archetypes".
+ */
+export interface Archetype {
+  id: number;
+  name?: string | null;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -367,6 +195,123 @@ export interface ErWeapon {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-weapon-types".
+ */
+export interface ErWeaponType {
+  id: number;
+  name?: string | null;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-skills".
+ */
+export interface ErSkill {
+  id: number;
+  name?: string | null;
+  fp_cost?: number | null;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  location?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-statistics".
+ */
+export interface ErStatistic {
+  id: number;
+  name?: string | null;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  softcaps?:
+    | {
+        level?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-status-effects".
+ */
+export interface ErStatusEffect {
+  id: number;
+  name?: string | null;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  effect?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-ashes-of-war".
+ */
+export interface ErAshesOfWar {
+  id: number;
+  name?: string | null;
+  skill?: (number | null) | ErSkill;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  location?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  availability?: (number | ErWeaponType)[] | null;
+  affinity?: (number | null) | ErAffinity;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-affinities".
+ */
+export interface ErAffinity {
+  id: number;
+  name?: string | null;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  type?: ('Physical' | 'Magic' | 'Flame' | 'Golden' | 'Occult') | null;
+  affected_statistics?: (number | ErStatistic)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "er-shields".
  */
 export interface ErShield {
@@ -411,6 +356,65 @@ export interface ErShield {
       }[]
     | null;
   passives?: (number | null) | ErStatusEffect;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-ammunitions".
+ */
+export interface ErAmmunition {
+  id: number;
+  ammunition_type?: ('Bolt' | 'Greatbolt') | null;
+  name?: string | null;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  attack?: {
+    physical?: number | null;
+    magic?: number | null;
+    fire?: number | null;
+    lightning?: number | null;
+    holy?: number | null;
+    critical?: number | null;
+  };
+  passives?: (number | null) | ErStatusEffect;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-armors".
+ */
+export interface ErArmor {
+  id: number;
+  armor_type?: ('Helm' | 'Chest' | 'Gauntlet' | 'Leg') | null;
+  name?: string | null;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  weight?: number | null;
+  damage_negation?: {
+    physical?: number | null;
+    vs_strike?: number | null;
+    vs_slash?: number | null;
+    vs_pierce?: number | null;
+    magic?: number | null;
+    fire?: number | null;
+    lightning?: number | null;
+    holy?: number | null;
+  };
+  resistance?: {
+    immunity?: number | null;
+    robustness?: number | null;
+    focus?: number | null;
+    vitality?: number | null;
+    poise?: number | null;
+  };
   updatedAt: string;
   createdAt: string;
 }

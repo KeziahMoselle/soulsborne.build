@@ -1,7 +1,7 @@
 import { CollectionConfig } from 'payload/types'
 import { isAdmin, isAdminFieldLevel } from '../access/isAdmin'
-import { isSelf } from '../access/isSelf'
 import { isAdminOrSelf, isAdminOrSelfFieldLevel } from '../access/isAdminOrSelf'
+import { isSelfFieldLevel } from '../access/isSelf'
 
 const Users: CollectionConfig = {
   slug: 'users',
@@ -44,6 +44,28 @@ const Users: CollectionConfig = {
         'user',
       ],
     },
+    {
+      name: 'votes',
+      label: 'Votes',
+      type: 'group',
+      fields: [
+        {
+          name: 'eldenring',
+          label: 'Elden Ring Builds',
+          type: 'relationship',
+          relationTo: 'er-builds',
+          hasMany: true,
+          access: {
+            read: isSelfFieldLevel,
+            create: isSelfFieldLevel,
+            update: isSelfFieldLevel,
+          },
+          admin: {
+            readOnly: true,
+          }
+        },
+      ]
+    }
   ],
 }
 
