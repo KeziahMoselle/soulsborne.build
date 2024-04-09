@@ -94,6 +94,7 @@ const ERBuilds: CollectionConfig = {
       relationTo: 'users',
       hasMany: true,
       maxDepth: 0,
+      unique: true,
       admin: {
         position: 'sidebar'
       }

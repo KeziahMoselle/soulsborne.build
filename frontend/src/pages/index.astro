@@ -2,22 +2,10 @@
 import BuildCard from "@/components/molecules/EldenRing/BuildCard.vue"
 import Layout from "../layouts/Layout.astro"
 import TranslateImages from '@/components/atoms/TranslateImages.vue'
-import { apiFetch } from "@/api"
-import type { PayloadCollection } from "@/types"
-import type { ErBuild } from "~/payload-types"
-import qs from 'qs'
+import { getMostVotedBuilds } from "@/api"
 
-const stringifiedQuery = qs.stringify(
-	{
-		sort: 'votes',
-		limit: 3,
-	},
-	{ addQueryPrefix: true },
-)
-const url = `/api/er-builds${stringifiedQuery}`
-const builds = await apiFetch<PayloadCollection<ErBuild>>(url)
+const builds = await getMostVotedBuilds({ limit: 3 })
 ---
-
 <Layout title="Home">
 	<div class="relative">
 		<img class="-z-10 absolute top-0 w-full max-h-screen object-cover object-top" src="/hero/gideon.webp" alt="" />
@@ -92,7 +80,7 @@ const builds = await apiFetch<PayloadCollection<ErBuild>>(url)
 			{builds.docs.map((build) => (
 				<BuildCard
 					build={build}
-					hasVoted={build.votes.includes(Astro.locals.user.id)}
+					hasVoted={build.votes?.includes(Astro.locals.user?.id)}
 					client:visible />
 			))}
 		</div>
