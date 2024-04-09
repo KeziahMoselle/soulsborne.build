@@ -22,7 +22,7 @@
     "@payloadcms/db-postgres": "^0.x",
     "@payloadcms/plugin-cloud": "^3.0.0",
     "@payloadcms/plugin-cloud-storage": "1.1.2",
-    "@payloadcms/richtext-slate": "^1.0.0",
+    "@payloadcms/richtext-slate": "^1.5.0",
     "aws-crt": "^1.21.1",
     "cross-env": "^7.0.3",
     "dotenv": "^8.2.0",
