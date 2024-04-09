@@ -4,11 +4,17 @@
   import { ThumbsUpIcon } from 'lucide-vue-next'
   import EquipmentImage from '@/components/molecules/EldenRing/EquipmentImage.vue';
   import { Vue3Marquee } from 'vue3-marquee'
-  import { computed } from 'vue';
+  import { computed, ref } from 'vue';
+  import { toggleVoteBuild } from '@/api';
+  import { toast } from 'vue-sonner';
 
   const props = defineProps<{
-    build?: ErBuild
+    build?: ErBuild,
+    hasVoted?: boolean
   }>()
+
+  const hasVoted = ref(props.hasVoted)
+  const votesCount = ref(props.build.votes_count)
 
   const mainWeapons = computed(() => {
     // Return the first mainhand and offhand if each have at least 1 weapon
@@ -21,13 +27,26 @@
 
     // No offhand but at least 1 mainhand
     if (props.build.mainhand_weapons.length > 0 && props.build.offhand_weapons.length === 0) {
-      return props.build.mainhand_weapons.slice(0, 1).filter(Boolean)
+      return props.build.mainhand_weapons.slice(0, 2).filter(Boolean)
     }
 
     if (props.build.offhand_weapons.length > 0 && props.build.mainhand_weapons.length === 0) {
-      return props.build.offhand_weapons.slice(0, 1).filter(Boolean)
+      return props.build.offhand_weapons.slice(0, 2).filter(Boolean)
     }
   })
+
+  async function toggleVote() {
+    const update = toggleVoteBuild({ buildId: props.build.id })
+    toast.promise(update, {
+      success: (updatedBuild) => {
+        votesCount.value = updatedBuild.votes_count
+        hasVoted.value = !hasVoted.value
+        return `Successfully ${hasVoted.value ? 'voted' : 'removed vote'}.`
+      },
+      error: (e) => 'There was an error.'
+    })
+
+  }
 </script>
 
 <template>
@@ -45,7 +64,7 @@
             absolute top-1/2 transform -translate-y-1/2 left-8
             flex items-center gap-x-4
           ">
-          <img class="h-6 w-6" src="https://cdn.soulsborne.build/test%2Fbleed.png" alt="bleed" />
+          <img class="size-8" src="https://cdn.soulsborne.build/test%2Fbleed.png" alt="bleed" />
           <p class="-ml-4 w-52 lg:w-48 2xl:w-64">
             <Vue3Marquee
                 gradient
@@ -62,8 +81,16 @@
         <img class="w-full h-[44px]" src="/build-title.png" alt="" />
       </div>
 
-      <button class="flex items-center self-center gap-x-2 bg-accent-foreground leading-4 px-2 py-1 rounded transition lg:text-sm lg:px-3 hover:bg-accent">
-        <span class="type-h5">{{ build.votes.length }}</span>
+      <button
+        type="button"
+        class="flex items-center self-center gap-x-2 leading-4 px-2 py-1 rounded transition lg:text-sm lg:px-3 hover:bg-accent"
+        :class="{
+          'bg-accent-foreground': !hasVoted,
+          'bg-accent': hasVoted
+        }"
+        :title="hasVoted ? 'Unvote' : 'Vote'"
+        @click="toggleVote">
+        <span class="type-h5">{{ votesCount }}</span>
         <ThumbsUpIcon class="w-3" />
       </button>
     </header>

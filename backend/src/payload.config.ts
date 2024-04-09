@@ -9,6 +9,7 @@ import { slateEditor } from '@payloadcms/richtext-slate'
 
 import { seed } from './endpoints/seed'
 import { register } from './endpoints/register'
+import { toggleVote } from './endpoints/toggle-vote'
 
 import Users from './collections/Users'
 import Archetype from './collections/Archetype'
@@ -82,6 +83,11 @@ export default buildConfig({
       path: '/register',
       method: 'post',
       handler: register,
+    },
+    {
+      path: '/er-builds/toggle-vote',
+      method: 'post',
+      handler: toggleVote,
     },
     {
       path: '/seed',

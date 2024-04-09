@@ -1,19 +1,33 @@
+import { apiFetch } from "@/api";
 import type { PayloadUserResponse } from "@/types";
 import { defineMiddleware, sequence } from "astro:middleware"
 
-const auth = defineMiddleware(async ({ cookies, locals }, next) => {
+const auth = defineMiddleware(async ({ cookies, locals, redirect }, next) => {
   if (!cookies.has('payload-token')) {
     locals.user = null
     return next()
   }
 
-  const data: PayloadUserResponse = await fetch(`${import.meta.env.PUBLIC_PAYLOAD_URL}/api/users/me`, {
-    headers: {
-      'Cookie': `payload-token=${cookies.get('payload-token').value}`
-    },
-  }).then((res) => res.json())
+  let data: PayloadUserResponse
+  try {
+    data = await apiFetch('/api/users/me', {
+      headers: {
+        'Cookie': `payload-token=${cookies.get('payload-token').value}`
+      },
+    })
+  } catch (error) {
+    console.error(error)
+    return next()
+  }
 
-  locals.user = data?.user
+  // If data.user is null that means the token expired
+  // todo: Refresh token here
+  if (!data.user) {
+    cookies.delete('payload-token')
+    return redirect('/?logged-out')
+  }
+
+  locals.user = data.user
   return next()
 })
 
