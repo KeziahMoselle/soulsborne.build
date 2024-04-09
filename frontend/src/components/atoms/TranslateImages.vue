@@ -25,7 +25,7 @@ import { onMounted, onUnmounted, ref } from 'vue';
 </script>
 
 <template>
-  <span class="relative" :class="class">
+  <span class="block relative" :class="class">
     <img
       v-for="(image, index) in images"
       :key="image.src"

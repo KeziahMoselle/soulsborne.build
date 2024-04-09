@@ -9,7 +9,7 @@ import TranslateImages from '@/components/atoms/TranslateImages.vue'
 		<img class="-z-10 absolute top-0 w-full max-h-screen object-cover object-top" src="/hero/gideon.webp" alt="" />
 	</div>
 	<section class="container px-4">
-		<h1 class="text-center font-display text-3xl md:text-7xl md:leading-xl my-20 md:mt-44">
+		<h1 class="hidden text-center font-display text-4xl leading-relaxed md:text-7xl md:leading-xl my-20 md:mt-44 md:block">
 			<span class="flex justify-center items-center gap-x-4">
 				Share your <TranslateImages class="w-[100px] h-[20px] transform scale-125 md:transform-none md:w-[412px] md:h-[100px]" images={[
 					{
@@ -28,6 +28,29 @@ import TranslateImages from '@/components/atoms/TranslateImages.vue'
 			</span>
 			<span class="block text-center">with the world</span>
 		</h1>
+		<h1 class="block text-center font-display text-4xl leading-relaxed my-20 md:hidden">
+			<span class="block text-center">
+				Share your
+			</span>
+			<TranslateImages
+				class="w-[250px] h-[56px] mx-auto"
+				images={[
+					{
+						src: '/img/eldenring-logo.png',
+						alt: 'Elden Ring'
+					},
+					{
+						src: '/img/darksouls-logo.png',
+						alt: 'Dark Souls'
+					},
+					{
+						src: '/img/bloodborne-logo.png',
+						alt: 'Bloodborne'
+					},
+				]}
+				client:load />
+			<span class="block text-center">builds with the world</span>
+		</h1>
 	</section>
 
 	<section class="container">
@@ -43,7 +66,7 @@ import TranslateImages from '@/components/atoms/TranslateImages.vue'
 	<section class="mb-16">
 		<h2 class="type-h2 text-center mb-16">Most popular builds</h2>
 
-		<div class="container--xl grid gap-5 justify-center md:grid-cols-3">
+		<div class="container--xl grid gap-5 justify-center sm:grid-cols-2 md:grid-cols-3">
 			<BuildCard client:idle />
 			<BuildCard client:idle />
 			<BuildCard client:idle />

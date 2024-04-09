@@ -26,8 +26,8 @@
             absolute top-1/2 transform -translate-y-1/2 left-8
             flex items-center gap-x-4
           ">
-          <img class="h-6 w-auto" src="https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/test%2Fbleed.png" alt="bleed" />
-          <p class="-ml-4 w-40">
+          <img class="h-6 w-6" src="https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/test%2Fbleed.png" alt="bleed" />
+          <p class="-ml-4 w-28 lg:w-40">
             <Vue3Marquee
                 gradient
                 :gradient-color="[29, 29, 24]"
@@ -41,7 +41,7 @@
         <img class="w-full h-[44px]" src="/build-title.png" alt="" />
       </div>
 
-      <button class="flex items-center self-center gap-x-2 bg-accent-foreground text-sm leading-4 px-3 py-1 rounded transition hover:bg-accent">
+      <button class="flex items-center self-center gap-x-2 bg-accent-foreground leading-4 px-2 py-1 rounded transition lg:text-sm lg:px-3 hover:bg-accent">
         <span class="type-h5">15</span>
         <ThumbsUpIcon class="w-3" />
       </button>
@@ -54,7 +54,7 @@
     </div>
 
     <!-- Build preview -->
-    <div class="grid ml-8 mt-8 gap-2 grid-cols-2 md:grid-cols-3">
+    <div class="grid ml-8 mt-8 gap-2 grid-cols-2 lg:grid-cols-3">
       <EquipmentImage
         src="https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/test%2Fmainhand.png"
         alt="Mainhand 1" />
@@ -62,7 +62,7 @@
         src="https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/test%2Fmainhand.png"
         alt="Mainhand 2" />
 
-      <div class="grid gap-2 col-span-4 grid-cols-4 md:col-span-1 md:grid-cols-2">
+      <div class="grid gap-2 col-span-4 grid-cols-4 lg:col-span-1 lg:grid-cols-2">
         <EquipmentImage
           v-for="(_, i) in Array.from({ length: 4 })"
           :src="`https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/test%2Ftalisman${i + 1}.png`"
