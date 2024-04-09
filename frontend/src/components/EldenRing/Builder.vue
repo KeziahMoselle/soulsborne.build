@@ -325,10 +325,12 @@ const onSubmit = handleSubmit((values) => {
   ]
 
   const sorceriesIds = magicIds
+    .filter(Boolean)
     .filter((id) => id.startsWith('er-sorceries'))
     .map((id) => Number(id.split(':')[1]))
 
   const incantationsIds = magicIds
+    .filter(Boolean)
     .filter((id) => id.startsWith('er-incantations'))
     .map((id) => Number(id.split(':')[1]))
 
@@ -366,7 +368,7 @@ const onSubmit = handleSubmit((values) => {
     sorceries: sorceriesIds,
     incantations: incantationsIds,
     level: values.level,
-    statistics
+    statistics,
   }
 
   const createBuild = apiFetch<PayloadCreateResponse<ErBuild>>(`/api/er-builds`, {

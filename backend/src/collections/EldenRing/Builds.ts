@@ -78,6 +78,17 @@ const ERBuilds: CollectionConfig = {
         position: 'sidebar',
       }
     },
+    {
+      name: 'votes',
+      label: 'Votes',
+      type: 'relationship',
+      relationTo: 'users',
+      hasMany: true,
+      admin: {
+        readOnly: true,
+        position: 'sidebar'
+      }
+    },
 
     /**
      * Elden Ring specifics
@@ -223,8 +234,40 @@ const ERBuilds: CollectionConfig = {
           ]
         },
       ]
-    }
+    },
+
+    /**
+     * Metadata
+     */
+    {
+      label: 'Created by',
+      name: 'created_by',
+      type: 'relationship',
+      relationTo: 'users',
+      access: {
+        read: () => true,
+        update: () => false,
+      },
+      admin: {
+        readOnly: true,
+        position: 'sidebar',
+        condition: (data) => !!data?.created_by,
+      },
+    },
   ],
+  hooks: {
+    beforeChange: [
+      ({ req, operation, data }) => {
+        if (req.user) {
+          if (operation === 'create') {
+            data.created_by = req.user.id;
+          }
+
+          return data;
+        }
+      },
+    ],
+  },
 }
 
 export default ERBuilds
