@@ -7,7 +7,8 @@
   import { computed } from 'vue';
 
   const props = defineProps<{
-    build?: ErBuild
+    build?: ErBuild,
+    hasVoted?: boolean
   }>()
 
   const mainWeapons = computed(() => {
@@ -28,6 +29,9 @@
       return props.build.offhand_weapons.slice(0, 1).filter(Boolean)
     }
   })
+
+  async function vote() {}
+  async function unvote() {}
 </script>
 
 <template>
@@ -62,7 +66,11 @@
         <img class="w-full h-[44px]" src="/build-title.png" alt="" />
       </div>
 
-      <button class="flex items-center self-center gap-x-2 bg-accent-foreground leading-4 px-2 py-1 rounded transition lg:text-sm lg:px-3 hover:bg-accent">
+      <button
+        class="flex items-center self-center gap-x-2 bg-accent-foreground leading-4 px-2 py-1 rounded transition lg:text-sm lg:px-3 hover:bg-accent"
+        :class="{
+          'bg-accent': hasVoted
+        }">
         <span class="type-h5">{{ build.votes.length }}</span>
         <ThumbsUpIcon class="w-3" />
       </button>

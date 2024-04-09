@@ -90,7 +90,10 @@ const builds = await apiFetch<PayloadCollection<ErBuild>>(url)
 
 		<div class="container--xl grid gap-5 justify-center sm:grid-cols-2 lg:grid-cols-3">
 			{builds.docs.map((build) => (
-				<BuildCard build={build} client:visible />
+				<BuildCard
+					build={build}
+					hasVoted={build.votes.includes(Astro.locals.user.id)}
+					client:visible />
 			))}
 		</div>
 
