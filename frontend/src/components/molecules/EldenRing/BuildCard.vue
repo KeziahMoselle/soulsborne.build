@@ -26,7 +26,7 @@
             absolute top-1/2 transform -translate-y-1/2 left-8
             flex items-center gap-x-4
           ">
-          <img class="h-6 w-6" src="https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/test%2Fbleed.png" alt="bleed" />
+          <img class="h-6 w-6" src="https://cdn.soulsborne.build/test%2Fbleed.png" alt="bleed" />
           <p class="-ml-4 w-28 lg:w-40">
             <Vue3Marquee
                 gradient
@@ -56,16 +56,16 @@
     <!-- Build preview -->
     <div class="grid ml-8 mt-8 gap-2 grid-cols-2 lg:grid-cols-3">
       <EquipmentImage
-        src="https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/test%2Fmainhand.png"
+        src="https://cdn.soulsborne.build/test%2Fmainhand.png"
         alt="Mainhand 1" />
       <EquipmentImage
-        src="https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/test%2Fmainhand.png"
+        src="https://cdn.soulsborne.build/test%2Fmainhand.png"
         alt="Mainhand 2" />
 
       <div class="grid gap-2 col-span-4 grid-cols-4 lg:col-span-1 lg:grid-cols-2">
         <EquipmentImage
           v-for="(_, i) in Array.from({ length: 4 })"
-          :src="`https://pub-3a5ef743ff2748219f5eb6a3adad2be7.r2.dev/test%2Ftalisman${i + 1}.png`"
+          :src="`https://cdn.soulsborne.build/test%2Ftalisman${i + 1}.png`"
           :alt="`Mainhand ${i + 1}`" />
       </div>
     </div>
