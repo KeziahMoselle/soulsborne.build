@@ -3,7 +3,7 @@ import path from 'path'
 
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { webpackBundler } from '@payloadcms/bundler-webpack'
-import { slateEditor } from '@payloadcms/richtext-slate'
+import { lexicalEditor } from '@payloadcms/richtext-lexical'
 // import { cloudStorage } from '@payloadcms/plugin-cloud-storage'
 // import { s3Adapter } from '@payloadcms/plugin-cloud-storage/s3'
 
@@ -70,7 +70,7 @@ export default buildConfig({
     defaultLocale: 'en',
     fallback: true,
   },
-  editor: slateEditor({}),
+  editor: lexicalEditor({}),
   collections: [Users, Archetype, Restrictions, ...ERCollections],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
