@@ -19,10 +19,10 @@ dependencies:
     version: 4.0.9(@babel/core@7.24.3)(astro@4.5.10)(vite@5.2.6)(vue@3.4.21)
   '@nanostores/persistent':
     specifier: ^0.10.1
-    version: 0.10.1(nanostores@0.10.0)
+    version: 0.10.1(nanostores@0.10.3)
   '@nanostores/vue':
     specifier: ^0.10.0
-    version: 0.10.0(nanostores@0.10.0)(vue@3.4.21)
+    version: 0.10.0(nanostores@0.10.3)(vue@3.4.21)
   '@types/qs':
     specifier: ^6.9.14
     version: 6.9.14
@@ -45,8 +45,8 @@ dependencies:
     specifier: ^0.363.0
     version: 0.363.0(vue@3.4.21)
   nanostores:
-    specifier: ^0.10.0
-    version: 0.10.0
+    specifier: ^0.10.3
+    version: 0.10.3
   qs:
     specifier: ^6.12.0
     version: 6.12.0
@@ -1400,16 +1400,16 @@ packages:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
 
-  /@nanostores/persistent@0.10.1(nanostores@0.10.0):
+  /@nanostores/persistent@0.10.1(nanostores@0.10.3):
     resolution: {integrity: sha512-BMYj47ONmkrPkHfomimtBAwtDNNjO57lw0uk7jB35GHVwixmqWtlK6DVAAbioqwJn9WEaWSB/9Ss5ukBG0NHlQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
     peerDependencies:
       nanostores: ^0.9.0 || ^0.10.0
     dependencies:
-      nanostores: 0.10.0
+      nanostores: 0.10.3
     dev: false
 
-  /@nanostores/vue@0.10.0(nanostores@0.10.0)(vue@3.4.21):
+  /@nanostores/vue@0.10.0(nanostores@0.10.3)(vue@3.4.21):
     resolution: {integrity: sha512-832RAUbzRfHPs1CdqVEwfvgB2+RD/INji4Zo8bUSEfRO2pQRMMeq479gydnohGpRaa0oNwlfKo7TGFXCghq/1g==}
     engines: {node: ^18.0.0 || >=20.0.0}
     peerDependencies:
@@ -1423,7 +1423,7 @@ packages:
       '@vue/devtools-api':
         optional: true
     dependencies:
-      nanostores: 0.10.0
+      nanostores: 0.10.3
       vue: 3.4.21(typescript@5.4.4)
     dev: false
 
@@ -3957,8 +3957,8 @@ packages:
     hasBin: true
     dev: false
 
-  /nanostores@0.10.0:
-    resolution: {integrity: sha512-Poy5+9wFXOD0jAstn4kv9n686U2BFw48z/W8lms8cS8lcbRz7BU20JxZ3e/kkKQVfRrkm4yLWCUA6GQINdvJCQ==}
+  /nanostores@0.10.3:
+    resolution: {integrity: sha512-Nii8O1XqmawqSCf9o2aWqVxhKRN01+iue9/VEd1TiJCr9VT5XxgPFbF1Edl1XN6pwJcZRsl8Ki+z01yb/T/C2g==}
     engines: {node: ^18.0.0 || >=20.0.0}
     dev: false
 
