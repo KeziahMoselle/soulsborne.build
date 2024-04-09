@@ -13,13 +13,13 @@ import {
     <NavigationMenuList class="h-full">
       <NavigationMenuItem class="h-full flex items-center">
         <NavigationMenuTrigger class="h-full">
-          <div class="flex items-center justify-between self-stretch" href="/">
+          <a class="flex items-center justify-between self-stretch" href="/">
             <picture>
               <source media="(max-width: 767px)" srcset="/img/eldenring-icon.png" />
               <source media="(min-width: 768px)" srcset="/img/eldenring-logo.png" />
               <img class="h-10 py-2 md:h-8 md:w-auto md:py-0" src="/img/eldenring-logo.png" alt="Current dataset is Elden Ring" />
             </picture>
-          </div>
+          </a>
         </NavigationMenuTrigger>
         <NavigationMenuContent>
           <ul class="flex flex-col gap-y-2 px-5 py-2 w-[109px] md:w-[264px]">

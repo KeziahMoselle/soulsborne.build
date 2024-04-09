@@ -1,6 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import LoginForm from '@/components/Auth/Login.vue'
+
+if (Astro.locals.user) {
+  return Astro.redirect('/');
+}
 ---
 
 <Layout title="Login">

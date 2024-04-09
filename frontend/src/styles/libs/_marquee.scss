@@ -1,0 +1,7 @@
+.marquee {
+  @apply overflow-y-hidden gap-2;
+
+  + .marquee {
+    @apply mx-2;
+  }
+}

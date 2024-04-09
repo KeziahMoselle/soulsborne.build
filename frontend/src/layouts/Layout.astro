@@ -14,7 +14,7 @@ const { user } = Astro.locals;
 ---
 
 <!doctype html>
-<html class="h-full bg-background text-foreground type-body" lang="en">
+<html class="h-full bg-background text-foreground font-display" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content="Astro description" />
@@ -49,11 +49,11 @@ const { user } = Astro.locals;
                 <a href="/login">Login</a>
               </li>
             )}
-            <li class="font-display text-xl leading-5">
-              <a class="text-white opacity-40 cursor-not-allowed pointer-events-none" title="Coming in v2" href="/fashion">Fashion souls</a>
+            <li class="font-display text-xl leading-5" title="Coming in v3">
+              <a class="text-white opacity-40 cursor-not-allowed pointer-events-none" href="/lore-tree">Lore tree</a>
             </li>
-            <li class="font-display text-xl leading-5">
-              <a class="text-white opacity-40 cursor-not-allowed pointer-events-none" title="Coming in v3" href="/lore-tree">Lore tree</a>
+            <li class="font-display text-xl leading-5" title="Coming in v2">
+              <a class="text-white opacity-40 cursor-not-allowed pointer-events-none" href="/fashion">Fashion souls</a>
             </li>
             <li class="font-display text-xl leading-5">
               <a href="/builds">Builds</a>

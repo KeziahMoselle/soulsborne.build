@@ -2,6 +2,20 @@
 import BuildCard from "@/components/molecules/EldenRing/BuildCard.vue"
 import Layout from "../layouts/Layout.astro"
 import TranslateImages from '@/components/atoms/TranslateImages.vue'
+import { apiFetch } from "@/api"
+import type { PayloadCollection } from "@/types"
+import type { ErBuild } from "~/payload-types"
+import qs from 'qs'
+
+const stringifiedQuery = qs.stringify(
+	{
+		sort: 'votes',
+		limit: 3,
+	},
+	{ addQueryPrefix: true },
+)
+const url = `/api/er-builds${stringifiedQuery}`
+const builds = await apiFetch<PayloadCollection<ErBuild>>(url)
 ---
 
 <Layout title="Home">
@@ -54,18 +68,18 @@ import TranslateImages from '@/components/atoms/TranslateImages.vue'
 	</section>
 
 	<section class="container">
-		<div class="bg-secondary px-4 py-8 my-8 md:px-16 md:my-16">
+		<div class="bg-secondary border border-primary px-4 py-8 my-8 md:px-16 md:my-16">
 			<h2 class="type-h2 mb-7">About the project</h2>
 
-			<p>
-				This project aims to simplify the sharing and saving of your <a href="/builds" class="link">builds</a> and <a href="/fashion" class="link">character appearances</a>.
+			<p class="type-body mb-4">
+				This project aims to simplify sharing and saving of your <a href="/builds" class="link">builds</a> and <a href="/fashion" class="link">character appearances</a>.
 			</p>
 
-			<p>
-				The idea came to me while exploring the <a href="https://eldenring.wiki.fextralife.com/Elden+Ring+Wiki" class="link" target="_blank">fextralife wiki</a> and watching videos of builds and I said to myself: “I just want to see the stats and equipment”. That's how the idea for this site came about, and a few weeks later, with two friends, we decided to start build the website.
+			<p class="type-body mb-4">
+				The idea came to me while exploring the <a href="https://eldenring.wiki.fextralife.com/Elden+Ring+Wiki" class="link" target="_blank">fextralife wiki</a> and watching videos of builds and I said to myself: “I just want to see the stats and equipment”. That's how the idea for this site came about, and a few weeks later, with two friends, we decided to start building the website.
 			</p>
 
-			<p>
+			<p class="type-body mb-4">
 				Our aim is not to replace the various <a href="https://eldenring.wiki.fextralife.com/Elden+Ring+Wiki" class="link" target="_blank">wikis</a> or <a href="https://eip.gg/elden-ring/build-planner/" class="link" target="_blank">build planners</a>. Rather, we aim to offer something new, somewhere between these two levels of information.
 			</p>
 		</div>
@@ -75,9 +89,9 @@ import TranslateImages from '@/components/atoms/TranslateImages.vue'
 		<h2 class="type-h2 text-center mb-16">Most popular builds</h2>
 
 		<div class="container--xl grid gap-5 justify-center sm:grid-cols-2 md:grid-cols-3">
-			<BuildCard client:idle />
-			<BuildCard client:idle />
-			<BuildCard client:idle />
+			{builds.docs.map((build) => (
+				<BuildCard build={build} client:idle />
+			))}
 		</div>
 
 		<div class="flex justify-center mt-16">

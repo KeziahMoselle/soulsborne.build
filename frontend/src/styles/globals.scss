@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './libs';
+
 @layer base {
   :root {
     --background: 330, 4%, 10%, 1;
@@ -119,7 +121,7 @@
 
 @layer components {
   .button {
-    @apply text-white bg-primary font-display px-7 py-2 text-xl leading-6 border transition hover:bg-accent hover:border-accent-foreground;
+    @apply text-white bg-primary font-display px-7 py-2 text-xl leading-6 border border-accent transition hover:bg-accent hover:border-accent-foreground;
   }
 }
 

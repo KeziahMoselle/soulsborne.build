@@ -1,7 +1,7 @@
 <script setup lang="ts">
   defineProps<{
-    src: string
-    alt: string
+    src?: string
+    alt?: string
   }>()
 </script>
 
@@ -10,8 +10,9 @@
     <img
       class="h-full w-full border"
       src="/build-equipment-background.png"
-      alt="" />
+      :alt="!src ? 'Empty' : ''" />
     <img
+      v-if="src"
       class="absolute inset-0 h-full w-full p-2"
       :src="src"
       :alt="alt" />
