@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.5.10",
-    "@astrojs/cloudflare": "^10.0.1",
+    "@astrojs/cloudflare": "^10.0.3",
     "@astrojs/tailwind": "^5.1.0",
     "@astrojs/vue": "^4.0.9",
     "@nanostores/persistent": "^0.10.1",
