@@ -70,8 +70,10 @@
         class="flex items-center self-center gap-x-2 bg-accent-foreground leading-4 px-2 py-1 rounded transition lg:text-sm lg:px-3 hover:bg-accent"
         :class="{
           'bg-accent': hasVoted
-        }">
-        <span class="type-h5">{{ build.votes.length }}</span>
+        }"
+        :title="hasVoted ? 'Unvote' : 'Vote'"
+        @click="hasVoted ? unvote : vote">
+        <span class="type-h5">{{ build.votes_count }}</span>
         <ThumbsUpIcon class="w-3" />
       </button>
     </header>
