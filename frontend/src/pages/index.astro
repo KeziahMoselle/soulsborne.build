@@ -72,7 +72,7 @@ const builds = await apiFetch<PayloadCollection<ErBuild>>(url)
 			<h2 class="type-h2 mb-7">About the project</h2>
 
 			<p class="type-body mb-4">
-				This project aims to simplify sharing and saving of your <a href="/builds" class="link">builds</a> and <a href="/fashion" class="link">character appearances</a>.
+				This project aims to simplify sharing and saving <a href="/builds" class="link">builds</a> and <a href="/fashion" class="link">character appearances</a>.
 			</p>
 
 			<p class="type-body mb-4">
@@ -88,9 +88,9 @@ const builds = await apiFetch<PayloadCollection<ErBuild>>(url)
 	<section class="mb-16">
 		<h2 class="type-h2 text-center mb-16">Most popular builds</h2>
 
-		<div class="container--xl grid gap-5 justify-center sm:grid-cols-2 md:grid-cols-3">
+		<div class="container--xl grid gap-5 justify-center sm:grid-cols-2 lg:grid-cols-3">
 			{builds.docs.map((build) => (
-				<BuildCard build={build} client:idle />
+				<BuildCard build={build} client:visible />
 			))}
 		</div>
 

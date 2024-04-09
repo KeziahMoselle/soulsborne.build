@@ -208,7 +208,7 @@ const magicInputs = computed(() => {
 })
 
 const statsSchema = props.stats.docs.reduce((acc, value) => {
-  acc[`stat-${value.id}`] = z.number().min(0).max(99)
+  acc[`stat-${value.id}`] = z.number().min(1).max(99)
   return acc
 }, {})
 

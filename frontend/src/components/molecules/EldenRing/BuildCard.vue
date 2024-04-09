@@ -46,7 +46,7 @@
             flex items-center gap-x-4
           ">
           <img class="h-6 w-6" src="https://cdn.soulsborne.build/test%2Fbleed.png" alt="bleed" />
-          <p class="-ml-4 w-28 lg:w-48 2xl:w-64">
+          <p class="-ml-4 w-52 lg:w-48 2xl:w-64">
             <Vue3Marquee
                 gradient
                 :gradient-color="[29, 29, 24]"
