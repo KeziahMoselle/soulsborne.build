@@ -78,6 +78,17 @@ const ERBuilds: CollectionConfig = {
         position: 'sidebar',
       }
     },
+    {
+      name: 'votes',
+      label: 'Votes',
+      type: 'relationship',
+      relationTo: 'users',
+      hasMany: true,
+      admin: {
+        readOnly: true,
+        position: 'sidebar'
+      }
+    },
 
     /**
      * Elden Ring specifics

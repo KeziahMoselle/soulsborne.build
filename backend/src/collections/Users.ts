@@ -44,28 +44,6 @@ const Users: CollectionConfig = {
         'user',
       ],
     },
-    {
-      name: 'votes',
-      label: 'Votes',
-      type: 'group',
-      fields: [
-        {
-          name: 'eldenring',
-          label: 'Elden Ring Builds',
-          type: 'relationship',
-          relationTo: 'er-builds',
-          hasMany: true,
-          access: {
-            read: isSelfFieldLevel,
-            create: isSelfFieldLevel,
-            update: isSelfFieldLevel,
-          },
-          admin: {
-            readOnly: true,
-          }
-        },
-      ]
-    }
   ],
 }
 
