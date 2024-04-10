@@ -27,7 +27,7 @@ import Archetype from './src/collections/Archetype'
 import Restrictions from './src/collections/Restrictions'
 import ERCollections from './src/collections/EldenRing'
 
-const ALLOWED_URLS = [
+export const ALLOWED_ORIGINS = [
   // Back
   'https://payload.soulsborne.build',
   'https://dev-payload.soulsborne.build',
@@ -42,8 +42,8 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-  cors: ALLOWED_URLS,
-  csrf: ALLOWED_URLS,
+  cors: ALLOWED_ORIGINS,
+  csrf: ALLOWED_ORIGINS,
   editor: lexicalEditor(),
   collections: [Users, Archetype, Restrictions, ...ERCollections],
   secret: process.env.PAYLOAD_SECRET || '',

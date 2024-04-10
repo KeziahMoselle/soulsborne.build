@@ -5,7 +5,7 @@ import FormItem from '@/components/ui/form/FormItem.vue';
 import FormLabel from '@/components/ui/form/FormLabel.vue';
 import FormMessage from '@/components/ui/form/FormMessage.vue';
 import Input from '@/components/ui/input/Input.vue';
-import type { ErStatistic } from '~/payload-types';
+import type { ErStatistic } from '@payload-types';
 
 defineProps<{
   stats: ErStatistic[];

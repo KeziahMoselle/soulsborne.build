@@ -4,9 +4,9 @@
   "description": "share your soulsborne builds",
   "author": "Keziah MOSELLE <contact@keziahmoselle.fr>",
   "scripts": {
-    "setup": "cd backend && yarn install && cd ../frontend && pnpm install",
+    "setup": "cd backend && pnpm install && cd ../frontend && pnpm install",
     "dev": "concurrently \"npm:dev:payload\" \"npm:dev:astro\"",
-    "dev:payload": "cd backend && yarn dev",
+    "dev:payload": "cd backend && pnpm dev",
     "dev:astro": "cd frontend && pnpm dev"
   },
   "dependencies": {

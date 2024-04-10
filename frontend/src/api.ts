@@ -1,5 +1,5 @@
 import type { PayloadCollection } from '@/types'
-import type { ErBuild } from '~/payload-types'
+import type { ErBuild } from '@payload-types'
 import { toast } from 'vue-sonner'
 import qs from 'qs'
 
