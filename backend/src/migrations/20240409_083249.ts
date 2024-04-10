@@ -5,7 +5,13 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
 await payload.db.drizzle.execute(sql`
 
 DO $$ BEGIN
- CREATE TYPE "enum_users_role" AS ENUM('admin', 'developer', 'editor', 'user');
+ CREATE TYPE "_locales" AS ENUM('en', 'fr');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+ CREATE TYPE "enum_users_roles" AS ENUM('admin', 'editor', 'user');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -82,10 +88,16 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 
+CREATE TABLE IF NOT EXISTS "users_roles" (
+	"order" integer NOT NULL,
+	"parent_id" integer NOT NULL,
+	"value" "enum_users_roles",
+	"id" serial PRIMARY KEY NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS "users" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" varchar NOT NULL,
-	"role" "enum_users_role" NOT NULL,
 	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
 	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
 	"email" varchar NOT NULL,
@@ -95,6 +107,14 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"hash" varchar,
 	"login_attempts" numeric,
 	"lock_until" timestamp(3) with time zone
+);
+
+CREATE TABLE IF NOT EXISTS "users_rels" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"order" integer,
+	"parent_id" integer NOT NULL,
+	"path" varchar NOT NULL,
+	"er_builds_id" integer
 );
 
 CREATE TABLE IF NOT EXISTS "archetypes" (
@@ -299,6 +319,7 @@ CREATE TABLE IF NOT EXISTS "er_builds" (
 	"description" jsonb,
 	"youtube_url" varchar,
 	"is_two_handed" boolean,
+	"level" numeric,
 	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
 	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
 );
@@ -312,12 +333,16 @@ CREATE TABLE IF NOT EXISTS "er_builds_rels" (
 	"archetypes_id" integer,
 	"er_weapons_id" integer,
 	"er_ashes_of_war_id" integer,
+	"er_affinities_id" integer,
 	"er_shields_id" integer,
 	"er_ammunitions_id" integer,
 	"er_armors_id" integer,
 	"er_talismans_id" integer,
+	"er_sorceries_id" integer,
+	"er_incantations_id" integer,
 	"er_classes_id" integer,
-	"er_statistics_id" integer
+	"er_statistics_id" integer,
+	"users_id" integer
 );
 
 CREATE TABLE IF NOT EXISTS "er_classes_statistics" (
@@ -342,6 +367,9 @@ CREATE TABLE IF NOT EXISTS "er_classes_rels" (
 	"path" varchar NOT NULL,
 	"er_weapons_id" integer,
 	"er_shields_id" integer,
+	"er_sorceries_id" integer,
+	"er_incantations_id" integer,
+	"er_ammunitions_id" integer,
 	"er_statistics_id" integer
 );
 
@@ -767,9 +795,14 @@ CREATE TABLE IF NOT EXISTS "payload_migrations" (
 	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
 );
 
+CREATE INDEX IF NOT EXISTS "users_roles_order_idx" ON "users_roles" ("order");
+CREATE INDEX IF NOT EXISTS "users_roles_parent_idx" ON "users_roles" ("parent_id");
 CREATE UNIQUE INDEX IF NOT EXISTS "users_name_idx" ON "users" ("name");
 CREATE INDEX IF NOT EXISTS "users_created_at_idx" ON "users" ("created_at");
 CREATE UNIQUE INDEX IF NOT EXISTS "users_email_idx" ON "users" ("email");
+CREATE INDEX IF NOT EXISTS "users_rels_order_idx" ON "users_rels" ("order");
+CREATE INDEX IF NOT EXISTS "users_rels_parent_idx" ON "users_rels" ("parent_id");
+CREATE INDEX IF NOT EXISTS "users_rels_path_idx" ON "users_rels" ("path");
 CREATE INDEX IF NOT EXISTS "archetypes_created_at_idx" ON "archetypes" ("created_at");
 CREATE INDEX IF NOT EXISTS "restrictions_created_at_idx" ON "restrictions" ("created_at");
 CREATE UNIQUE INDEX IF NOT EXISTS "er_affinities_name_idx" ON "er_affinities" ("name");
@@ -929,6 +962,24 @@ CREATE INDEX IF NOT EXISTS "payload_preferences_rels_parent_idx" ON "payload_pre
 CREATE INDEX IF NOT EXISTS "payload_preferences_rels_path_idx" ON "payload_preferences_rels" ("path");
 CREATE INDEX IF NOT EXISTS "payload_migrations_created_at_idx" ON "payload_migrations" ("created_at");
 DO $$ BEGIN
+ ALTER TABLE "users_roles" ADD CONSTRAINT "users_roles_parent_id_users_id_fk" FOREIGN KEY ("parent_id") REFERENCES "users"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+ ALTER TABLE "users_rels" ADD CONSTRAINT "users_rels_parent_id_users_id_fk" FOREIGN KEY ("parent_id") REFERENCES "users"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+ ALTER TABLE "users_rels" ADD CONSTRAINT "users_rels_er_builds_id_er_builds_id_fk" FOREIGN KEY ("er_builds_id") REFERENCES "er_builds"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
  ALTER TABLE "er_affinities_rels" ADD CONSTRAINT "er_affinities_rels_parent_id_er_affinities_id_fk" FOREIGN KEY ("parent_id") REFERENCES "er_affinities"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -1073,6 +1124,12 @@ EXCEPTION
 END $$;
 
 DO $$ BEGIN
+ ALTER TABLE "er_builds_rels" ADD CONSTRAINT "er_builds_rels_er_affinities_id_er_affinities_id_fk" FOREIGN KEY ("er_affinities_id") REFERENCES "er_affinities"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
  ALTER TABLE "er_builds_rels" ADD CONSTRAINT "er_builds_rels_er_shields_id_er_shields_id_fk" FOREIGN KEY ("er_shields_id") REFERENCES "er_shields"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -1097,6 +1154,18 @@ EXCEPTION
 END $$;
 
 DO $$ BEGIN
+ ALTER TABLE "er_builds_rels" ADD CONSTRAINT "er_builds_rels_er_sorceries_id_er_sorceries_id_fk" FOREIGN KEY ("er_sorceries_id") REFERENCES "er_sorceries"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+ ALTER TABLE "er_builds_rels" ADD CONSTRAINT "er_builds_rels_er_incantations_id_er_incantations_id_fk" FOREIGN KEY ("er_incantations_id") REFERENCES "er_incantations"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
  ALTER TABLE "er_builds_rels" ADD CONSTRAINT "er_builds_rels_er_classes_id_er_classes_id_fk" FOREIGN KEY ("er_classes_id") REFERENCES "er_classes"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -1104,6 +1173,12 @@ END $$;
 
 DO $$ BEGIN
  ALTER TABLE "er_builds_rels" ADD CONSTRAINT "er_builds_rels_er_statistics_id_er_statistics_id_fk" FOREIGN KEY ("er_statistics_id") REFERENCES "er_statistics"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+ ALTER TABLE "er_builds_rels" ADD CONSTRAINT "er_builds_rels_users_id_users_id_fk" FOREIGN KEY ("users_id") REFERENCES "users"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -1128,6 +1203,24 @@ END $$;
 
 DO $$ BEGIN
  ALTER TABLE "er_classes_rels" ADD CONSTRAINT "er_classes_rels_er_shields_id_er_shields_id_fk" FOREIGN KEY ("er_shields_id") REFERENCES "er_shields"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+ ALTER TABLE "er_classes_rels" ADD CONSTRAINT "er_classes_rels_er_sorceries_id_er_sorceries_id_fk" FOREIGN KEY ("er_sorceries_id") REFERENCES "er_sorceries"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+ ALTER TABLE "er_classes_rels" ADD CONSTRAINT "er_classes_rels_er_incantations_id_er_incantations_id_fk" FOREIGN KEY ("er_incantations_id") REFERENCES "er_incantations"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+ ALTER TABLE "er_classes_rels" ADD CONSTRAINT "er_classes_rels_er_ammunitions_id_er_ammunitions_id_fk" FOREIGN KEY ("er_ammunitions_id") REFERENCES "er_ammunitions"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -1450,7 +1543,9 @@ END $$;
 export async function down({ payload }: MigrateDownArgs): Promise<void> {
 await payload.db.drizzle.execute(sql`
 
+DROP TABLE "users_roles";
 DROP TABLE "users";
+DROP TABLE "users_rels";
 DROP TABLE "archetypes";
 DROP TABLE "restrictions";
 DROP TABLE "er_affinities";

@@ -1,9 +1,72 @@
 {
-  "id": "b0efe20a-86a9-4d18-b91c-c4c0695c2748",
+  "id": "762299db-28a6-48f1-9d57-9dbd2da002be",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
   "tables": {
+    "users_roles": {
+      "name": "users_roles",
+      "schema": "",
+      "columns": {
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "value": {
+          "name": "value",
+          "type": "enum_users_roles",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "users_roles_order_idx": {
+          "name": "users_roles_order_idx",
+          "columns": [
+            "order"
+          ],
+          "isUnique": false
+        },
+        "users_roles_parent_idx": {
+          "name": "users_roles_parent_idx",
+          "columns": [
+            "parent_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "users_roles_parent_id_users_id_fk": {
+          "name": "users_roles_parent_id_users_id_fk",
+          "tableFrom": "users_roles",
+          "tableTo": "users",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "users": {
       "name": "users",
       "schema": "",
@@ -17,12 +80,6 @@
         "name": {
           "name": "name",
           "type": "varchar",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "role": {
-          "name": "role",
-          "type": "enum_users_role",
           "primaryKey": false,
           "notNull": true
         },
@@ -107,6 +164,95 @@
         }
       },
       "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "users_rels": {
+      "name": "users_rels",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "path": {
+          "name": "path",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "er_builds_id": {
+          "name": "er_builds_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "users_rels_order_idx": {
+          "name": "users_rels_order_idx",
+          "columns": [
+            "order"
+          ],
+          "isUnique": false
+        },
+        "users_rels_parent_idx": {
+          "name": "users_rels_parent_idx",
+          "columns": [
+            "parent_id"
+          ],
+          "isUnique": false
+        },
+        "users_rels_path_idx": {
+          "name": "users_rels_path_idx",
+          "columns": [
+            "path"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "users_rels_parent_id_users_id_fk": {
+          "name": "users_rels_parent_id_users_id_fk",
+          "tableFrom": "users_rels",
+          "tableTo": "users",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "users_rels_er_builds_id_er_builds_id_fk": {
+          "name": "users_rels_er_builds_id_er_builds_id_fk",
+          "tableFrom": "users_rels",
+          "tableTo": "er_builds",
+          "columnsFrom": [
+            "er_builds_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -1790,6 +1936,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "level": {
+          "name": "level",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp(3) with time zone",
@@ -1870,6 +2022,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "er_affinities_id": {
+          "name": "er_affinities_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "er_shields_id": {
           "name": "er_shields_id",
           "type": "integer",
@@ -1894,6 +2052,18 @@
           "primaryKey": false,
           "notNull": false
         },
+        "er_sorceries_id": {
+          "name": "er_sorceries_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_incantations_id": {
+          "name": "er_incantations_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "er_classes_id": {
           "name": "er_classes_id",
           "type": "integer",
@@ -1902,6 +2072,12 @@
         },
         "er_statistics_id": {
           "name": "er_statistics_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "users_id": {
+          "name": "users_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
@@ -1996,6 +2172,19 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "er_builds_rels_er_affinities_id_er_affinities_id_fk": {
+          "name": "er_builds_rels_er_affinities_id_er_affinities_id_fk",
+          "tableFrom": "er_builds_rels",
+          "tableTo": "er_affinities",
+          "columnsFrom": [
+            "er_affinities_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "er_builds_rels_er_shields_id_er_shields_id_fk": {
           "name": "er_builds_rels_er_shields_id_er_shields_id_fk",
           "tableFrom": "er_builds_rels",
@@ -2048,6 +2237,32 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "er_builds_rels_er_sorceries_id_er_sorceries_id_fk": {
+          "name": "er_builds_rels_er_sorceries_id_er_sorceries_id_fk",
+          "tableFrom": "er_builds_rels",
+          "tableTo": "er_sorceries",
+          "columnsFrom": [
+            "er_sorceries_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "er_builds_rels_er_incantations_id_er_incantations_id_fk": {
+          "name": "er_builds_rels_er_incantations_id_er_incantations_id_fk",
+          "tableFrom": "er_builds_rels",
+          "tableTo": "er_incantations",
+          "columnsFrom": [
+            "er_incantations_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "er_builds_rels_er_classes_id_er_classes_id_fk": {
           "name": "er_builds_rels_er_classes_id_er_classes_id_fk",
           "tableFrom": "er_builds_rels",
@@ -2067,6 +2282,19 @@
           "tableTo": "er_statistics",
           "columnsFrom": [
             "er_statistics_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "er_builds_rels_users_id_users_id_fk": {
+          "name": "er_builds_rels_users_id_users_id_fk",
+          "tableFrom": "er_builds_rels",
+          "tableTo": "users",
+          "columnsFrom": [
+            "users_id"
           ],
           "columnsTo": [
             "id"
@@ -2238,6 +2466,24 @@
           "primaryKey": false,
           "notNull": false
         },
+        "er_sorceries_id": {
+          "name": "er_sorceries_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_incantations_id": {
+          "name": "er_incantations_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_ammunitions_id": {
+          "name": "er_ammunitions_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "er_statistics_id": {
           "name": "er_statistics_id",
           "type": "integer",
@@ -2301,6 +2547,45 @@
           "tableTo": "er_shields",
           "columnsFrom": [
             "er_shields_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "er_classes_rels_er_sorceries_id_er_sorceries_id_fk": {
+          "name": "er_classes_rels_er_sorceries_id_er_sorceries_id_fk",
+          "tableFrom": "er_classes_rels",
+          "tableTo": "er_sorceries",
+          "columnsFrom": [
+            "er_sorceries_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "er_classes_rels_er_incantations_id_er_incantations_id_fk": {
+          "name": "er_classes_rels_er_incantations_id_er_incantations_id_fk",
+          "tableFrom": "er_classes_rels",
+          "tableTo": "er_incantations",
+          "columnsFrom": [
+            "er_incantations_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "er_classes_rels_er_ammunitions_id_er_ammunitions_id_fk": {
+          "name": "er_classes_rels_er_ammunitions_id_er_ammunitions_id_fk",
+          "tableFrom": "er_classes_rels",
+          "tableTo": "er_ammunitions",
+          "columnsFrom": [
+            "er_ammunitions_id"
           ],
           "columnsTo": [
             "id"
@@ -6001,11 +6286,17 @@
     }
   },
   "enums": {
-    "enum_users_role": {
-      "name": "enum_users_role",
+    "_locales": {
+      "name": "_locales",
+      "values": {
+        "en": "en",
+        "fr": "fr"
+      }
+    },
+    "enum_users_roles": {
+      "name": "enum_users_roles",
       "values": {
         "admin": "admin",
-        "developer": "developer",
         "editor": "editor",
         "user": "user"
       }

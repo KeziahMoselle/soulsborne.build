@@ -1,5 +1,5 @@
 {
-  "id": "fe894a7d-890f-49b7-a8aa-a7f4fb22375b",
+  "id": "24ad8ba5-2328-4623-a9ff-47a9552b354e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -1841,9 +1841,27 @@
           "primaryKey": false,
           "notNull": false
         },
+        "slug": {
+          "name": "slug",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "edit_slug": {
+          "name": "edit_slug",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
         "is_two_handed": {
           "name": "is_two_handed",
           "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "votes_count": {
+          "name": "votes_count",
+          "type": "numeric",
           "primaryKey": false,
           "notNull": false
         },
@@ -1869,6 +1887,13 @@
         }
       },
       "indexes": {
+        "er_builds_slug_idx": {
+          "name": "er_builds_slug_idx",
+          "columns": [
+            "slug"
+          ],
+          "isUnique": true
+        },
         "er_builds_created_at_idx": {
           "name": "er_builds_created_at_idx",
           "columns": [
@@ -1917,6 +1942,12 @@
         },
         "archetypes_id": {
           "name": "archetypes_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "users_id": {
+          "name": "users_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
@@ -2044,6 +2075,19 @@
           "tableTo": "archetypes",
           "columnsFrom": [
             "archetypes_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "er_builds_rels_users_id_users_id_fk": {
+          "name": "er_builds_rels_users_id_users_id_fk",
+          "tableFrom": "er_builds_rels",
+          "tableTo": "users",
+          "columnsFrom": [
+            "users_id"
           ],
           "columnsTo": [
             "id"
@@ -6178,6 +6222,13 @@
     }
   },
   "enums": {
+    "_locales": {
+      "name": "_locales",
+      "values": {
+        "en": "en",
+        "fr": "fr"
+      }
+    },
     "enum_users_roles": {
       "name": "enum_users_roles",
       "values": {

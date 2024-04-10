@@ -1,7 +1,92 @@
 ---
-import Layout from "../layouts/Layout.astro";
----
+import BuildCard from "@/components/molecules/EldenRing/BuildCard.vue"
+import Layout from "../layouts/Layout.astro"
+import TranslateImages from '@/components/atoms/TranslateImages.vue'
+import { getMostVotedBuilds } from "@/api"
 
+const builds = await getMostVotedBuilds({ limit: 3 })
+---
 <Layout title="Home">
-	<h1>Index</h1>
+	<div class="relative">
+		<img class="-z-10 absolute top-0 w-full max-h-screen object-cover object-top" src="/hero/gideon.webp" alt="" />
+	</div>
+	<section class="container px-4">
+		<h1 class="hidden text-center font-display text-4xl leading-relaxed md:text-7xl md:leading-xl my-20 md:mt-44 md:block">
+			<span class="flex justify-center items-center gap-x-4">
+				Share your <TranslateImages class="w-[100px] h-[20px] transform scale-125 md:transform-none md:w-[412px] md:h-[100px]" images={[
+					{
+						src: '/img/eldenring-logo.png',
+						alt: 'Elden Ring'
+					},
+					{
+						src: '/img/darksouls-logo.png',
+						alt: 'Dark Souls'
+					},
+					{
+						src: '/img/bloodborne-logo.png',
+						alt: 'Bloodborne'
+					},
+				]} client:load /> builds
+			</span>
+			<span class="block text-center">with the world</span>
+		</h1>
+		<h1 class="block text-center font-display text-4xl leading-relaxed my-20 md:hidden">
+			<span class="block text-center">
+				Share your
+			</span>
+			<TranslateImages
+				class="w-[250px] h-[56px] mx-auto"
+				images={[
+					{
+						src: '/img/eldenring-logo.png',
+						alt: 'Elden Ring'
+					},
+					{
+						src: '/img/darksouls-logo.png',
+						alt: 'Dark Souls'
+					},
+					{
+						src: '/img/bloodborne-logo.png',
+						alt: 'Bloodborne'
+					},
+				]}
+				client:load />
+			<span class="block text-center">builds with the world</span>
+		</h1>
+	</section>
+
+	<section class="container">
+		<div class="bg-secondary border border-primary px-4 py-8 my-8 md:px-16 md:my-16">
+			<h2 class="type-h2 mb-7">About the project</h2>
+
+			<p class="type-body mb-4">
+				This project aims to simplify sharing and saving <a href="/builds" class="link">builds</a> and <a href="/fashion" class="link">character appearances</a>.
+			</p>
+
+			<p class="type-body mb-4">
+				The idea came to me while exploring the <a href="https://eldenring.wiki.fextralife.com/Elden+Ring+Wiki" class="link" target="_blank">fextralife wiki</a> and watching videos of builds and I said to myself: “I just want to see the stats and equipment”. That's how the idea for this site came about, and a few weeks later, with two friends, we decided to start building the website.
+			</p>
+
+			<p class="type-body mb-4">
+				Our aim is not to replace the various <a href="https://eldenring.wiki.fextralife.com/Elden+Ring+Wiki" class="link" target="_blank">wikis</a> or <a href="https://eip.gg/elden-ring/build-planner/" class="link" target="_blank">build planners</a>. Rather, we aim to offer something new, somewhere between these two levels of information.
+			</p>
+		</div>
+	</section>
+
+	<section class="mb-16">
+		<h2 class="type-h2 text-center mb-16">Most popular builds</h2>
+
+		<div class="container--xl grid gap-5 justify-center sm:grid-cols-2 lg:grid-cols-3">
+			{builds.docs.map((build) => (
+				<BuildCard
+					build={build}
+					hasVoted={build.votes?.includes(Astro.locals.user?.id)}
+					client:visible />
+			))}
+		</div>
+
+		<div class="flex justify-center mt-16">
+			<a href="/builds" class="button">View more builds</a>
+		</div>
+	</section>
 </Layout>

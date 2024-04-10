@@ -1,37 +1,34 @@
+import { apiFetch } from "@/api";
 import type { PayloadUserResponse } from "@/types";
 import { defineMiddleware, sequence } from "astro:middleware"
 
-const FORBID_ALREADY_LOGGED_ROUTES = [
-  '/register',
-  '/login'
-]
-
-const auth = defineMiddleware(async ({ cookies, locals }, next) => {
+const auth = defineMiddleware(async ({ cookies, locals, redirect }, next) => {
   if (!cookies.has('payload-token')) {
     locals.user = null
     return next()
   }
 
-  const data: PayloadUserResponse = await fetch(`${import.meta.env.PUBLIC_PAYLOAD_URL}/api/users/me`, {
-    headers: {
-      'Cookie': `payload-token=${cookies.get('payload-token').value}`
-    },
-  }).then((res) => res.json())
-
-  locals.user = data?.user
-  return next()
-})
-
-const alreadyLoggedIn = defineMiddleware((context, next) => {
-  if (!context.locals.user) {
+  let data: PayloadUserResponse
+  try {
+    data = await apiFetch('/api/users/me', {
+      headers: {
+        'Cookie': `payload-token=${cookies.get('payload-token').value}`
+      },
+    })
+  } catch (error) {
+    console.error(error)
     return next()
   }
 
-  if (FORBID_ALREADY_LOGGED_ROUTES.includes(context.url.pathname)) {
-    return context.redirect('/', 302)
+  // If data.user is null that means the token expired
+  // todo: Refresh token here
+  if (!data.user) {
+    cookies.delete('payload-token')
+    return redirect('/?logged-out')
   }
 
+  locals.user = data.user
   return next()
 })
 
-export const onRequest = sequence(auth, alreadyLoggedIn)
+export const onRequest = sequence(auth)

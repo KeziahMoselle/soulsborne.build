@@ -1,4 +1,7 @@
+import type { PayloadCollection } from '@/types'
+import type { ErBuild } from '~/payload-types'
 import { toast } from 'vue-sonner'
+import qs from 'qs'
 
 export async function apiFetch<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   return fetchJSON(`${import.meta.env.PUBLIC_PAYLOAD_URL}${endpoint}`, options)
@@ -111,4 +114,30 @@ export async function logout() {
       return 'There was an error'
     }
   })
+}
+
+export async function getMostVotedBuilds({ limit }: { limit: number }) {
+  const stringifiedQuery = qs.stringify(
+    {
+      sort: 'votes',
+      limit,
+    },
+    { addQueryPrefix: true },
+  )
+  const url = `/api/er-builds${stringifiedQuery}`
+
+  const builds = await apiFetch<PayloadCollection<ErBuild>>(url)
+
+  return builds
+}
+
+export async function toggleVoteBuild({ buildId }) {
+  const updatedBuild = await apiFetch<ErBuild>(`/api/er-builds/toggle-vote`, {
+    method: 'POST',
+    body: JSON.stringify({
+      buildId
+    })
+  })
+
+  return updatedBuild
 }

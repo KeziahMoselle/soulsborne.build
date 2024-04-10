@@ -9,6 +9,7 @@ import { slateEditor } from '@payloadcms/richtext-slate'
 
 import { seed } from './endpoints/seed'
 import { register } from './endpoints/register'
+import { toggleVote } from './endpoints/toggle-vote'
 
 import Users from './collections/Users'
 import Archetype from './collections/Archetype'
@@ -18,6 +19,7 @@ import ERCollections from './collections/EldenRing'
 const ALLOWED_URLS = [
   // Back
   'https://payload.soulsborne.build',
+  'https://dev-payload.soulsborne.build',
   'http://localhost:3000',
   // Front
   'https://soulsborne.build',
@@ -63,6 +65,11 @@ export default buildConfig({
   cors: ALLOWED_URLS,
   telemetry: false,
   csrf: ALLOWED_URLS,
+  localization: {
+    locales: ['en', 'fr'],
+    defaultLocale: 'en',
+    fallback: true,
+  },
   editor: slateEditor({}),
   collections: [Users, Archetype, Restrictions, ...ERCollections],
   typescript: {
@@ -76,6 +83,11 @@ export default buildConfig({
       path: '/register',
       method: 'post',
       handler: register,
+    },
+    {
+      path: '/er-builds/toggle-vote',
+      method: 'post',
+      handler: toggleVote,
     },
     {
       path: '/seed',

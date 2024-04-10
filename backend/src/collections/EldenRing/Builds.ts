@@ -1,4 +1,5 @@
 import { CollectionConfig } from 'payload/types'
+import { SlugField } from '@nouance/payload-better-fields-plugin'
 import { isPublic } from '../../access/isPublic'
 import { isUser } from '../../access/isUser'
 
@@ -50,6 +51,14 @@ const ERBuilds: CollectionConfig = {
         }
       ]
     } */
+    ...SlugField({
+      name: 'slug',
+      admin: {
+        position: 'sidebar'
+      }
+    }, {
+      useFields: ['name']
+    }),
     {
       name: 'restrictions',
       label: 'Build Restrictions',
@@ -76,6 +85,27 @@ const ERBuilds: CollectionConfig = {
       type: 'checkbox',
       admin: {
         position: 'sidebar',
+      }
+    },
+    {
+      name: 'votes',
+      label: 'Votes',
+      type: 'relationship',
+      relationTo: 'users',
+      hasMany: true,
+      maxDepth: 0,
+      unique: true,
+      admin: {
+        position: 'sidebar'
+      }
+    },
+    {
+      name: 'votes_count',
+      label: 'Votes count',
+      type: 'number',
+      defaultValue: 0,
+      admin: {
+        position: 'sidebar'
       }
     },
 
@@ -223,8 +253,49 @@ const ERBuilds: CollectionConfig = {
           ]
         },
       ]
-    }
+    },
+
+    /**
+     * Metadata
+     */
+    {
+      label: 'Created by',
+      name: 'created_by',
+      type: 'relationship',
+      relationTo: 'users',
+      access: {
+        read: () => true,
+        update: () => false,
+      },
+      admin: {
+        readOnly: true,
+        position: 'sidebar',
+        condition: (data) => !!data?.created_by,
+      },
+    },
   ],
+  hooks: {
+    beforeChange: [
+      ({ req, operation, data }) => {
+        if (req.user) {
+          if (operation === 'create') {
+            data.created_by = req.user.id;
+          }
+
+          return data;
+        }
+      },
+      ({ req, operation, data }) => {
+        if (req.user) {
+          if (operation === 'update') {
+            data.votes_count = data.votes.length;
+          }
+
+          return data;
+        }
+      },
+    ],
+  },
 }
 
 export default ERBuilds

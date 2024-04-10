@@ -53,7 +53,15 @@ export default {
         display: ['garamond-premier-pro', ...defaultTheme.fontFamily.serif],
         body: ['mantinia', ...defaultTheme.fontFamily.sans],
       },
+      fontSize: {
+        '7xl': '70px',
+        '2xl': '25px',
+      },
+      lineHeight: {
+        xl: '84px'
+      },
       borderRadius: {
+        DEFAULT: '3px',
       	xl: "calc(var(--radius) + 4px)",
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

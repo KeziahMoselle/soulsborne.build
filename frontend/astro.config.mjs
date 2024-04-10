@@ -12,7 +12,7 @@ export default defineConfig({
     }
   }),
   integrations: [
-    vue(),
+    vue({ appEntrypoint: '/src/pages/_app' }),
     tailwind({
       applyBaseStyles: false,
     }),

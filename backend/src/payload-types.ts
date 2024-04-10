@@ -271,9 +271,13 @@ export interface ErBuild {
       }[]
     | null;
   youtube_url?: string | null;
+  slug?: string | null;
+  editSlug?: boolean | null;
   restrictions?: (number | Restriction)[] | null;
   archetype?: (number | Archetype)[] | null;
   is_two_handed?: boolean | null;
+  votes?: (number | User)[] | null;
+  votes_count?: number | null;
   mainhand_weapons?:
     | {
         weapon?: (number | null) | ErWeapon;
@@ -313,6 +317,7 @@ export interface ErBuild {
         id?: string | null;
       }[]
     | null;
+  created_by?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
 }

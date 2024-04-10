@@ -1,7 +1,8 @@
 ---
 import '@/styles/globals.scss'
 import { Toaster } from 'vue-sonner'
-import { SquareMenu } from 'lucide-vue-next'
+import { SquareMenu, ChevronDown } from 'lucide-vue-next'
+import GameSelect from "@/components/molecules/GameSelect.vue"
 import Logout from '@/components/Auth/Logout.vue'
 
 interface Props {
@@ -13,7 +14,7 @@ const { user } = Astro.locals;
 ---
 
 <!doctype html>
-<html class="h-full" lang="en">
+<html class="h-full bg-background text-foreground font-display" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content="Astro description" />
@@ -23,17 +24,11 @@ const { user } = Astro.locals;
     <title>{title} | soulsborne.build</title>
     <link rel="stylesheet" href="https://use.typekit.net/okw0knf.css">
   </head>
-  <body class="flex flex-col justify-between min-h-full bg-background text-white">
+  <body class="flex flex-col justify-between min-h-full">
     <header class="border-b bg-secondary">
-      <div class="container flex justify-between">
+      <div class="flex justify-between">
         <div class="flex items-center gap-x-4">
-          <a class="px-4" href="/">
-            <picture>
-              <source media="(max-width: 767px)" srcset="/img/elden-ring-icon.png" />
-              <source media="(min-width: 768px)" srcset="/img/logo.png" />
-              <img class="h-16 py-2 md:h-20 md:w-auto md:py-0" src="/img/logo.png" alt="Current dataset is Elden Ring" />
-            </picture>
-          </a>
+          <GameSelect client:load />
 
           {user && (
             <div class="flex gap-x-4 items-center">
@@ -44,19 +39,33 @@ const { user } = Astro.locals;
         </div>
 
         <!-- Desktop nav -->
-        <nav class="hidden md:block">
-          <ul class="flex flex-row gap-x-8 py-7">
+        <nav class="hidden py-4 md:pr-20 md:block">
+          <ul class="flex items-center flex-row gap-x-8">
             {!user && (
-              <li class="font-display text-xl"><a href="/register">Register</a></li>
-              <li class="font-display text-xl"><a href="/login">Login</a></li>
+              <li class="font-display text-xl leading-5">
+                <a href="/register">Register</a>
+              </li>
+              <li class="font-display text-xl leading-5">
+                <a href="/login">Login</a>
+              </li>
             )}
-            <li class="font-display text-xl"><a href="/builds">Builds</a></li>
-            <li class="font-display text-xl"><a class="button" href="/builder">Create a build</a></li>
+            <li class="font-display text-xl leading-5" title="Coming in v3">
+              <a class="text-white opacity-40 cursor-not-allowed pointer-events-none" href="/lore-tree">Lore tree</a>
+            </li>
+            <li class="font-display text-xl leading-5" title="Coming in v2">
+              <a class="text-white opacity-40 cursor-not-allowed pointer-events-none" href="/fashion">Fashion souls</a>
+            </li>
+            <li class="font-display text-xl leading-5">
+              <a href="/builds">Builds</a>
+            </li>
+            <li class="font-display text-xl leading-5">
+              <a class="button" href="/builder">Create a build</a>
+            </li>
           </ul>
         </nav>
 
         <!-- Mobile nav -->
-        <button class="md:hidden">
+        <button class="pr-4 md:hidden">
           <SquareMenu class="size-8" />
         </button>
       </div>
