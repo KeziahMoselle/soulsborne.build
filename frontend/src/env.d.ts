@@ -11,6 +11,6 @@ interface ImportMeta {
 
 declare namespace App {
   interface Locals extends Runtime {
-      user: import('~/payload-types').User,
+      user: import('@payload-types').User,
   }
 }

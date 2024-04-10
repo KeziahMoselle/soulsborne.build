@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { apiFetch } from '@/api'
-import type { Archetype, ErBuild, ErStatistic, Restriction } from '~/payload-types'
+import type { Archetype, ErBuild, ErStatistic, Restriction } from '@payload-types'
 import { toast } from 'vue-sonner'
 import { Checkbox } from '@/components/ui/checkbox'
 import Statistics from '@/components/EldenRing/Statistics.vue'

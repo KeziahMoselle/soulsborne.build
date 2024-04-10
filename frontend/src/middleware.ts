@@ -21,7 +21,7 @@ const auth = defineMiddleware(async ({ cookies, locals, redirect }, next) => {
   }
 
   // If data.user is null that means the token expired
-  // todo: Refresh token here
+  // TODO: Refresh token here
   if (!data.user) {
     cookies.delete('payload-token')
     return redirect('/?logged-out')

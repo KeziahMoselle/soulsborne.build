@@ -1,5 +1,5 @@
 import { CollectionConfig } from 'payload/types'
-import { SlugField } from '@nouance/payload-better-fields-plugin'
+// import { SlugField } from '@nouance/payload-better-fields-plugin'
 import { isPublic } from '../../access/isPublic'
 import { isUser } from '../../access/isUser'
 
@@ -51,14 +51,14 @@ const ERBuilds: CollectionConfig = {
         }
       ]
     } */
-    ...SlugField({
+    /* ...SlugField({
       name: 'slug',
       admin: {
         position: 'sidebar'
       }
     }, {
       useFields: ['name']
-    }),
+    }), */
     {
       name: 'restrictions',
       label: 'Build Restrictions',

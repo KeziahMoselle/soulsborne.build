@@ -27,14 +27,14 @@ import {
               <picture>
                 <source media="(max-width: 767px)" srcset="/img/darksouls-icon.png" />
                 <source media="(min-width: 768px)" srcset="/img/darksouls-logo.png" />
-                <img class="h-16 py-2 md:h-8 md:w-auto md:py-0" src="/img/darksouls-logo.png" alt="Switch to Dark Souls dataset" />
+                <img class="filter grayscale h-16 py-2 md:h-8 md:w-auto md:py-0" src="/img/darksouls-logo.png" alt="Switch to Dark Souls dataset" />
               </picture>
             </li>
             <li class="opacity-70 cursor-not-allowed flex items-center justify-center" title="Coming in v3">
               <picture>
                 <source media="(max-width: 767px)" srcset="/img/bloodborne-icon.png" />
                 <source media="(min-width: 768px)" srcset="/img/bloodborne-logo.png" />
-                <img class="h-16 py-2 md:h-8 md:w-auto md:py-0" src="/img/bloodborne-logo.png" alt="Switch to Bloodborne dataset" />
+                <img class="filter grayscale h-16 py-2 md:h-8 md:w-auto md:py-0" src="/img/bloodborne-logo.png" alt="Switch to Bloodborne dataset" />
               </picture>
             </li>
           </ul>

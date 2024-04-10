@@ -198,7 +198,8 @@ const ERWeapons: CollectionConfig = {
       name: 'passives',
       label: 'Passives',
       type: 'relationship',
-      relationTo: 'er-status-effects'
+      relationTo: 'er-status-effects',
+      hasMany: true,
     }
   ],
 }
