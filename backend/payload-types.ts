@@ -191,7 +191,7 @@ export interface ErAmmunition {
     holy?: number | null;
     critical?: number | null;
   };
-  passives?: (number | null) | ErStatusEffect;
+  passives?: (number | ErStatusEffect)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -514,7 +514,7 @@ export interface ErWeapon {
         id?: string | null;
       }[]
     | null;
-  passives?: (number | null) | ErStatusEffect;
+  passives?: (number | ErStatusEffect)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -573,7 +573,7 @@ export interface ErShield {
         id?: string | null;
       }[]
     | null;
-  passives?: (number | null) | ErStatusEffect;
+  passives?: (number | ErStatusEffect)[] | null;
   updatedAt: string;
   createdAt: string;
 }
