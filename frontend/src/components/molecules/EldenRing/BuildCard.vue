@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import type { Archetype, ErBuild, ErTalisman, ErWeapon, Restriction } from '~/payload-types'
+  import type { Archetype, ErBuild, ErTalisman, ErWeapon, Restriction } from '@payload-types'
   import Tag from '@/components/molecules/EldenRing/Tag.vue'
   import { ThumbsUpIcon } from 'lucide-vue-next'
   import EquipmentImage from '@/components/molecules/EldenRing/EquipmentImage.vue';
@@ -17,6 +17,11 @@
   const votesCount = ref(props.build.votes_count)
 
   const mainWeapons = computed(() => {
+    // Return empty array if no mainhand and no offhand
+    if (props.build.mainhand_weapons.length === 0 && props.build.offhand_weapons.length === 0) {
+      return []
+    }
+
     // Return the first mainhand and offhand if each have at least 1 weapon
     if (props.build.mainhand_weapons.length > 0 && props.build.offhand_weapons.length > 0) {
       return [
@@ -115,6 +120,10 @@
         src="https://cdn.soulsborne.build/test%2Fmainhand.png"
         :alt="(weapon as ErWeapon).name" />
       <EquipmentImage v-if="mainWeapons.length === 1" />
+      <template v-if="mainWeapons.length === 0">
+        <EquipmentImage  />
+        <EquipmentImage  />
+      </template>
 
       <div class="grid gap-1 col-span-4 grid-cols-4 lg:col-span-1 lg:grid-cols-2 lg:grid-rows-2">
         <EquipmentImage
