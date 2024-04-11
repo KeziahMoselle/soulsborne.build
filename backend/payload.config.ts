@@ -18,6 +18,7 @@ import {
   UploadFeature,
 } from '@payloadcms/richtext-lexical'
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { en } from '@payloadcms/translations/languages/en'
 import { buildConfig } from 'payload/config'
 // import sharp from 'sharp'
 import { fileURLToPath } from 'url'
@@ -57,5 +58,8 @@ export default buildConfig({
   }),
   admin: {
     user: Users.slug
+  },
+  i18n: {
+    supportedLanguages: { en },
   },
 })

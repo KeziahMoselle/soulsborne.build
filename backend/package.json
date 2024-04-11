@@ -20,6 +20,7 @@
     "@payloadcms/db-postgres": "beta",
     "@payloadcms/next": "beta",
     "@payloadcms/richtext-lexical": "beta",
+    "@payloadcms/translations": "beta",
     "@payloadcms/ui": "beta",
     "cross-env": "^7.0.3",
     "next": "14.2.0-canary.23",
