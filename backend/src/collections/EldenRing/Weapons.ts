@@ -4,14 +4,8 @@ import { isPublic } from '../../access/isPublic'
 const ERWeapons: CollectionConfig = {
   slug: 'er-weapons',
   labels: {
-    singular: {
-      en: 'Weapon',
-      fr: 'Arme'
-    },
-    plural: {
-      en: 'Weapons',
-      fr: 'Armes'
-    },
+    singular: "Weapon",
+    plural: "Weapons"
   },
   admin: {
     group: 'Elden Ring',

@@ -6,110 +6,110 @@ import Layout from "../layouts/Layout.astro";
 
 // const builds: PayloadCollection<ErBuild> = await apiFetch('/api/er-builds')
 ---
+
 <script>
-import { apiFetch } from '@/api';
-import type { ErBuild } from '~/payload-types';
-import type { PayloadCollection } from '@/types'
+  import { apiFetch } from "@/api";
+  import type { ErBuild } from "@payload-types";
+  import type { PayloadCollection } from "@/types";
 
-const pageSize = 10;
-let curPage = 1;
-let builds: {
-  docs: ErBuild[]
-} = {
-  docs: [],
-};
-const nextButton: HTMLButtonElement = document.querySelector('#nextButton')
-const prevButton: HTMLButtonElement = document.querySelector('#prevButton')
+  const pageSize = 10;
+  let curPage = 1;
+  let builds: {
+    docs: ErBuild[];
+  } = {
+    docs: [],
+  };
+  const nextButton: HTMLButtonElement = document.querySelector("#nextButton");
+  const prevButton: HTMLButtonElement = document.querySelector("#prevButton");
 
-nextButton.addEventListener('click', nextPage, false);
-prevButton.addEventListener('click', previousPage, false);
+  nextButton.addEventListener("click", nextPage, false);
+  prevButton.addEventListener("click", previousPage, false);
 
-async function renderTable(page = 1) {
-  const response: PayloadCollection<ErBuild> = await apiFetch('/api/er-builds')
-  builds.docs = response.docs
-  console.log(builds)
+  async function renderTable(page = 1) {
+    const response: PayloadCollection<ErBuild> =
+      await apiFetch("/api/er-builds");
+    builds.docs = response.docs;
+    console.log(builds);
 
-  if (page == 1) {
-    prevButton.style.visibility = "hidden";
-  } else {
-    prevButton.style.visibility = "visible";
+    if (page == 1) {
+      prevButton.style.visibility = "hidden";
+    } else {
+      prevButton.style.visibility = "visible";
+    }
+
+    if (page == numPages()) {
+      nextButton.style.visibility = "hidden";
+    } else {
+      nextButton.style.visibility = "visible";
+    }
+
+    // create html
+    let buildsList = "";
+    builds.docs
+      .filter((row, index) => {
+        let start = (curPage - 1) * pageSize;
+        let end = curPage * pageSize;
+        if (index >= start && index < end) return true;
+      })
+      .forEach((build) => {
+        console.log(build);
+        buildsList += "<tr>";
+        buildsList += `<td> ${build.name} </td>`;
+        buildsList += `<td> ${build.mainhand_weapons[0]?.weapon?.name ?? "no weapons"}${build.mainhand_weapons[1]?.weapon?.name ?? ""}${build.mainhand_weapons[2]?.weapon?.name ?? ""}`;
+        buildsList += `<td> ${build.restrictions[0]?.name ?? "no restriction"}`;
+        buildsList += `<td> ${build.archetype[0]?.name ?? ""}`;
+      });
+    document.getElementById("data").innerHTML = buildsList;
   }
 
-  if (page == numPages()) {
-    nextButton.style.visibility = "hidden";
-  } else {
-    nextButton.style.visibility = "visible";
+  function previousPage() {
+    if (curPage > 1) {
+      curPage--;
+      renderTable(curPage);
+    }
   }
 
-  // create html
-  var buildsList = "";
-  builds.docs.filter((row, index) => {
-    let start = (curPage - 1) * pageSize;
-    let end = curPage * pageSize;
-    if (index >= start && index < end) return true;
-  }).forEach(build => {
-    console.log(build)
-    buildsList += "<tr>";
-    buildsList += `<td> ${build.name} </td>`;
-    buildsList += `<td> ${build.mainhand_weapons[0].weapon.name}`;
-    buildsList += `<td> ${build.restrictions}`;
-    buildsList += `<td> ${build.archetype}`;
-    buildsList += "<tr>";
-  });
-  document.getElementById("data").innerHTML = buildsList;
-}
-
-function previousPage() {
-  if (curPage > 1) {
-    curPage--;
-    renderTable(curPage);
+  function nextPage() {
+    if (curPage * pageSize < builds.docs.length) {
+      curPage++;
+      renderTable(curPage);
+    }
   }
-}
+  renderTable();
 
-function nextPage() {
-  if ((curPage * pageSize) < builds.docs.length) {
-    curPage++;
-    renderTable(curPage);
+  function numPages() {
+    // builds.docs.length
+    return Math.ceil(builds.docs.length / pageSize);
   }
-}
-renderTable()
 
-function numPages() {
-  // builds.docs.length
-  return Math.ceil(builds.docs.length / pageSize);
-}
-
-// pour le "?." : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining
-
+  // pour le "?." : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining
 </script>
 
 <Layout title="Explore builds">
   <h1>Builds</h1>
-<div class="container mt-5 mb-5">
-  <table class="table table-dark table-striped" id="listingTable">
-    <thead>
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Main weapons</th>
-        <th scope="col">restriction</th>
-        <th scope="col">archetype</th>
-      </tr>
-    </thead>
-    <tbody id="data">
-      <!-- Builds here inserted in JS above -->
-    </tbody>
-  </table>
-  <nav aria-label="Page navigation example">
-    <ul class="pagination">
-      <li class="page-item">
-        <button class="page-link" id="prevButton">Prev</button>
-      </li>
-      <li class="page-item">
-        <button class="page-link" id="nextButton">Next</button>
-      </li>
-    </ul>
-  </nav>
-</div>
-
- 
+  <div class="container mt-5 mb-5">
+    <table class="table table-dark table-striped" id="listingTable">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Main weapons</th>
+          <th scope="col">restriction</th>
+          <th scope="col">archetype</th>
+        </tr>
+      </thead>
+      <tbody id="data">
+        <!-- Builds here inserted in JS above -->
+      </tbody>
+    </table>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item">
+          <button class="page-link" id="prevButton">Prev</button>
+        </li>
+        <li class="page-item">
+          <button class="page-link" id="nextButton">Next</button>
+        </li>
+      </ul>
+    </nav>
+  </div>
 </Layout>

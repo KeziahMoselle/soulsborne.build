@@ -1,3 +1,4 @@
+import { en } from '@payloadcms/translations/languages/en'
 import path from 'path'
 import {
   AlignFeature,
@@ -57,5 +58,8 @@ export default buildConfig({
   }),
   admin: {
     user: Users.slug
+  },
+  i18n: {
+    supportedLanguages: { en },
   },
 })
