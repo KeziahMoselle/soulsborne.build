@@ -17,11 +17,12 @@ const ERArmors: CollectionConfig = {
   timestamps: true,
   versions: true,
   fields: [
-    /* {
+    {
       name: 'image',
       label: 'Image',
       type: 'upload',
-    }, */
+      relationTo: 'er-media',
+    },
     {
       name: 'armor_type',
       label: 'Armor Type',

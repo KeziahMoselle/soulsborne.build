@@ -4,7 +4,7 @@ import Armors from './Armors';
 import AshesOfWar from './AshesOfWar';
 import Builds from './Builds';
 import Classes from './Classes';
-// import Media from './Media';
+import Media from './Media';
 import Incantations from './Incantations';
 import IncantationTypes from './IncantationTypes';
 import Shields from './Shields';
@@ -24,6 +24,7 @@ const ERCollections = [
   AshesOfWar,
   Builds,
   Classes,
+  Media,
   Incantations,
   IncantationTypes,
   Shields,

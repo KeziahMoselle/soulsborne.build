@@ -36,21 +36,19 @@ const ERBuilds: CollectionConfig = {
       label: 'YouTube URL',
       type: 'text'
     },
-    /* {
+    {
       name: 'images',
       label: 'Build Images',
       type: 'array',
-      admin: {
-        position: 'sidebar',
-      },
       fields: [
         {
           name: 'image',
           label: 'Image',
           type: 'upload',
-        }
+          relationTo: 'er-media',
+        },
       ]
-    } */
+    },
     /* ...SlugField({
       name: 'slug',
       admin: {

@@ -17,11 +17,12 @@ const ERTalismans: CollectionConfig = {
   timestamps: true,
   versions: true,
   fields: [
-    /* {
+    {
       name: 'image',
       label: 'Image',
       type: 'upload',
-    }, */
+      relationTo: 'er-media',
+    },
     {
       name: 'weight',
       label: 'Weight',

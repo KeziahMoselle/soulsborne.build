@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev --turbo",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
@@ -17,11 +17,15 @@
     "node": ">=18.19.0"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.552.0",
+    "@aws-sdk/lib-storage": "^3.552.0",
     "@payloadcms/db-postgres": "beta",
     "@payloadcms/next": "beta",
+    "@payloadcms/plugin-cloud-storage": "beta",
     "@payloadcms/richtext-lexical": "beta",
     "@payloadcms/translations": "beta",
     "@payloadcms/ui": "beta",
+    "aws-crt": "^1.21.1",
     "cross-env": "^7.0.3",
     "next": "14.2.0-canary.23",
     "payload": "beta",

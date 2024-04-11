@@ -18,9 +18,11 @@ import {
   UploadFeature,
 } from '@payloadcms/richtext-lexical'
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { cloudStorage } from '@payloadcms/plugin-cloud-storage'
+import { s3Adapter } from '@payloadcms/plugin-cloud-storage/s3'
 import { en } from '@payloadcms/translations/languages/en'
 import { buildConfig } from 'payload/config'
-// import sharp from 'sharp'
+import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
 import Users from './src/collections/Users'
@@ -42,12 +44,35 @@ export const ALLOWED_ORIGINS = [
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+
+const adapter = s3Adapter({
+  config: {
+    credentials: {
+      accessKeyId: process.env.S3_ACCESS_KEY_ID,
+      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+    },
+    region: 'auto',
+    endpoint: process.env.S3_ENDPOINT
+  },
+  bucket: process.env.S3_BUCKET,
+})
+
 export default buildConfig({
   cors: ALLOWED_ORIGINS,
   csrf: ALLOWED_ORIGINS,
   editor: lexicalEditor(),
   collections: [Users, Archetype, Restrictions, ...ERCollections],
-  secret: process.env.PAYLOAD_SECRET || '',
+  plugins: [
+    cloudStorage({
+      collections: {
+        'er-media': {
+          adapter,
+          disablePayloadAccessControl: true,
+        }
+      }
+    })
+  ],
+  secret: process.env.PAYLOAD_SECRET,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
@@ -62,4 +87,5 @@ export default buildConfig({
   i18n: {
     supportedLanguages: { en },
   },
+  sharp
 })

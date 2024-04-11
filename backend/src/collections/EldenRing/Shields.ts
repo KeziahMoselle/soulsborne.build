@@ -17,11 +17,12 @@ const ERShields: CollectionConfig = {
   timestamps: true,
   versions: true,
   fields: [
-    /* {
+    {
       name: 'image',
       label: 'Image',
       type: 'upload',
-    }, */
+      relationTo: 'er-media',
+    },
     {
       name: 'shield_type',
       label: 'Shield Type',

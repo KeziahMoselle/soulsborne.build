@@ -23,11 +23,12 @@ const ERWeapons: CollectionConfig = {
   timestamps: true,
   versions: true,
   fields: [
-    /* {
+    {
       name: 'image',
       label: 'Image',
       type: 'upload',
-    }, */
+      relationTo: 'er-media',
+    },
     {
       name: 'weapon_type',
       label: 'Weapon Type',

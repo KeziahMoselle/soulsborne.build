@@ -17,11 +17,12 @@ const ERIncantations: CollectionConfig = {
   timestamps: true,
   versions: true,
   fields: [
-    /* {
+    {
       name: 'image',
       label: 'Image',
       type: 'upload',
-    }, */
+      relationTo: 'er-media',
+    },
     {
       name: 'name',
       label: 'Name',

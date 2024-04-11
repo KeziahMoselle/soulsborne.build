@@ -15,11 +15,12 @@ const ERStatusEffects: CollectionConfig = {
     read: isPublic
   },
   fields: [
-    /* {
+    {
       name: 'image',
       label: 'Image',
       type: 'upload',
-    }, */
+      relationTo: 'er-media',
+    },
     {
       name: 'name',
       label: 'Name',
