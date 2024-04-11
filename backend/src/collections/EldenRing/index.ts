@@ -17,7 +17,7 @@ import Talismans from './Talismans';
 import WeaponTypes from "./WeaponTypes";
 import Weapons from "./Weapons";
 
-export default [
+const ERCollections = [
   Affinities,
   Ammunitions,
   Armors,
@@ -36,3 +36,5 @@ export default [
   WeaponTypes,
   Weapons
 ]
+
+export default ERCollections
