@@ -25,7 +25,7 @@ export async function fetchJSON<T>(url: string, options: RequestInit = {}): Prom
   }
 
   const result = await fetch(`${url}`, mergedOptions).then(async (res) => {
-  const json = await res.json() as T
+    const json = await res.json() as T
 
     if (res.ok) {
       return json
