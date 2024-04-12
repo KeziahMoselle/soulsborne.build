@@ -16,10 +16,10 @@ import type { Archetype, ErBuild, ErStatistic, Restriction } from '@payload-type
 import { toast } from 'vue-sonner'
 import { Checkbox } from '@/components/ui/checkbox'
 import Statistics from '@/components/EldenRing/Statistics.vue'
-import type { PayloadCreateResponse, PayloadCollection } from '@/types'
+import type { PayloadCreateResponse, PayloadCollection, PayloadMediaResponse } from '@/types'
 import Tags from '@/components/Form/Tags.vue'
 import Editor from '@/components/organisms/Editor/index.vue'
-import { computed, ref } from 'vue'
+import { computed, ref, unref } from 'vue'
 import ImageGalleryInput from '@/components/molecules/ImageGalleryInput.vue'
 
 const props = defineProps<{
@@ -290,8 +290,11 @@ const { handleSubmit, values, setValues } = useForm({
   }
 })
 const editorState = ref()
-const images = ref([])
-const files = ref<FileList>([])
+const imagesForm = ref()
+
+/**
+ * Get formatted values from the form `values`
+ */
 
 const mainhands = computed(() => {
   return [values['mainhand-1'], values['mainhand-2'], values['mainhand-3']].filter(Boolean).map((item, index) => {
@@ -305,6 +308,7 @@ const mainhands = computed(() => {
     }
   })
 })
+
 const offhands = computed(() => {
   return [values['offhand-1'], values['offhand-2'], values['offhand-3']].filter(Boolean).map((item, index) => {
     const [collectionSlug, id] = item.split(':')
@@ -317,10 +321,12 @@ const offhands = computed(() => {
     }
   })
 })
+
 const armors = computed(() => {
   const armorIds = [values.helm, values.chest, values.gauntlet, values.leg].filter(Boolean).map((armor) => Number(armor.split(':')[1]))
   return armorIds
 })
+
 const talismans = computed(() => {
   return [values['talisman-1'], values['talisman-2'], values['talisman-3'], values['talisman-4']].filter(Boolean).map((talisman) => Number(talisman.split(':')[1]))
 })
@@ -365,26 +371,42 @@ const statistics = computed(() => {
   })
 })
 
+/**
+ * Events
+ */
+
 function onEditorChange(state) {
   editorState.value = state
 }
 
 async function onGalleryChange(form) {
-  console.log(form)
-  return
-  files.value = form.value.target.files
-
-  fetch(`/api/er-media`, {
-    method: 'POST',
-    body: new FormData(form.value)
-  })
-
-  for (const file of form.value.target.files) {
-    console.log(file)
-  }
+  imagesForm.value = form
 }
 
-const onSubmit = handleSubmit((values) => {
+/**
+ * Create a new build
+ */
+const onSubmit = handleSubmit(async (values) => {
+  // Upload images first to reference them after
+
+  const uploadPromises = []
+
+  for (const file of new FormData(unref(imagesForm)).values()) {
+    const body = new FormData()
+    body.append('file', file)
+
+    uploadPromises.push(
+      fetch(`/api/er-media`, {
+        method: 'POST',
+        credentials: 'include',
+        body,
+      }).then((res) => res.json())
+    )
+  }
+
+  toast.loading('Uploading images...')
+  const images: PayloadMediaResponse[] = await Promise.all(uploadPromises)
+
   /**
    * Request body
    * Will be sent to PayloadCMS
@@ -395,6 +417,9 @@ const onSubmit = handleSubmit((values) => {
     description: JSON.stringify(editorState.value),
     is_two_handed: values.is_two_handed,
     youtube_url: values.youtube_url,
+    images: images.map((image) => ({
+      image: image.doc.id
+    })),
     archetype: values.archetypes,
     restrictions: values.restrictions,
     mainhand_weapons: mainhands.value.map((item) => ({

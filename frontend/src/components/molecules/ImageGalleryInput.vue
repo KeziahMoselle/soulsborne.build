@@ -8,7 +8,8 @@
 
   function onChange(event) {
     images.value = event.target.files
-    emit('change', form)
+    console.log(form.value, event)
+    emit('change', form.value)
   }
 
   function getPreviewSrc(file) {
@@ -24,7 +25,7 @@
       @change="onChange"
       class="absolute inset-0 w-full h-full block cursor-pointer opacity-0"
       type="file"
-      name="images"
+      name="file"
       multiple
       accept="image/png, image/jpeg"
       title="Upload images" />
@@ -36,7 +37,7 @@
           :src="getPreviewSrc(image)"
           alt="" />
       </div>
-      <div v-else class="flex items-center justify-center">
+      <div v-else class="flex items-center justify-center pointer-events-auto z-10">
         <span class="button">Select multiple images</span>
       </div>
   </form>
