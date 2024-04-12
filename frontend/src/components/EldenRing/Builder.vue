@@ -18,7 +18,9 @@ import { Checkbox } from '@/components/ui/checkbox'
 import Statistics from '@/components/EldenRing/Statistics.vue'
 import type { PayloadCreateResponse, PayloadCollection } from '@/types'
 import Tags from '@/components/Form/Tags.vue'
-import { computed } from 'vue'
+import Editor from '@/components/organisms/Editor/index.vue'
+import { computed, ref } from 'vue'
+import ImageGalleryInput from '@/components/molecules/ImageGalleryInput.vue'
 
 const props = defineProps<{
   stats: PayloadCollection<ErStatistic>,
@@ -287,6 +289,9 @@ const { handleSubmit, values, setValues } = useForm({
     "stat-8": 10,
   }
 })
+const editorState = ref()
+const images = ref([])
+const files = ref<FileList>([])
 
 const mainhands = computed(() => {
   return [values['mainhand-1'], values['mainhand-2'], values['mainhand-3']].filter(Boolean).map((item, index) => {
@@ -360,6 +365,25 @@ const statistics = computed(() => {
   })
 })
 
+function onEditorChange(state) {
+  editorState.value = state
+}
+
+async function onGalleryChange(form) {
+  console.log(form)
+  return
+  files.value = form.value.target.files
+
+  fetch(`/api/er-media`, {
+    method: 'POST',
+    body: new FormData(form.value)
+  })
+
+  for (const file of form.value.target.files) {
+    console.log(file)
+  }
+}
+
 const onSubmit = handleSubmit((values) => {
   /**
    * Request body
@@ -367,6 +391,8 @@ const onSubmit = handleSubmit((values) => {
    */
   const build: Partial<ErBuild> = {
     name: values.name,
+    // @ts-ignore
+    description: JSON.stringify(editorState.value),
     is_two_handed: values.is_two_handed,
     youtube_url: values.youtube_url,
     archetype: values.archetypes,
@@ -415,7 +441,7 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <form class="mt-4" @submit.prevent="onSubmit">
+  <section class="mt-4">
     <!-- Build informations -->
     <div class="grid md:grid-cols-2">
       <FormField v-slot="{ componentField }" name="name">
@@ -441,6 +467,11 @@ const onSubmit = handleSubmit((values) => {
           :docs="restrictions" />
       </div>
     </div>
+
+    <ImageGalleryInput @change="onGalleryChange" />
+
+    <Editor @change="onEditorChange" />
+
     <FormField v-slot="{ componentField }" name="youtube_url">
       <FormItem>
         <FormLabel>Build demo (youtube video)</FormLabel>
@@ -515,9 +546,9 @@ const onSubmit = handleSubmit((values) => {
     </div>
 
     <div class="flex justify-center my-12">
-      <button class="button" type="submit">
+      <button @click="onSubmit" class="button" type="button">
         Create
       </button>
     </div>
-  </form>
+  </section>
 </template>
