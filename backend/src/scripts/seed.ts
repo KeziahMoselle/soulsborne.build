@@ -1,12 +1,12 @@
-import type { PayloadHandler } from 'payload/config'
-
 import type { ErAmmunition, ErArmor, ErAshesOfWar, ErClass, ErIncantation, ErShield, ErSorcery, ErTalisman, ErWeapon } from '@payload-types'
 import { getPayload } from 'payload'
-import configPromise from '@payload-config'
+import { importConfig } from 'payload/node'
+import 'dotenv/config'
 
 function fetchJSON(url) {
   return fetch(url).then((res) => res.json())
 }
+
 function getLexicalContent(type: 'quote' | 'paragraph', quote: string) {
   const direction: 'ltr' = "ltr"
   return {
@@ -386,18 +386,9 @@ const AFFINITIES: {
   },
 ]
 
-export const GET = async (req) => {
-  const { user } = req
-
-  const payload = await getPayload({
-    config: configPromise,
-  })
-
-  if (
-    process.env.NODE_ENV === 'production'
-    && (!user || !user.roles.includes('admin'))) {
-    return Response.json({ error: 'Unauthorized' })
-  }
+async function run() {
+  const awaitedConfig = await importConfig('../../payload.config.ts')
+  const payload = await getPayload({ config: awaitedConfig })
 
   try {
     for (const type of INCANTATIONS_TYPES) {
@@ -407,7 +398,7 @@ export const GET = async (req) => {
           name: type.name,
         }
       }).catch(() => {
-        // Silence is golden
+        console.warn(`Catched: ${type}`)
       })
     }
 
@@ -418,7 +409,7 @@ export const GET = async (req) => {
           name: type.name,
         }
       }).catch(() => {
-        // Silence is golden
+        console.warn(`Catched: ${type}`)
       })
     }
 
@@ -429,7 +420,7 @@ export const GET = async (req) => {
           name: archetype.name,
         }
       }).catch(() => {
-        // Silence is golden
+        console.warn(`Catched: ${archetype}`)
       })
     }
 
@@ -440,7 +431,7 @@ export const GET = async (req) => {
           name: restriction.name,
         }
       }).catch(() => {
-        // Silence is golden
+        console.warn(`Catched: ${restriction}`)
       })
     }
 
@@ -452,7 +443,7 @@ export const GET = async (req) => {
           softcaps: stat.softcaps
         }
       }).catch(() => {
-        // Silence is golden
+        console.warn(`Catched: ${stat}`)
       })
     }
 
@@ -463,7 +454,7 @@ export const GET = async (req) => {
           name: type
         }
       }).catch(() => {
-        // Silence is golden
+        console.warn(`Catched: ${type}`)
       })
     }
 
@@ -474,7 +465,7 @@ export const GET = async (req) => {
           name: status.name
         }
       }).catch(() => {
-        // Silence is golden
+        console.warn(`Catched: ${status}`)
       })
     }
 
@@ -486,7 +477,7 @@ export const GET = async (req) => {
           type: affinity.type
         }
       }).catch(() => {
-        // Silence is golden
+        console.warn(`Catched: ${affinity}`)
       })
     }
 
@@ -495,15 +486,21 @@ export const GET = async (req) => {
       limit: 100,
     })
 
+    console.log(`${statistics.length} statistics loaded.`)
+
     const { docs: weaponTypes } = await payload.find({
       collection: 'er-weapon-types',
       limit: 100,
     })
 
+    console.log(`${weaponTypes.length} weapon types loaded.`)
+
     const { docs: affinities } = await payload.find({
       collection: 'er-affinities',
       limit: 100,
     })
+
+    console.log(`${affinities.length} affinities loaded.`)
 
     const STAT_LINK = {
       'Vig': statistics.find((stat) => stat.name === 'Vigor'),
@@ -626,11 +623,11 @@ export const GET = async (req) => {
     })
 
 
-    await Promise.all(wformattedItems.map((i) => payload.create({
+    await Promise.all(wformattedItems.map((i, index) => payload.create({
       collection: 'er-weapons',
       data: i,
     }).catch((e) => {
-      // silence is golden
+      console.warn(`Catched: ${i?.name} at index: ${index}`)
     })))
 
     const shieldsData = await fetchJSON(' https://eldenring.fanapis.com/api/shields?limit=100')
@@ -724,11 +721,11 @@ export const GET = async (req) => {
     })
 
 
-    await Promise.all(formattedShieldsItems.map((i) => payload.create({
+    await Promise.all(formattedShieldsItems.map((i, index) => payload.create({
       collection: 'er-shields',
       data: i,
     }).catch((e) => {
-      // silence is golden
+      console.warn(`Catched: ${i?.name} at index: ${index}`)
     })))
 
     const [aOne, aTwo, aThree, aFour, aFive] = await Promise.all([
@@ -784,11 +781,11 @@ export const GET = async (req) => {
     })
 
 
-    await Promise.all(aFormattedItems.map((i) => payload.create({
+    await Promise.all(aFormattedItems.map((i, index) => payload.create({
       collection: 'er-armors',
       data: i,
     }).catch((e) => {
-      // silence is golden
+      console.warn(`Catched: ${i?.name} at index: ${index}`)
     })))
 
     const ammos = await fetchJSON('https://eldenring.fanapis.com/api/ammos?limit=100')
@@ -810,11 +807,11 @@ export const GET = async (req) => {
       return a
     })
 
-    await Promise.all(ammunitionsFormattedItems.map((i) => payload.create({
+    await Promise.all(ammunitionsFormattedItems.map((i, index) => payload.create({
       collection: 'er-ammunitions',
       data: i,
     }).catch((e) => {
-      // silence is golden
+      console.warn(`Catched: ${i?.name} at index: ${index}`)
     })))
 
     const talismans = await fetchJSON('https://eldenring.fanapis.com/api/talismans?limit=100')
@@ -830,11 +827,11 @@ export const GET = async (req) => {
       return a
     })
 
-    await Promise.all(talismansFormattedItems.map((i) => payload.create({
+    await Promise.all(talismansFormattedItems.map((i, index) => payload.create({
       collection: 'er-talismans',
       data: i,
     }).catch((e) => {
-      // silence is golden
+      console.warn(`Catched: ${i?.name} at index: ${index}`)
     })))
 
     const sorceries = await fetchJSON('https://eldenring.fanapis.com/api/sorceries?limit=100')
@@ -866,11 +863,11 @@ export const GET = async (req) => {
       return a
     })
 
-    await Promise.all(sorceriesFormattedItems.map((i) => payload.create({
+    await Promise.all(sorceriesFormattedItems.map((i, index) => payload.create({
       collection: 'er-sorceries',
       data: i,
     }).catch((e) => {
-      // silence is golden
+      console.warn(`Catched: ${i?.name} at index: ${index}`)
     })))
 
     const incantations = await fetchJSON('https://eldenring.fanapis.com/api/incantations?limit=100')
@@ -902,11 +899,11 @@ export const GET = async (req) => {
       return a
     })
 
-    await Promise.all(incantationsFormattedItems.map((i) => payload.create({
+    await Promise.all(incantationsFormattedItems.map((i, index) => payload.create({
       collection: 'er-incantations',
       data: i,
     }).catch((e) => {
-      // silence is golden
+      console.warn(`Catched: ${i?.name} at index: ${index}`)
     })))
 
     const ashes = await fetchJSON('https://eldenring.fanapis.com/api/ashes?limit=100')
@@ -921,7 +918,7 @@ export const GET = async (req) => {
           name: skill,
         }
       }).catch(() => {
-        // Silence is golden
+        console.warn(`Catched: ${skill}`)
       })
     }
 
@@ -929,6 +926,8 @@ export const GET = async (req) => {
       collection: 'er-skills',
       limit: 100,
     })
+
+    console.log(`${allSkills.length} skills loaded.`)
 
     const ashesFormattedItems = ashes.data.map((item) => {
       const linkedAffinity = AFFINITIES_LINK[item.affinity]
@@ -943,11 +942,11 @@ export const GET = async (req) => {
       return a
     })
 
-    await Promise.all(ashesFormattedItems.map((i) => payload.create({
+    await Promise.all(ashesFormattedItems.map((i, index) => payload.create({
       collection: 'er-ashes-of-war',
       data: i,
     }).catch((e) => {
-      // silence is golden
+      console.warn(`Catched: ${i?.name} at index: ${index}`)
     })))
 
     const CLASSES: Partial<ErClass>[] = [
@@ -1397,19 +1396,17 @@ export const GET = async (req) => {
       await payload.create({
         collection: 'er-classes',
         data: erClass
+      }).catch(() => {
+        console.warn(`Catched: ${erClass.name}`)
       })
     }
 
-    return Response.json({ success: true })
+    console.log('seeded!')
+    process.exit(0)
   } catch (error) {
     console.log(error)
-    const message = error instanceof Error ? error.message : 'Unknown error'
-    // @ts-ignore
-    payload.logger.error(`${message} ${error?.data?.map((e) => e.message).join(', ')}`)
-    return Response.json({
-      error: message,
-      // @ts-ignore
-      message: error?.data?.map((e) => e.message).join(', ')
-    })
+    process.exit(1)
   }
 }
+
+run()

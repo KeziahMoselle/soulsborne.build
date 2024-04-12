@@ -11,7 +11,7 @@
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
     "generate:types": "payload generate:types",
-    "standalone-script": "tsx ./src/scripts/standalone-script.ts"
+    "seed": "tsx ./src/scripts/seed.ts"
   },
   "engines": {
     "node": ">=18.19.0"
