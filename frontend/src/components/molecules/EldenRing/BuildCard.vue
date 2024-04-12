@@ -118,7 +118,7 @@
       <EquipmentImage
         v-for="{ weapon } in mainWeapons"
         src="https://cdn.soulsborne.build/test%2Fmainhand.png"
-        :alt="(weapon as ErWeapon).name" />
+        :alt="(weapon as ErWeapon)?.name" />
       <EquipmentImage v-if="mainWeapons.length === 1" />
       <template v-if="mainWeapons.length === 0">
         <EquipmentImage  />

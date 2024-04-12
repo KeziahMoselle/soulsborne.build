@@ -275,7 +275,8 @@ const formSchema = toTypedSchema(z.object({
 const { handleSubmit, values, setValues } = useForm({
   validationSchema: formSchema,
   initialValues: {
-    level: 1,
+    archetypes: [1], // Melee is default
+    level: 1, // Wretch class is default
     "stat-1": 10,
     "stat-2": 10,
     "stat-3": 10,
@@ -287,8 +288,8 @@ const { handleSubmit, values, setValues } = useForm({
   }
 })
 
-const onSubmit = handleSubmit((values) => {
-  const mainhands = [values['mainhand-1'], values['mainhand-2'], values['mainhand-3']].filter(Boolean).map((item, index) => {
+const mainhands = computed(() => {
+  return [values['mainhand-1'], values['mainhand-2'], values['mainhand-3']].filter(Boolean).map((item, index) => {
     const [collectionSlug, id] = item.split(':')
     return {
       collectionSlug,
@@ -298,7 +299,9 @@ const onSubmit = handleSubmit((values) => {
       affinityId: values[`mainhand-affinity-${index + 1}`]?.split(':')[1],
     }
   })
-  const offhands = [values['offhand-1'], values['offhand-2'], values['offhand-3']].filter(Boolean).map((item, index) => {
+})
+const offhands = computed(() => {
+  return [values['offhand-1'], values['offhand-2'], values['offhand-3']].filter(Boolean).map((item, index) => {
     const [collectionSlug, id] = item.split(':')
     return {
       collectionSlug,
@@ -308,10 +311,17 @@ const onSubmit = handleSubmit((values) => {
       affinityId: values[`offhand-affinity-${index + 1}`]?.split(':')[1],
     }
   })
+})
+const armors = computed(() => {
   const armorIds = [values.helm, values.chest, values.gauntlet, values.leg].filter(Boolean).map((armor) => Number(armor.split(':')[1]))
-  const talismanIds = [values['talisman-1'], values['talisman-2'], values['talisman-3'], values['talisman-4']].filter(Boolean).map((talisman) => Number(talisman.split(':')[1]))
+  return armorIds
+})
+const talismans = computed(() => {
+  return [values['talisman-1'], values['talisman-2'], values['talisman-3'], values['talisman-4']].filter(Boolean).map((talisman) => Number(talisman.split(':')[1]))
+})
 
-  const magicIds = [
+const magics = computed(() => {
+  return [
     values['magic-1'],
     values['magic-2'],
     values['magic-3'],
@@ -323,18 +333,24 @@ const onSubmit = handleSubmit((values) => {
     values['magic-9'],
     values['magic-10'],
   ]
+})
 
-  const sorceriesIds = magicIds
+const sorceries = computed(() => {
+  return magics.value
     .filter(Boolean)
     .filter((id) => id.startsWith('er-sorceries'))
     .map((id) => Number(id.split(':')[1]))
+})
 
-  const incantationsIds = magicIds
+const incantations = computed(() => {
+  return magics.value
     .filter(Boolean)
     .filter((id) => id.startsWith('er-incantations'))
     .map((id) => Number(id.split(':')[1]))
+})
 
-  const statistics = props.stats.docs.map((stat) => {
+const statistics = computed(() => {
+  return props.stats.docs.map((stat) => {
     const value = values[`stat-${stat.id}`]
 
     return {
@@ -342,7 +358,9 @@ const onSubmit = handleSubmit((values) => {
       value
     }
   })
+})
 
+const onSubmit = handleSubmit((values) => {
   /**
    * Request body
    * Will be sent to PayloadCMS
@@ -353,22 +371,22 @@ const onSubmit = handleSubmit((values) => {
     youtube_url: values.youtube_url,
     archetype: values.archetypes,
     restrictions: values.restrictions,
-    mainhand_weapons: mainhands.map((item) => ({
+    mainhand_weapons: mainhands.value.map((item) => ({
       weapon: Number(item.id),
       ash_of_war: Number(item.ashId),
       affinity: Number(item.affinityId)
     })),
-    offhand_weapons: offhands.map((item) => ({
+    offhand_weapons: offhands.value.map((item) => ({
       [item.name]: Number(item.id),
       ash_of_war: Number(item.ashId),
       affinity: Number(item.affinityId)
     })),
-    armors: armorIds,
-    talismans: talismanIds,
-    sorceries: sorceriesIds,
-    incantations: incantationsIds,
+    armors: armors.value,
+    talismans: talismans.value,
+    sorceries: sorceries.value,
+    incantations: incantations.value,
     level: values.level,
-    statistics,
+    statistics: statistics.value,
   }
 
   const createBuild = apiFetch<PayloadCreateResponse<ErBuild>>(`/api/er-builds`, {
@@ -382,7 +400,7 @@ const onSubmit = handleSubmit((values) => {
       if (import.meta.env.PROD) {
         setTimeout(() => {
           location.href = `/build/${response.doc.id}`
-        }, 2000);
+        }, 1000);
       } else {
         toast.info('Skipped redirection because of DEV mode.')
       }
