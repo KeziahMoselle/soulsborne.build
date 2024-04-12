@@ -10,6 +10,7 @@ const Users: CollectionConfig = {
     useAsTitle: 'email',
   },
   timestamps: true,
+  disableDuplicate: true,
   access: {
     create: isAdmin,
     read: () => true,
@@ -18,12 +19,23 @@ const Users: CollectionConfig = {
   },
   fields: [
     {
+      name: 'image',
+      label: 'Image',
+      type: 'upload',
+      relationTo: 'er-media',
+    },
+    {
       name: 'name',
       label: 'Username',
       type: 'text',
       unique: true,
       required: true,
       saveToJWT: true,
+    },
+    {
+      name: 'bio',
+      label: 'Bio',
+      type: 'richText',
     },
     {
       name: 'roles',

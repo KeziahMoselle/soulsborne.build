@@ -73,6 +73,7 @@ const ERBuilds: CollectionConfig = {
       type: 'relationship',
       relationTo: 'archetypes',
       hasMany: true,
+      required: true,
       admin: {
         position: 'sidebar',
       }
@@ -278,6 +279,7 @@ const ERBuilds: CollectionConfig = {
         if (req.user) {
           if (operation === 'create') {
             data.created_by = req.user.id;
+            data.votes_count = 0;
           }
 
           return data;
