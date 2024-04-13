@@ -17,6 +17,7 @@ export interface Config {
     'er-ashes-of-war': ErAshesOfWar;
     'er-builds': ErBuild;
     'er-classes': ErClass;
+    'er-media': ErMedia;
     'er-incantations': ErIncantation;
     'er-incantation-types': ErIncantationType;
     'er-shields': ErShield;
@@ -32,6 +33,10 @@ export interface Config {
     'payload-migrations': PayloadMigration;
   };
   globals: {};
+  locale: null;
+  user: User & {
+    collection: 'users';
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -39,7 +44,23 @@ export interface Config {
  */
 export interface User {
   id: number;
+  image?: number | ErMedia | null;
   name: string;
+  bio?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   roles: ('admin' | 'editor' | 'user')[];
   updatedAt: string;
   createdAt: string;
@@ -51,6 +72,23 @@ export interface User {
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-media".
+ */
+export interface ErMedia {
+  id: number;
+  alt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -108,6 +146,7 @@ export interface Restriction {
  */
 export interface ErAffinity {
   id: number;
+  image?: number | ErMedia | null;
   name?: string | null;
   description?: {
     root: {
@@ -166,6 +205,7 @@ export interface ErStatistic {
  */
 export interface ErAmmunition {
   id: number;
+  image?: number | ErMedia | null;
   ammunition_type?: ('Bolt' | 'Greatbolt') | null;
   name?: string | null;
   description?: {
@@ -201,6 +241,7 @@ export interface ErAmmunition {
  */
 export interface ErStatusEffect {
   id: number;
+  image?: number | ErMedia | null;
   name?: string | null;
   description?: {
     root: {
@@ -241,6 +282,7 @@ export interface ErStatusEffect {
  */
 export interface ErArmor {
   id: number;
+  image?: number | ErMedia | null;
   armor_type?: ('Helm' | 'Chest' | 'Gauntlet' | 'Leg') | null;
   name?: string | null;
   description?: {
@@ -411,8 +453,14 @@ export interface ErBuild {
     [k: string]: unknown;
   } | null;
   youtube_url?: string | null;
+  images?:
+    | {
+        image?: number | ErMedia | null;
+        id?: string | null;
+      }[]
+    | null;
   restrictions?: (number | Restriction)[] | null;
-  archetype?: (number | Archetype)[] | null;
+  archetype: (number | Archetype)[];
   is_two_handed?: boolean | null;
   votes?: (number | User)[] | null;
   votes_count?: number | null;
@@ -465,6 +513,7 @@ export interface ErBuild {
  */
 export interface ErWeapon {
   id: number;
+  image?: number | ErMedia | null;
   weapon_type?: (number | null) | ErWeaponType;
   skill?: (number | null) | ErSkill;
   name?: string | null;
@@ -524,6 +573,7 @@ export interface ErWeapon {
  */
 export interface ErShield {
   id: number;
+  image?: number | ErMedia | null;
   shield_type?: ('Small Shield' | 'Medium Shield' | 'Greatshield') | null;
   skill?: (number | null) | ErSkill;
   name?: string | null;
@@ -583,6 +633,7 @@ export interface ErShield {
  */
 export interface ErTalisman {
   id: number;
+  image?: number | ErMedia | null;
   weight?: number | null;
   name?: string | null;
   description?: {
@@ -624,6 +675,7 @@ export interface ErTalisman {
  */
 export interface ErSorcery {
   id: number;
+  image?: number | ErMedia | null;
   name?: string | null;
   description?: {
     root: {
@@ -674,6 +726,7 @@ export interface ErSorcery {
  */
 export interface ErSorceryType {
   id: number;
+  image?: number | ErMedia | null;
   name?: string | null;
   description?: {
     root: {
@@ -699,6 +752,7 @@ export interface ErSorceryType {
  */
 export interface ErIncantation {
   id: number;
+  image?: number | ErMedia | null;
   name?: string | null;
   description?: {
     root: {
@@ -749,6 +803,7 @@ export interface ErIncantation {
  */
 export interface ErIncantationType {
   id: number;
+  image?: number | ErMedia | null;
   name?: string | null;
   description?: {
     root: {

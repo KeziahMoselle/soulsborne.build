@@ -24,3 +24,22 @@ export interface PayloadUserResponse {
   token: string
   exp: string
 }
+
+export interface PayloadMediaResponse {
+  doc:     PayloadMedia;
+  message: string;
+}
+
+export interface PayloadMedia {
+  id:           number;
+  alt:          null;
+  updatedAt:    Date;
+  createdAt:    Date;
+  url:          string;
+  thumbnailURL: string;
+  filename:     string;
+  mimeType:     string;
+  filesize:     number;
+  width:        number;
+  height:       number;
+}

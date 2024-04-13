@@ -16,9 +16,11 @@ import type { Archetype, ErBuild, ErStatistic, Restriction } from '@payload-type
 import { toast } from 'vue-sonner'
 import { Checkbox } from '@/components/ui/checkbox'
 import Statistics from '@/components/EldenRing/Statistics.vue'
-import type { PayloadCreateResponse, PayloadCollection } from '@/types'
+import type { PayloadCreateResponse, PayloadCollection, PayloadMediaResponse } from '@/types'
 import Tags from '@/components/Form/Tags.vue'
-import { computed } from 'vue'
+import Editor from '@/components/organisms/Editor/index.vue'
+import { computed, ref, unref } from 'vue'
+import ImageGalleryInput from '@/components/molecules/ImageGalleryInput.vue'
 
 const props = defineProps<{
   stats: PayloadCollection<ErStatistic>,
@@ -216,7 +218,7 @@ const formSchema = toTypedSchema(z.object({
   // Build informations
   name: z.string().min(2).max(255),
   is_two_handed: z.boolean().default(false).optional(),
-  youtube_url: z.string().url({ message: "Invalid url" }).optional(),
+  youtube_url: z.string().url({ message: "Invalid url" }).or(z.literal('')),
   archetypes: z.array(z.number()).optional(),
   restrictions: z.array(z.number()).optional(),
   level: z.number().min(1).max(713),
@@ -287,6 +289,12 @@ const { handleSubmit, values, setValues } = useForm({
     "stat-8": 10,
   }
 })
+const editorState = ref()
+const imagesForm = ref()
+
+/**
+ * Get formatted values from the form `values`
+ */
 
 const mainhands = computed(() => {
   return [values['mainhand-1'], values['mainhand-2'], values['mainhand-3']].filter(Boolean).map((item, index) => {
@@ -300,6 +308,7 @@ const mainhands = computed(() => {
     }
   })
 })
+
 const offhands = computed(() => {
   return [values['offhand-1'], values['offhand-2'], values['offhand-3']].filter(Boolean).map((item, index) => {
     const [collectionSlug, id] = item.split(':')
@@ -312,10 +321,12 @@ const offhands = computed(() => {
     }
   })
 })
+
 const armors = computed(() => {
   const armorIds = [values.helm, values.chest, values.gauntlet, values.leg].filter(Boolean).map((armor) => Number(armor.split(':')[1]))
   return armorIds
 })
+
 const talismans = computed(() => {
   return [values['talisman-1'], values['talisman-2'], values['talisman-3'], values['talisman-4']].filter(Boolean).map((talisman) => Number(talisman.split(':')[1]))
 })
@@ -360,15 +371,55 @@ const statistics = computed(() => {
   })
 })
 
-const onSubmit = handleSubmit((values) => {
+/**
+ * Events
+ */
+
+function onEditorChange(state) {
+  editorState.value = state
+}
+
+async function onGalleryChange(form) {
+  imagesForm.value = form
+}
+
+/**
+ * Create a new build
+ */
+const onSubmit = handleSubmit(async (values) => {
+  // Upload images first to reference them after
+
+  const uploadPromises = []
+
+  for (const file of new FormData(unref(imagesForm)).values()) {
+    const body = new FormData()
+    body.append('file', file)
+
+    uploadPromises.push(
+      fetch(`/api/er-media`, {
+        method: 'POST',
+        credentials: 'include',
+        body,
+      }).then((res) => res.json())
+    )
+  }
+
+  toast.info('Uploading images...')
+  const images: PayloadMediaResponse[] = await Promise.all(uploadPromises)
+
   /**
    * Request body
    * Will be sent to PayloadCMS
    */
   const build: Partial<ErBuild> = {
     name: values.name,
+    // @ts-ignore
+    description: JSON.stringify(editorState.value),
     is_two_handed: values.is_two_handed,
     youtube_url: values.youtube_url,
+    images: images.map((image) => ({
+      image: image.doc.id
+    })),
     archetype: values.archetypes,
     restrictions: values.restrictions,
     mainhand_weapons: mainhands.value.map((item) => ({
@@ -415,48 +466,56 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <form class="mt-4" @submit.prevent="onSubmit">
+  <section class="mt-4">
     <!-- Build informations -->
-    <div class="grid md:grid-cols-2">
-      <FormField v-slot="{ componentField }" name="name">
-        <FormItem>
-          <FormLabel class="flex justify-between">
-            <span>Name</span>
-            <FormMessage />
-          </FormLabel>
-          <FormControl>
-            <Input type="text" placeholder="My awesome build" v-bind="componentField" />
-          </FormControl>
-        </FormItem>
-      </FormField>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div>
+        <FormField v-slot="{ componentField }" name="name">
+          <FormItem>
+            <FormLabel class="flex justify-between">
+              <span>Name</span>
+              <FormMessage />
+            </FormLabel>
+            <FormControl>
+              <Input type="text" placeholder="My awesome build" v-bind="componentField" />
+            </FormControl>
+          </FormItem>
+        </FormField>
 
-      <div class="flex flex-col md:flex-row md:justify-end md:items-end gap-2 mt-2 md:mt-0">
-        <Tags
-          label="archetypes"
-          name="archetypes"
-          :docs="archetypes" />
-        <Tags
-          label="restrictions"
-          name="restrictions"
-          :docs="restrictions" />
+        <Editor @change="onEditorChange" />
+      </div>
+
+      <div class="flex flex-col gap-y-4">
+        <div class="flex flex-col md:flex-row md:items-start gap-2 mt-2 md:mt-0">
+          <Tags
+            label="archetypes"
+            name="archetypes"
+            :docs="archetypes" />
+          <Tags
+            label="restrictions"
+            name="restrictions"
+            :docs="restrictions" />
+        </div>
+
+        <FormField v-slot="{ componentField }" name="youtube_url">
+          <FormItem>
+            <FormLabel>Build demo (youtube video)</FormLabel>
+            <FormControl>
+              <Input
+                type="url"
+                placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                pattern="https://.*"
+                v-bind="componentField" />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        </FormField>
+
+        <ImageGalleryInput class="flex-1" @change="onGalleryChange" />
       </div>
     </div>
-    <FormField v-slot="{ componentField }" name="youtube_url">
-      <FormItem>
-        <FormLabel>Build demo (youtube video)</FormLabel>
-        <FormControl>
-          <Input
-            type="url"
-            placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-            pattern="https://.*"
-            v-bind="componentField" />
-        </FormControl>
-        <FormMessage />
-      </FormItem>
-    </FormField>
-
     <!-- Equipment -->
-    <div class="grid md:grid-cols-12">
+    <div class="grid md:grid-cols-12 border-t mt-4 pt-4">
       <!-- Mainhand, offhand, armor, talismans... -->
       <div class="md:col-span-6">
         <div class="grid grid-cols-er-builder" v-for="row in FORM">
@@ -515,9 +574,9 @@ const onSubmit = handleSubmit((values) => {
     </div>
 
     <div class="flex justify-center my-12">
-      <button class="button" type="submit">
+      <button @click="onSubmit" class="button" type="button">
         Create
       </button>
     </div>
-  </form>
+  </section>
 </template>
