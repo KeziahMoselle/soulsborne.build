@@ -8,8 +8,6 @@ import { INSERT_CHECK_LIST_COMMAND, INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERE
 import { blockTypeToBlockName, dropDownActiveClass } from './shared'
 import DropDown from '@/components/organisms/Editor/ui/DropDown.vue'
 import DropDownItem from '@/components/organisms/Editor/ui/DropDownItem.vue'
-import { $isTweetNode } from '@/components/organisms/Editor/nodes/TweetNode'
-import { $isYouTubeNode } from '@/components/organisms/Editor/nodes/YouTubeNode'
 
 const props = defineProps<{
   editor: LexicalEditor
@@ -73,6 +71,7 @@ function formatQuote() {
 }
 
 function formatCode() {
+  // @ts-ignore
   if (props.blockType !== 'code') {
     props.editor.update(() => {
       const selection = $getSelection()
@@ -82,24 +81,6 @@ function formatCode() {
           $wrapNodes(selection, () => $createCodeNode())
         }
         else {
-          selection.getNodes().forEach((node) => {
-            // Explicity set fallback text content for some decorators nodes.
-            if ($isTweetNode(node)) {
-              node.replace(
-                $createTextNode(
-                    `https://twitter.com/i/web/status/${node.getId()}`,
-                ),
-              )
-            }
-            else if ($isYouTubeNode(node)) {
-              node.replace(
-                $createTextNode(
-                    `https://www.youtube.com/watch?v=${node.getId()}`,
-                ),
-              )
-            }
-          })
-
           const textContent = selection.getTextContent()
           const codeNode = $createCodeNode()
           selection.insertNodes([codeNode])

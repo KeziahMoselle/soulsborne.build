@@ -451,25 +451,6 @@ function onCodeLanguageSelect(value: string) {
           <span class="text">Clear Formatting</span>
         </DropDownItem>
       </DropDown>
-      <!-- <DropDown
-        button-class-name="toolbar-item spaced"
-        button-label="Insert"
-        button-aria-label="Insert specialized editor node"
-        button-icon-class-name="icon plus"
-      >
-        <DropDownItem
-          v-for="embedConfig in EmbedConfigs"
-          :key="embedConfig.type"
-          class="item"
-          @click="editor.dispatchCommand(
-            INSERT_EMBED_COMMAND,
-            embedConfig.type,
-          )"
-        >
-          <component :is="embedConfig.icon" />
-          <span class="text">{{ embedConfig.contentName }}</span>
-        </DropDownItem>
-      </DropDown> -->
     </template>
   </div>
 </template>

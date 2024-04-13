@@ -218,7 +218,7 @@ const formSchema = toTypedSchema(z.object({
   // Build informations
   name: z.string().min(2).max(255),
   is_two_handed: z.boolean().default(false).optional(),
-  youtube_url: z.string().url({ message: "Invalid url" }).optional(),
+  youtube_url: z.string().url({ message: "Invalid url" }).or(z.literal('')),
   archetypes: z.array(z.number()).optional(),
   restrictions: z.array(z.number()).optional(),
   level: z.number().min(1).max(713),
