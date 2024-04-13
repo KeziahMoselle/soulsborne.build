@@ -2,6 +2,7 @@
   defineProps<{
     src?: string
     alt?: string
+    small?: boolean
   }>()
 </script>
 
@@ -13,7 +14,10 @@
       :alt="!src ? 'Empty' : ''" />
     <img
       v-if="src"
-      class="absolute inset-0 h-full w-full p-2"
+      class="absolute inset-0 h-full w-full"
+      :class="{
+        'p-2': !small
+      }"
       :src="src"
       :alt="alt" />
   </div>
