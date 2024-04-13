@@ -1,10 +1,8 @@
 <script setup lang="ts">
   import qs from 'qs'
-  import { computed, ref } from 'vue';
+  import { computed, reactive, ref } from 'vue';
   import { inMemoryCache } from '@/lib/Cache'
   import { apiFetch } from '@/api';
-  import { Check } from 'lucide-vue-next'
-  import { cn } from '@/lib/utils'
   import {
     FormControl,
     FormField,
@@ -23,6 +21,8 @@
     PopoverContent,
     PopoverTrigger,
   } from '@/components/ui/popover'
+  import EquipmentImage from '@/components/molecules/EldenRing/EquipmentImage.vue';
+import type { PayloadMedia } from '@/types';
 
   const SELECT_IMAGES = {
     'mainhand': '/elden-ring/builder/mainhand.png',
@@ -49,21 +49,36 @@
   interface IPayloadOptionLike {
     id: number | string;
     name: string;
+    image?: PayloadMedia | null
   }
 
+  const value = ref(null)
+  const searchTerm = ref('')
   const isOpen = ref(false)
   const loading = ref(false)
-  const optionsByRelations = ref<{
+  const hasFetchedAllPages = ref(false)
+  const optionsByRelations = reactive<{
     [key: string]: IPayloadOptionLike[]
   }>({})
+  const optionsGroups = computed(() => Object.entries(optionsByRelations).map(([relation, options]) => ([relation, options.filter((item) => item.name.includes(searchTerm.value)).splice(0, 50)])))
   const isSmall = computed(() => props.type === 'ash' || props.type === 'affinity')
 
-  async function getOptions(relation, query = {}) {
+  const previewImage = computed(() => {
+    if (value.value?.image?.thumbnailURL) {
+      return value.value?.image?.thumbnailURL
+    }
+
+    return 'https://cdn.soulsborne.build/test%2Fmainhand.png'
+  })
+
+  async function getOptions({ relation, query = {}, page = 1 }) {
     const stringifiedQuery = qs.stringify(
       {
         where: query,
         sort: 'name',
-        limit: 20,
+        limit: 100,
+        depth: 2,
+        page
       },
       { addQueryPrefix: true },
     )
@@ -84,17 +99,40 @@
    * Get all options from all loaded relations
    */
   async function getAllOptions() {
+    if (hasFetchedAllPages.value) return console.log('skipped')
+
     loading.value = true
+
+    let hasNextPage = false
+    let page = 0
 
     for (const relation of props.relationTo) {
       if (typeof relation === 'string') {
-        const options = await getOptions(relation)
-        optionsByRelations.value[relation] = options.docs
+        do {
+          const options = await getOptions({
+            relation,
+            page,
+          })
+          if (Array.isArray(optionsByRelations[relation])) {
+            optionsByRelations[relation] = [...optionsByRelations[relation], ...options.docs]
+          } else {
+            optionsByRelations[relation] = options.docs
+          }
+          page = options.nextPage
+          hasNextPage = options.hasNextPage
+
+          if (!hasNextPage) {
+            hasFetchedAllPages.value = true
+          }
+        } while (hasNextPage)
       }
 
       if (typeof relation === 'object') {
-        const options = await getOptions(relation.slug, relation.query)
-        optionsByRelations.value[relation.slug] = options.docs
+        const options = await getOptions({
+          relation: relation.slug,
+          query: relation.query
+        })
+        optionsByRelations[relation.slug] = options.docs
       }
     }
 
@@ -130,14 +168,16 @@
               :class="{
                 'size-32': !isSmall,
                 'size-16': isSmall,
-                'opacity-50': loading
+                'opacity-50': loading || values[name]
               }"
               height="128"
               width="128"
               :src="SELECT_IMAGES[type]"
               alt="" />
             <!-- Item's image here -->
-            <p v-if="values[name]" class="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 z-[2]">todo image</p>
+            <div v-if="values[name]" class="absolute inset-0 z-[2]">
+              <img class="p-4" :src="previewImage" />
+            </div>
             <img
               class="absolute top-0 transition-opacity ease-in z-[3]"
               :class="{
@@ -159,7 +199,7 @@
           </FormControl>
         </PopoverTrigger>
         <PopoverContent class="w-[200px] p-0">
-          <Command>
+          <Command v-model="value" v-model:searchTerm="searchTerm">
             <CommandInput placeholder="Search..." />
             <CommandEmpty>
               <span v-if="loading">
@@ -170,34 +210,49 @@
               </span>
             </CommandEmpty>
             <CommandList>
-              <CommandGroup v-for="[relation, options] in Object.entries(optionsByRelations)">
-                <CommandItem
-                  v-for="option in options"
-                  :key="option.id"
-                  :value="`${relation}:${option.id}`"
-                  @select="() => {
-                    isOpen = false
-                    if (values[name] === `${relation}:${option.id}`) {
+              <CommandGroup
+                v-for="[relation, options] in optionsGroups"
+                :key="relation"
+                :heading="relation">
+                <template
+                  v-for="(option, index) in (options as IPayloadOptionLike[])"
+                  :key="`${relation}:${option.id}`">
+                  <CommandItem
+                    :value="option"
+                    :class="{
+                      'bg-primary': `${relation}:${option.id}` === values[name]
+                    }"
+                    @select="() => {
+                      isOpen = false
+
+                      if (values[name] === `${relation}:${option.id}`) {
+                        setValues({
+                          [name]: undefined,
+                        })
+                        return
+                      }
+
                       setValues({
-                        [name]: undefined,
+                        [name]: `${relation}:${option.id}`,
                       })
-                      return
-                    }
-                    setValues({
-                      [name]: `${relation}:${option.id}`,
-                    })
-                  }"
-                >
-                  <Check
-                    :class="cn('mr-2 h-4 w-4', `${relation}:${option.id}` === values[name] ? 'opacity-100' : 'opacity-0')"
-                  />
-                  <span v-if="type !== 'ash'">
-                    {{ option.name }}
-                  </span>
-                  <span v-if="type === 'ash'">
-                    {{ option.name.split('Ash Of War:')[1] }}
-                  </span>
-                </CommandItem>
+                    }"
+                  >
+                    <EquipmentImage
+                      class="size-8 mr-2"
+                      small
+                      :src="option?.image?.thumbnailURL ?? 'https://cdn.soulsborne.build/test%2Fmainhand.png'" />
+                    <span class="flex-1" v-if="type !== 'ash'">
+                      {{ option.name }}
+                    </span>
+                    <span class="flex-1" v-if="type === 'ash'">
+                      {{ option.name.split('Ash Of War:')[1] ?? option.name }}
+                    </span>
+                  </CommandItem>
+                  <div class="relative flex flex-col select-none items-center rounded-sm px-2 py-1.5 text-sm opacity-50" v-if="index === (options.length - 1)" disabled>
+                    <p class="m-0">{{ optionsByRelations[relation as string].length - options.length }} hidden results.</p>
+                    <p class="m-0">Type to filter</p>
+                  </div>
+                </template>
               </CommandGroup>
             </CommandList>
           </Command>

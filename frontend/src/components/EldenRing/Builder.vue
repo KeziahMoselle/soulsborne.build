@@ -2,7 +2,7 @@
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
-import RelationSelect from '@/components/EldenRing/RelationSelect.vue'
+import RelationSearch from '@/components/EldenRing/RelationSearch.vue'
 import {
   FormControl,
   FormField,
@@ -520,13 +520,13 @@ const onSubmit = handleSubmit(async (values) => {
       <div class="md:col-span-6">
         <div class="grid grid-cols-er-builder" v-for="row in FORM">
           <div v-for="input in row" class="relative">
-            <RelationSelect
+            <RelationSearch
               :key="input.name"
               v-bind="input"
               :values="values"
               :set-values="setValues" />
 
-              <RelationSelect
+              <RelationSearch
                 v-if="input.type === 'mainhand' || input.type === 'offhand'"
                 :key="`${input.name.split('-')[0]}-ash-${input.name.split('-')[1]}`"
                 :name="`${input.name.split('-')[0]}-ash-${input.name.split('-')[1]}`"
@@ -535,7 +535,7 @@ const onSubmit = handleSubmit(async (values) => {
                 :values="values"
                 :set-values="setValues" />
 
-              <RelationSelect
+              <RelationSearch
                 v-if="input.type === 'mainhand' || input.type === 'offhand'"
                 :key="`${input.name.split('-')[0]}-affinity-${input.name.split('-')[1]}`"
                 :name="`${input.name.split('-')[0]}-affinity-${input.name.split('-')[1]}`"
@@ -547,7 +547,7 @@ const onSubmit = handleSubmit(async (values) => {
         </div>
         <div class="grid grid-cols-er-builder">
           <div v-for="input in magicInputs" class="relative">
-            <RelationSelect
+            <RelationSearch
               :key="input.name"
               v-bind="input"
               :values="values"
@@ -568,6 +568,12 @@ const onSubmit = handleSubmit(async (values) => {
             <FormMessage />
           </FormItem>
         </FormField>
+
+        <!-- <RelationSelect
+          name="class"
+          label="Starting Class"
+          placeholder="Wretch"
+          relation-to="er-classes" /> -->
 
         <Statistics :stats="stats.docs" />
       </div>
