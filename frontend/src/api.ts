@@ -116,7 +116,7 @@ export async function logout() {
   })
 }
 
-export async function getMostVotedBuilds({ limit, page }: { limit: number; page: number }) {
+export async function getMostVotedBuilds({ limit, page = 1 }: { limit: number; page?: number }) {
   const stringifiedQuery = qs.stringify(
     {
       sort: 'votes',
