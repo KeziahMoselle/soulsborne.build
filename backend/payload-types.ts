@@ -33,6 +33,10 @@ export interface Config {
     'payload-migrations': PayloadMigration;
   };
   globals: {};
+  locale: null;
+  user: User & {
+    collection: 'users';
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
