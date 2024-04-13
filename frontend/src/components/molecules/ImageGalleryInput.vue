@@ -20,7 +20,7 @@
 <template>
   <form
     ref="form"
-    class="relative p-4 border border-dotted bg-black rounded-sm">
+    class="group relative p-4 border-2 border-dotted border-input rounded-sm">
     <input
       @change="onChange"
       class="absolute inset-0 w-full h-full block cursor-pointer opacity-0"
@@ -30,15 +30,15 @@
       accept="image/png, image/jpeg"
       title="Upload images" />
 
-      <div v-if="images.length > 0" class="grid grid-cols-4 place-items-center">
+      <div v-if="images.length > 0" class="grid grid-cols-4 gap-4 place-items-center">
         <img
           v-for="image in images"
-          class="aspect-square"
+          class="bg-white bg-opacity-5 p-2 object-contain"
           :src="getPreviewSrc(image)"
           alt="" />
       </div>
-      <div v-else class="flex items-center justify-center pointer-events-auto z-10">
-        <span class="button">Select multiple images</span>
+      <div v-else class="flex items-center justify-center pointer-events-auto z-10 h-full">
+        <span class="button group-hover:bg-accent group-hover:border-accent-foreground">Select multiple images</span>
       </div>
   </form>
 </template>

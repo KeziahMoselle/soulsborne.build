@@ -48,6 +48,9 @@ const ARCHETYPES = [
     name: 'Magic',
   },
   {
+    name: 'Ranged'
+  },
+  {
     name: 'Sorceries',
   },
   {

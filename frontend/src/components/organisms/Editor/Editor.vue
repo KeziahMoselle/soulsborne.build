@@ -25,7 +25,7 @@ function onChange(editorState) {
 
 <template>
   <ToolbarPlugin />
-  <div class="editor-container">
+  <div class="editor-container border border-input">
     <div className="editor-inner">
       <LexicalRichTextPlugin>
         <template #contentEditable>
@@ -36,7 +36,7 @@ function onChange(editorState) {
           </div>
         </template>
         <template #placeholder>
-          <div class="editor-placeholder">
+          <div class="editor-placeholder absolute top-2 left-7 text-white text-opacity-70">
             Enter description of your build...
           </div>
         </template>

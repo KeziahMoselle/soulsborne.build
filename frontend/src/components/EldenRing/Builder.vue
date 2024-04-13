@@ -404,7 +404,7 @@ const onSubmit = handleSubmit(async (values) => {
     )
   }
 
-  toast.loading('Uploading images...')
+  toast.info('Uploading images...')
   const images: PayloadMediaResponse[] = await Promise.all(uploadPromises)
 
   /**
@@ -468,51 +468,54 @@ const onSubmit = handleSubmit(async (values) => {
 <template>
   <section class="mt-4">
     <!-- Build informations -->
-    <div class="grid md:grid-cols-2">
-      <FormField v-slot="{ componentField }" name="name">
-        <FormItem>
-          <FormLabel class="flex justify-between">
-            <span>Name</span>
-            <FormMessage />
-          </FormLabel>
-          <FormControl>
-            <Input type="text" placeholder="My awesome build" v-bind="componentField" />
-          </FormControl>
-        </FormItem>
-      </FormField>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div>
+        <FormField v-slot="{ componentField }" name="name">
+          <FormItem>
+            <FormLabel class="flex justify-between">
+              <span>Name</span>
+              <FormMessage />
+            </FormLabel>
+            <FormControl>
+              <Input type="text" placeholder="My awesome build" v-bind="componentField" />
+            </FormControl>
+          </FormItem>
+        </FormField>
 
-      <div class="flex flex-col md:flex-row md:justify-end md:items-end gap-2 mt-2 md:mt-0">
-        <Tags
-          label="archetypes"
-          name="archetypes"
-          :docs="archetypes" />
-        <Tags
-          label="restrictions"
-          name="restrictions"
-          :docs="restrictions" />
+        <Editor @change="onEditorChange" />
+      </div>
+
+      <div class="flex flex-col gap-y-4">
+        <div class="flex flex-col md:flex-row md:items-start gap-2 mt-2 md:mt-0">
+          <Tags
+            label="archetypes"
+            name="archetypes"
+            :docs="archetypes" />
+          <Tags
+            label="restrictions"
+            name="restrictions"
+            :docs="restrictions" />
+        </div>
+
+        <FormField v-slot="{ componentField }" name="youtube_url">
+          <FormItem>
+            <FormLabel>Build demo (youtube video)</FormLabel>
+            <FormControl>
+              <Input
+                type="url"
+                placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                pattern="https://.*"
+                v-bind="componentField" />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        </FormField>
+
+        <ImageGalleryInput class="flex-1" @change="onGalleryChange" />
       </div>
     </div>
-
-    <ImageGalleryInput @change="onGalleryChange" />
-
-    <Editor @change="onEditorChange" />
-
-    <FormField v-slot="{ componentField }" name="youtube_url">
-      <FormItem>
-        <FormLabel>Build demo (youtube video)</FormLabel>
-        <FormControl>
-          <Input
-            type="url"
-            placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-            pattern="https://.*"
-            v-bind="componentField" />
-        </FormControl>
-        <FormMessage />
-      </FormItem>
-    </FormField>
-
     <!-- Equipment -->
-    <div class="grid md:grid-cols-12">
+    <div class="grid md:grid-cols-12 border-t mt-4 pt-4">
       <!-- Mainhand, offhand, armor, talismans... -->
       <div class="md:col-span-6">
         <div class="grid grid-cols-er-builder" v-for="row in FORM">
