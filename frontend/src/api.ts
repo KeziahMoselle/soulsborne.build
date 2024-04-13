@@ -116,11 +116,12 @@ export async function logout() {
   })
 }
 
-export async function getMostVotedBuilds({ limit }: { limit: number }) {
+export async function getMostVotedBuilds({ limit, page }: { limit: number; page: number }) {
   const stringifiedQuery = qs.stringify(
     {
       sort: 'votes',
       limit,
+      page,
     },
     { addQueryPrefix: true },
   )

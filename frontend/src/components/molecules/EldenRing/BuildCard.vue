@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import type { Archetype, ErBuild, ErTalisman, ErWeapon, Restriction } from '@payload-types'
+  import type { Archetype, ErBuild, ErMedia, ErTalisman, ErWeapon, Restriction } from '@payload-types'
   import Tag from '@/components/molecules/EldenRing/Tag.vue'
   import { ThumbsUpIcon } from 'lucide-vue-next'
   import EquipmentImage from '@/components/molecules/EldenRing/EquipmentImage.vue';
@@ -40,6 +40,15 @@
     }
   })
 
+  const backgroundImage = computed(() => {
+    if (props.build.images.length > 0) {
+      const image = props.build.images[0].image as ErMedia
+      return image.thumbnailURL
+    }
+
+    return '/build-background.jpg'
+  })
+
   async function toggleVote() {
     const update = toggleVoteBuild({ buildId: props.build.id })
     toast.promise(update, {
@@ -55,12 +64,16 @@
 </script>
 
 <template>
-  <article class="z-0 relative pr-5 pt-3 pb-5 border border-accent bg-background max-w-[451px] overflow-hidden">
+  <article class="group/card z-0 relative pr-5 pt-3 pb-5 border border-accent bg-background max-w-[451px] overflow-hidden">
+    <a :href="`/build/${build.id}`" title="See build" class="absolute z-10 inset-0">
+      <span class="sr-only">{{ build.name }}</span>
+    </a>
     <img
-      class="-z-10 absolute inset-0 object-cover object-center h-full w-full"
-      src="/build-background.png"
+      class="-z-10 absolute inset-0 object-cover object-center h-full w-full opacity-20 transform transition-transform duration-700 ease-out group-hover/card:scale-110"
+      :src="backgroundImage"
       alt=""
       loading="lazy" />
+    <div class="absolute inset-0 block bg-primary opacity-20 -z-[9]"></div>
     <!-- Build title and Actions -->
     <header class="flex justify-between">
       <div class="relative h-[44px]">
@@ -88,7 +101,7 @@
 
       <button
         type="button"
-        class="flex items-center self-center gap-x-2 leading-4 px-2 py-1 rounded transition lg:text-sm lg:px-3 hover:bg-accent"
+        class="flex items-center self-center gap-x-2 leading-4 px-2 py-1 rounded transition lg:text-sm lg:px-3 hover:bg-accent z-20"
         :class="{
           'bg-accent-foreground': !hasVoted,
           'bg-accent': hasVoted

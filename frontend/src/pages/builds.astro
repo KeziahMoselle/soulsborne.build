@@ -2,42 +2,57 @@
 import { getMostVotedBuilds } from "@/api";
 import Layout from "../layouts/Layout.astro";
 import BuildCard from "@/components/molecules/EldenRing/BuildCard.vue";
-
-// get the page number from the URL
-const currentPage = 1;
-const prevPage = currentPage - 1;
-const nextPage = currentPage + 1;
+import { ArrowLeft, ArrowRight } from "lucide-vue-next";
 
 const builds = await getMostVotedBuilds({
   limit: 3,
-  // page number here
+  page: Number(Astro.url.searchParams.get('page'))
 });
-console.log(Astro.request);
+console.log(builds)
 ---
 
 <Layout title="Explore builds">
-  <h1>Builds</h1>
-  <div
-    class="container--xl grid gap-5 justify-center sm:grid-cols-2 lg:grid-cols-3"
-  >
-    {
-      builds.docs.map((build) => (
-        <BuildCard
-          build={build}
-          hasVoted={build.votes?.includes(Astro.locals.user?.id)}
-          client:visible
-        />
-      ))
-    }
-  </div>
-  <a
-    href="http://localhost:4321/builds"
-    class="button pointer-events-none opacity-50">PREV</a
-  >
-  <a href="http://localhost:4321/builds?page=2" class="button">NEXT</a>
+  <section class="mt-4">
+    <div
+      class="container--xl grid gap-5 justify-center sm:grid-cols-2 lg:grid-cols-3"
+    >
+      {
+        builds.docs.map((build) => (
+          <BuildCard
+            build={build}
+            hasVoted={build.votes?.includes(Astro.locals.user?.id)}
+            client:visible
+          />
+        ))
+      }
+    </div>
 
-  <!-- Les boutons doivent se désactiver si hasNextPage/hasPrevPage = false -->
-  <!-- Bouton précédent (lien vers la page précédente) -->
-
-  <!-- Bouton suivant (lien vers la prochaine page) -->
+    <nav class="flex justify-center gap-4 mt-8">
+      <a
+        href={`?page=${builds.prevPage}`}
+        class:list={[
+          'button',
+          {
+            'button--disabled': !builds.hasPrevPage
+          }
+        ]}
+        class="button ">
+        <ArrowLeft />
+        Previous
+      </a
+      >
+      <a
+        href={`?page=${builds.nextPage}`}
+        class:list={[
+          'button',
+          {
+            'button--disabled': !builds.hasNextPage
+          }
+        ]}
+        >
+        Next
+        <ArrowRight />
+      </a>
+    </n>
+  </section>
 </Layout>
