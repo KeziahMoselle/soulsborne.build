@@ -25,7 +25,7 @@ export async function fetchJSON<T>(url: string, options: RequestInit = {}): Prom
   }
 
   const result = await fetch(`${url}`, mergedOptions).then(async (res) => {
-  const json = await res.json() as T
+    const json = await res.json() as T
 
     if (res.ok) {
       return json
@@ -116,11 +116,12 @@ export async function logout() {
   })
 }
 
-export async function getMostVotedBuilds({ limit }: { limit: number }) {
+export async function getMostVotedBuilds({ limit, page = 1 }: { limit: number; page?: number }) {
   const stringifiedQuery = qs.stringify(
     {
       sort: 'votes',
       limit,
+      page,
     },
     { addQueryPrefix: true },
   )

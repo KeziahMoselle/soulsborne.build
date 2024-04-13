@@ -1,7 +1,58 @@
 ---
+import { getMostVotedBuilds } from "@/api";
 import Layout from "../layouts/Layout.astro";
+import BuildCard from "@/components/molecules/EldenRing/BuildCard.vue";
+import { ArrowLeft, ArrowRight } from "lucide-vue-next";
+
+const builds = await getMostVotedBuilds({
+  limit: 3,
+  page: Number(Astro.url.searchParams.get('page'))
+});
+console.log(builds)
 ---
 
 <Layout title="Explore builds">
-  <h1>Builds</h1>
+  <section class="mt-4">
+    <div
+      class="container--xl grid gap-5 justify-center sm:grid-cols-2 lg:grid-cols-3"
+    >
+      {
+        builds.docs.map((build) => (
+          <BuildCard
+            build={build}
+            hasVoted={build.votes?.includes(Astro.locals.user?.id)}
+            client:visible
+          />
+        ))
+      }
+    </div>
+
+    <nav class="flex justify-center gap-4 mt-8">
+      <a
+        href={`?page=${builds.prevPage}`}
+        class:list={[
+          'button',
+          {
+            'button--disabled': !builds.hasPrevPage
+          }
+        ]}
+        class="button ">
+        <ArrowLeft />
+        Previous
+      </a
+      >
+      <a
+        href={`?page=${builds.nextPage}`}
+        class:list={[
+          'button',
+          {
+            'button--disabled': !builds.hasNextPage
+          }
+        ]}
+        >
+        Next
+        <ArrowRight />
+      </a>
+    </n>
+  </section>
 </Layout>
