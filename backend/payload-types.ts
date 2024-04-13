@@ -829,6 +829,7 @@ export interface ErIncantationType {
  */
 export interface ErClass {
   id: number;
+  image?: number | ErMedia | null;
   name?: string | null;
   rune_level?: number | null;
   weapons?: (number | ErWeapon)[] | null;

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Archetype, ErBuild, ErStatistic, ErClass, Restriction } from '@payload-types'
+import type { PayloadCreateResponse, PayloadCollection, PayloadMediaResponse } from '@/types'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
@@ -12,15 +14,14 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { apiFetch } from '@/api'
-import type { Archetype, ErBuild, ErStatistic, Restriction } from '@payload-types'
 import { toast } from 'vue-sonner'
 import { Checkbox } from '@/components/ui/checkbox'
 import Statistics from '@/components/EldenRing/Statistics.vue'
-import type { PayloadCreateResponse, PayloadCollection, PayloadMediaResponse } from '@/types'
 import Tags from '@/components/Form/Tags.vue'
 import Editor from '@/components/organisms/Editor/index.vue'
 import { computed, ref, unref } from 'vue'
 import ImageGalleryInput from '@/components/molecules/ImageGalleryInput.vue'
+import RelationSelect from '@/components/EldenRing/RelationSelect.vue'
 
 const props = defineProps<{
   stats: PayloadCollection<ErStatistic>,
@@ -221,6 +222,7 @@ const formSchema = toTypedSchema(z.object({
   youtube_url: z.string().url({ message: "Invalid url" }).or(z.literal('')).optional(),
   archetypes: z.array(z.number()).optional(),
   restrictions: z.array(z.number()).optional(),
+  class: z.number().min(0),
   level: z.number().min(1).max(713),
   'stat-1': z.number().min(1).max(99),
   'stat-2': z.number().min(1).max(99),
@@ -278,6 +280,7 @@ const { handleSubmit, values, setValues } = useForm({
   validationSchema: formSchema,
   initialValues: {
     archetypes: [1], // Melee is default
+    class: 7, // Wretch class is default
     level: 1, // Wretch class is default
     "stat-1": 10,
     "stat-2": 10,
@@ -379,8 +382,34 @@ function onEditorChange(state) {
   editorState.value = state
 }
 
+/**
+ * Keep track of the images form
+ */
 async function onGalleryChange(form) {
   imagesForm.value = form
+}
+
+/**
+ * Update the rune level and statistics
+ * TODO: update equipment
+ */
+function onClassChange(newClass: ErClass) {
+  toast(`Do you want to replace the stats by the one used in the starting class?`, {
+    action: {
+      label: 'Replace',
+      onClick: () => {
+        const newValues = {
+          level: newClass.rune_level
+        }
+
+        newClass.statistics.forEach((stat) => {
+          newValues[`stat-${stat.stat?.id}`] = stat.value
+        })
+
+        setValues(newValues)
+      }
+    },
+  })
 }
 
 /**
@@ -420,6 +449,7 @@ const onSubmit = handleSubmit(async (values) => {
     images: images.map((image) => ({
       image: image.doc.id
     })),
+    starting_class: values.class,
     archetype: values.archetypes,
     restrictions: values.restrictions,
     mainhand_weapons: mainhands.value.map((item) => ({
@@ -569,11 +599,13 @@ const onSubmit = handleSubmit(async (values) => {
           </FormItem>
         </FormField>
 
-        <!-- <RelationSelect
+        <RelationSelect
+          @change="onClassChange"
+          class="flex flex-row items-center gap-x-8"
           name="class"
           label="Starting Class"
-          placeholder="Wretch"
-          relation-to="er-classes" /> -->
+          placeholder="- Select a class -"
+          relation-to="er-classes" />
 
         <Statistics :stats="stats.docs" />
       </div>

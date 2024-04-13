@@ -1,6 +1,7 @@
 <script setup lang="ts">
+  import type { PayloadOptionLike } from '@/types';
   import qs from 'qs'
-  import { computed, reactive, ref } from 'vue';
+  import { computed, reactive, ref, watch } from 'vue';
   import { inMemoryCache } from '@/lib/Cache'
   import { apiFetch } from '@/api';
   import {
@@ -22,7 +23,7 @@
     PopoverTrigger,
   } from '@/components/ui/popover'
   import EquipmentImage from '@/components/molecules/EldenRing/EquipmentImage.vue';
-import type { PayloadMedia } from '@/types';
+  import { X } from 'lucide-vue-next';
 
   const SELECT_IMAGES = {
     'mainhand': '/elden-ring/builder/mainhand.png',
@@ -46,19 +47,13 @@ import type { PayloadMedia } from '@/types';
     relationTo: any;
   }>()
 
-  interface IPayloadOptionLike {
-    id: number | string;
-    name: string;
-    image?: PayloadMedia | null
-  }
-
   const value = ref(null)
   const searchTerm = ref('')
   const isOpen = ref(false)
   const loading = ref(false)
   const hasFetchedAllPages = ref(false)
   const optionsByRelations = reactive<{
-    [key: string]: IPayloadOptionLike[]
+    [key: string]: PayloadOptionLike[]
   }>({})
   const optionsGroups = computed(() => Object.entries(optionsByRelations).map(([relation, options]) => ([relation, options.filter((item) => item.name.includes(searchTerm.value)).splice(0, 50)])))
   const isSmall = computed(() => props.type === 'ash' || props.type === 'affinity')
@@ -215,8 +210,32 @@ import type { PayloadMedia } from '@/types';
                 :key="relation"
                 :heading="relation">
                 <template
-                  v-for="(option, index) in (options as IPayloadOptionLike[])"
+                  v-for="(option, index) in (options as PayloadOptionLike[]).filter((option) => option.id !== value?.id)"
                   :key="`${relation}:${option.id}`">
+                  <CommandItem
+                    v-if="value && (index === 0)"
+                    :value="value"
+                    class="relative bg-primary"
+                    @select="() => {
+                      isOpen = false
+
+                      setValues({
+                        [name]: undefined,
+                      })
+                    }"
+                  >
+                    <EquipmentImage
+                      class="size-8 mr-2"
+                      small
+                      :src="value?.image?.thumbnailURL ?? 'https://cdn.soulsborne.build/test%2Fmainhand.png'" />
+                    <span class="flex-1" v-if="type !== 'ash'">
+                      {{ value.name }}
+                    </span>
+                    <span class="flex-1" v-if="type === 'ash'">
+                      {{ value.name.split('Ash Of War:')[1] ?? value.name }}
+                    </span>
+                    <X class="absolute top-1/2 transform -translate-y-1/2 right-2" />
+                  </CommandItem>
                   <CommandItem
                     :value="option"
                     :class="{
