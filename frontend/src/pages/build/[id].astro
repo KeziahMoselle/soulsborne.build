@@ -1,7 +1,7 @@
 ---
 import { apiFetch } from '@/api';
 import Layout from '../../layouts/Layout.astro';
-import type { ErBuild } from '@payload-types';
+import type { Archetype, ErBuild, ErMedia, Restriction } from '@payload-types';
 import Tag from '@/components/molecules/EldenRing/Tag.vue';
 import LikeBuildButton from '@/components/molecules/LikeBuildButton.vue';
 import Build from '@/components/EldenRing/Build.vue';
@@ -30,10 +30,10 @@ const youtubeMatches = build.youtube_url?.match(REGEX_YOUTUBE_URL)
         <h1 class="type-h1">{ build.name }</h1>
         <div class="flex gap-2">
           { build.archetype.map((archetype) => (
-            <Tag label={archetype.name} />
+            <Tag label={(archetype as Archetype).name} />
           ))}
           { build.restrictions.map((restriction) => (
-            <Tag label={restriction.name} />
+            <Tag label={(restriction as Restriction).name} />
           ))}
         </div>
       </div>
@@ -71,10 +71,10 @@ const youtubeMatches = build.youtube_url?.match(REGEX_YOUTUBE_URL)
           'grid-rows-2': build.images.length > 2
         }
       ]}>
-      { build.images.map((image) => (
+      { build.images.map(({ image }: { image: ErMedia }) => (
         <img
           class="zoomable aspect-video h-full object-contain"
-          src={image.image.thumbnailURL}
+          src={image.thumbnailURL}
           alt="" />
       ))}
     </div>
