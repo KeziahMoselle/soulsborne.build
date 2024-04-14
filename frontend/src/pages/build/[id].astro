@@ -28,7 +28,7 @@ const youtubeMatches = build.youtube_url?.match(REGEX_YOUTUBE_URL)
   <section class="group/header z-[1] relative bg-secondary py-8 mb-8 overflow-hidden">
     <img
       class="-z-10 absolute inset-0 object-cover object-center h-full w-full opacity-20"
-      src={build.images?.[0]?.image?.thumbnailURL}
+      src={(build.images?.[0]?.image as ErMedia)?.thumbnailURL ?? 'https://cdn.soulsborne.build/Limgrave%20Erdtree%20-%20MENU_Load_00002_PS5.jpg'}
       alt="" />
     <div class="absolute inset-0 block bg-primary opacity-20 -z-[9]"></div>
 
@@ -40,7 +40,7 @@ const youtubeMatches = build.youtube_url?.match(REGEX_YOUTUBE_URL)
           <img class="-z-10 absolute top-0 left-0 h-full w-full" src="/background-text.png" alt="" />
           <img
             class="size-8 rounded-full"
-            src={created_by?.image?.thumbnailURL} alt="" />
+            src={(created_by?.image as ErMedia)?.thumbnailURL} alt="" />
           <span>
             { created_by.name }
           </span>
