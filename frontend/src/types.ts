@@ -26,7 +26,7 @@ export interface PayloadUserResponse {
 }
 
 export interface PayloadOptionLike {
-  id: number | string;
+  id: number;
   name: string;
   image?: PayloadMedia | null
 }
