@@ -11,7 +11,7 @@ const REGEX_YOUTUBE_URL = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\
 const { id } = Astro.params
 
 const build: ErBuild = await apiFetch(`/api/er-builds/${id}`)
-const [, youtubeId] = build.youtube_url.match(REGEX_YOUTUBE_URL)
+const youtubeMatches = build.youtube_url?.match(REGEX_YOUTUBE_URL)
 ---
 
 <script>
@@ -46,11 +46,16 @@ const [, youtubeId] = build.youtube_url.match(REGEX_YOUTUBE_URL)
     </div>
   </section>
 
-  <section class="container grid md:grid-cols-2 gap-4">
+  <section class:list={[
+    'container grid gap-4',
+    {
+      'md:grid-cols-2': build.youtube_url && build.images.length > 0
+    }
+  ]}>
     {build.youtube_url && (
       <div class="plyr__video-embed" id="player">
         <iframe
-          src={`https://www.youtube.com/embed/${youtubeId}?origin=https://plyr.io&amp;iv_load_policy=3&amp;modestbranding=1&amp;playsinline=1&amp;showinfo=0&amp;rel=0&amp;enablejsapi=1`}
+          src={`https://www.youtube.com/embed/${youtubeMatches[1]}?origin=https://plyr.io&amp;iv_load_policy=3&amp;modestbranding=1&amp;playsinline=1&amp;showinfo=0&amp;rel=0&amp;enablejsapi=1`}
           allowfullscreen
           allowtransparency
           allow="autoplay"
@@ -58,7 +63,14 @@ const [, youtubeId] = build.youtube_url.match(REGEX_YOUTUBE_URL)
       </div>
     )}
 
-    <div class="grid grid-cols-2 grid-rows-2 gap-2">
+    <div
+      class:list={[
+        'grid gap-2',
+        {
+          'grid-cols-2': build.images.length > 1,
+          'grid-rows-2': build.images.length > 2
+        }
+      ]}>
       { build.images.map((image) => (
         <img
           class="zoomable aspect-video h-full object-contain"
@@ -70,5 +82,9 @@ const [, youtubeId] = build.youtube_url.match(REGEX_YOUTUBE_URL)
 
   <section class="mt-8 py-8 border-t">
     <Build build={build} client:visible/>
+  </section>
+
+  <section class="my-8">
+    {JSON.stringify(build.description, null, 2)}
   </section>
 </Layout>

@@ -8,6 +8,7 @@
   const props = defineProps<{
     build?: ErBuild,
     hasVoted?: boolean
+    class?: string
   }>()
 
   const hasVoted = ref(props.hasVoted)
