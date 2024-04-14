@@ -29,7 +29,11 @@
       return props.equipment?.image?.thumbnailURL
     }
 
-    return 'https://cdn.soulsborne.build/test%2Fmainhand.png'
+    if (props.equipment) {
+      return 'https://cdn.soulsborne.build/test%2Fmainhand.png'
+    }
+
+    return ''
   })
 
 </script>
@@ -56,7 +60,7 @@
 
       <slot name="background">
         <img
-          v-if="type && SELECT_IMAGES[type]"
+          v-if="(isSelect && type) || (!isSelect && previewImage === '') && SELECT_IMAGES[type]"
           class="absolute top-0 transform scale-75 p-1 object-contain transition-opacity ease-in z-[2]"
           :class="{
             'size-32': size === 'l',

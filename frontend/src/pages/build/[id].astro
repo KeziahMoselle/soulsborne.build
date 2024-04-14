@@ -2,15 +2,73 @@
 import { apiFetch } from '@/api';
 import Layout from '../../layouts/Layout.astro';
 import type { ErBuild } from '@payload-types';
+import Tag from '@/components/molecules/EldenRing/Tag.vue';
+import LikeBuildButton from '@/components/molecules/LikeBuildButton.vue';
+import Build from '@/components/EldenRing/Build.vue';
+
+const REGEX_YOUTUBE_URL = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/
 
 const { id } = Astro.params
 
-const build: Partial<ErBuild> = await apiFetch(`/api/er-builds/${id}`)
+const build: ErBuild = await apiFetch(`/api/er-builds/${id}`)
+const [, youtubeId] = build.youtube_url.match(REGEX_YOUTUBE_URL)
 ---
 
+<script>
+  import Plyr from 'plyr';
+  import mediumZoom from 'medium-zoom'
+  import 'plyr/dist/plyr.css'
+
+  new Plyr('#player');
+  mediumZoom('.zoomable')
+</script>
+
 <Layout title={`${build.name} - Build`}>
-  <h1>{ build.name }</h1>
-  <pre>
-    {JSON.stringify(build, null, 2)}
-  </pre>
+  <section class="bg-secondary py-8 mb-8">
+    <div class="container grid md:grid-cols-12">
+      <div class="md:col-span-11">
+        <h1 class="type-h1">{ build.name }</h1>
+        <div class="flex gap-2">
+          { build.archetype.map((archetype) => (
+            <Tag label={archetype.name} />
+          ))}
+          { build.restrictions.map((restriction) => (
+            <Tag label={restriction.name} />
+          ))}
+        </div>
+      </div>
+
+      <LikeBuildButton
+        class="mt-4 justify-self-start md:mt-0"
+        build={build}
+        hasVoted={build.votes?.includes(Astro.locals.user?.id)}
+        client:visible />
+    </div>
+  </section>
+
+  <section class="container grid md:grid-cols-2 gap-4">
+    {build.youtube_url && (
+      <div class="plyr__video-embed" id="player">
+        <iframe
+          src={`https://www.youtube.com/embed/${youtubeId}?origin=https://plyr.io&amp;iv_load_policy=3&amp;modestbranding=1&amp;playsinline=1&amp;showinfo=0&amp;rel=0&amp;enablejsapi=1`}
+          allowfullscreen
+          allowtransparency
+          allow="autoplay"
+        ></iframe>
+      </div>
+    )}
+
+    <div class="grid grid-cols-2 grid-rows-2 gap-2">
+      { build.images.map((image) => (
+        <img
+          class="zoomable aspect-video h-full object-contain"
+          src={image.image.thumbnailURL}
+          alt="" />
+      ))}
+    </div>
+  </section>
+
+  <section class="mt-8 py-8 border-t">
+    <Build build={build} client:visible/>
+  </section>
 </Layout>

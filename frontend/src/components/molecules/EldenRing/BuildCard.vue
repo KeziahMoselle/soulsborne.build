@@ -1,20 +1,16 @@
 <script setup lang="ts">
   import type { Archetype, ErBuild, ErMedia, ErTalisman, ErWeapon, Restriction } from '@payload-types'
   import Tag from '@/components/molecules/EldenRing/Tag.vue'
-  import { ThumbsUpIcon } from 'lucide-vue-next'
   import EquipmentImage from '@/components/molecules/EldenRing/EquipmentImage.vue';
   import { Vue3Marquee } from 'vue3-marquee'
   import { computed, ref } from 'vue';
-  import { toggleVoteBuild } from '@/api';
-  import { toast } from 'vue-sonner';
+
+  import LikeBuildButton from '@/components/molecules/LikeBuildButton.vue';
 
   const props = defineProps<{
     build?: ErBuild,
     hasVoted?: boolean
   }>()
-
-  const hasVoted = ref(props.hasVoted)
-  const votesCount = ref(props.build.votes_count)
 
   const mainWeapons = computed(() => {
     // Return empty array if no mainhand and no offhand
@@ -48,19 +44,6 @@
 
     return '/build-background.jpg'
   })
-
-  async function toggleVote() {
-    const update = toggleVoteBuild({ buildId: props.build.id })
-    toast.promise(update, {
-      success: (updatedBuild) => {
-        votesCount.value = updatedBuild.votes_count
-        hasVoted.value = !hasVoted.value
-        return `Successfully ${hasVoted.value ? 'voted' : 'removed vote'}.`
-      },
-      error: (e) => 'There was an error.'
-    })
-
-  }
 </script>
 
 <template>
@@ -99,18 +82,7 @@
         <img class="w-full h-[44px]" src="/build-title.png" alt="" />
       </div>
 
-      <button
-        type="button"
-        class="flex items-center self-center gap-x-2 leading-4 px-2 py-1 rounded transition lg:text-sm lg:px-3 hover:bg-accent z-20"
-        :class="{
-          'bg-accent-foreground': !hasVoted,
-          'bg-accent': hasVoted
-        }"
-        :title="hasVoted ? 'Unvote' : 'Vote'"
-        @click="toggleVote">
-        <span class="type-h5">{{ votesCount }}</span>
-        <ThumbsUpIcon class="w-3" />
-      </button>
+      <LikeBuildButton :build="build" :has-voted="hasVoted" />
     </header>
 
     <!-- Tags -->
