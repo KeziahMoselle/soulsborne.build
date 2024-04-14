@@ -68,7 +68,7 @@ const ERBuilds: CollectionConfig = {
       }
     },
     {
-      name: 'archetype',
+      name: 'archetypes',
       label: 'Archetype',
       type: 'relationship',
       relationTo: 'archetypes',

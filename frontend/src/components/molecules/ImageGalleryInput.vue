@@ -8,7 +8,6 @@
 
   function onChange(event) {
     images.value = event.target.files
-    console.log(form.value, event)
     emit('change', form.value)
   }
 

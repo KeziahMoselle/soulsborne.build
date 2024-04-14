@@ -26,7 +26,8 @@ import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
 import Users from './src/collections/Users'
-import Archetype from './src/collections/Archetype'
+import Archetypes from './src/collections/Archetypes'
+import Media from '@/collections/Media'
 import Restrictions from './src/collections/Restrictions'
 import ERCollections from './src/collections/EldenRing'
 
@@ -61,14 +62,18 @@ export default buildConfig({
   cors: ALLOWED_ORIGINS,
   csrf: ALLOWED_ORIGINS,
   editor: lexicalEditor(),
-  collections: [Users, Archetype, Restrictions, ...ERCollections],
+  collections: [Users, Media, Archetypes, Restrictions, ...ERCollections],
   plugins: [
     cloudStorage({
       collections: {
+        'media': {
+          adapter,
+          disablePayloadAccessControl: true,
+        },
         'er-media': {
           adapter,
           disablePayloadAccessControl: true,
-        }
+        },
       }
     })
   ],

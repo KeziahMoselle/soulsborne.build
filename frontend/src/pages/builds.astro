@@ -5,10 +5,9 @@ import BuildCard from "@/components/molecules/EldenRing/BuildCard.vue";
 import { ArrowLeft, ArrowRight } from "lucide-vue-next";
 
 const builds = await getMostVotedBuilds({
-  limit: 3,
+  limit: 12,
   page: Number(Astro.url.searchParams.get('page'))
 });
-console.log(builds)
 ---
 
 <Layout title="Explore builds">

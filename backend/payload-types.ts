@@ -9,6 +9,7 @@
 export interface Config {
   collections: {
     users: User;
+    media: Media;
     archetypes: Archetype;
     restrictions: Restriction;
     'er-affinities': ErAffinity;
@@ -44,7 +45,7 @@ export interface Config {
  */
 export interface User {
   id: number;
-  image?: number | ErMedia | null;
+  image?: number | Media | null;
   name: string;
   bio?: {
     root: {
@@ -75,9 +76,9 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-media".
+ * via the `definition` "media".
  */
-export interface ErMedia {
+export interface Media {
   id: number;
   alt?: string | null;
   updatedAt: string;
@@ -167,6 +168,23 @@ export interface ErAffinity {
   affected_statistics?: (number | ErStatistic)[] | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-media".
+ */
+export interface ErMedia {
+  id: number;
+  alt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -460,7 +478,7 @@ export interface ErBuild {
       }[]
     | null;
   restrictions?: (number | Restriction)[] | null;
-  archetype: (number | Archetype)[];
+  archetypes: (number | Archetype)[];
   is_two_handed?: boolean | null;
   votes?: (number | User)[] | null;
   votes_count?: number | null;

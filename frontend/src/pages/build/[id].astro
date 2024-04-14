@@ -1,7 +1,7 @@
 ---
 import { apiFetch } from '@/api';
 import Layout from '../../layouts/Layout.astro';
-import type { Archetype, ErBuild, ErMedia, Restriction } from '@payload-types';
+import type { Archetype, ErBuild, ErMedia, Restriction, User } from '@payload-types';
 import Tag from '@/components/molecules/EldenRing/Tag.vue';
 import LikeBuildButton from '@/components/molecules/LikeBuildButton.vue';
 import Build from '@/components/EldenRing/Build.vue';
@@ -11,6 +11,7 @@ const REGEX_YOUTUBE_URL = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\
 const { id } = Astro.params
 
 const build: ErBuild = await apiFetch(`/api/er-builds/${id}`)
+const created_by = build.created_by as User
 const youtubeMatches = build.youtube_url?.match(REGEX_YOUTUBE_URL)
 ---
 
@@ -24,12 +25,29 @@ const youtubeMatches = build.youtube_url?.match(REGEX_YOUTUBE_URL)
 </script>
 
 <Layout title={`${build.name} - Build`}>
-  <section class="bg-secondary py-8 mb-8">
+  <section class="group/header z-[1] relative bg-secondary py-8 mb-8 overflow-hidden">
+    <img
+      class="-z-10 absolute inset-0 object-cover object-center h-full w-full opacity-20"
+      src={build.images?.[0]?.image?.thumbnailURL}
+      alt="" />
+    <div class="absolute inset-0 block bg-primary opacity-20 -z-[9]"></div>
+
     <div class="container grid md:grid-cols-12">
       <div class="md:col-span-11">
+        <a
+          href={`/user/${created_by.id}`}
+          class="relative inline-flex items-center gap-4 pr-12 transition duration-500 hover:brightness-125">
+          <img class="-z-10 absolute top-0 left-0 h-full w-full" src="/background-text.png" alt="" />
+          <img
+            class="size-8 rounded-full"
+            src={created_by?.image?.thumbnailURL} alt="" />
+          <span>
+            { created_by.name }
+          </span>
+        </a>
         <h1 class="type-h1">{ build.name }</h1>
         <div class="flex gap-2">
-          { build.archetype.map((archetype) => (
+          { build.archetypes.map((archetype) => (
             <Tag label={(archetype as Archetype).name} />
           ))}
           { build.restrictions.map((restriction) => (
@@ -38,11 +56,12 @@ const youtubeMatches = build.youtube_url?.match(REGEX_YOUTUBE_URL)
         </div>
       </div>
 
-      <LikeBuildButton
-        class="mt-4 justify-self-start md:mt-0"
-        build={build}
-        hasVoted={build.votes?.includes(Astro.locals.user?.id)}
-        client:visible />
+      <div class="mt-4 self-center justify-self-start md:justify-self-end md:mt-0">
+        <LikeBuildButton
+          build={build}
+          hasVoted={build.votes?.includes(Astro.locals.user?.id)}
+          client:visible />
+      </div>
     </div>
   </section>
 

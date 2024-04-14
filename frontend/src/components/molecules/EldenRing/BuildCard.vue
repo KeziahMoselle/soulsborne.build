@@ -93,7 +93,7 @@
         gradient-length="5%"
         animate-on-overflow-only
       >
-        <Tag v-for="archetype in (build.archetype as Archetype[])" :label="archetype.name" />
+        <Tag v-for="archetype in (build.archetypes as Archetype[])" :label="archetype.name" />
         <Tag v-for="restriction in (build.restrictions as Restriction[])" :label="restriction.name" />
       </Vue3Marquee>
     </div>

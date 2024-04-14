@@ -21,7 +21,7 @@ const Users: CollectionConfig = {
       name: 'image',
       label: 'Image',
       type: 'upload',
-      relationTo: 'er-media',
+      relationTo: 'media',
     },
     {
       name: 'name',

@@ -60,7 +60,7 @@
 
       <slot name="background">
         <img
-          v-if="(isSelect && type) || (!isSelect && previewImage === '') && SELECT_IMAGES[type]"
+          v-if="((isSelect && type) || (!isSelect && previewImage === '')) && SELECT_IMAGES[type]"
           class="absolute top-0 transform scale-75 p-1 object-contain transition-opacity ease-in z-[2]"
           :class="{
             'size-32': size === 'l',
@@ -82,6 +82,7 @@
               'absolute inset-0 h-full w-full': !isSelect,
               'p-4': size === 'l' && isSelect,
               'p-2': (size === 'm' && isSelect) || (size === 'l' && !isSelect),
+              'opacity-0': previewImage === ''
             }"
             :src="previewImage" />
         </slot>

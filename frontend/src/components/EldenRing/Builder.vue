@@ -450,7 +450,7 @@ const onSubmit = handleSubmit(async (values) => {
       image: image.doc.id
     })),
     starting_class: values.class,
-    archetype: values.archetypes,
+    archetypes: values.archetypes,
     restrictions: values.restrictions,
     mainhand_weapons: mainhands.value.map((item) => ({
       weapon: Number(item.id),
