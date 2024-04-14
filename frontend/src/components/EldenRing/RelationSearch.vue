@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import type { PayloadOptionLike } from '@/types';
   import qs from 'qs'
-  import { computed, reactive, ref, watch } from 'vue';
+  import { computed, reactive, ref, unref, watch } from 'vue';
   import { inMemoryCache } from '@/lib/Cache'
   import { apiFetch } from '@/api';
   import {
@@ -25,20 +25,6 @@
   import EquipmentImage from '@/components/molecules/EldenRing/EquipmentImage.vue';
   import { X } from 'lucide-vue-next';
 
-  const SELECT_IMAGES = {
-    'mainhand': '/elden-ring/builder/mainhand.png',
-    'offhand': '/elden-ring/builder/offhand.png',
-    'bolt': '/elden-ring/builder/arrows.png',
-    'greatbolt': '/elden-ring/builder/bolts.png',
-    'helm': '/elden-ring/builder/helmet.png',
-    'chest': '/elden-ring/builder/chest.png',
-    'gauntlet': '/elden-ring/builder/gauntlet.png',
-    'leg': '/elden-ring/builder/leg.png',
-    'talisman': '/elden-ring/builder/talismans.png',
-    'ash': '/elden-ring/builder/ash.png',
-    'magic': '/elden-ring/builder/sorceries.png'
-  }
-
   const props = defineProps<{
     values: any;
     setValues: any;
@@ -55,16 +41,37 @@
   const optionsByRelations = reactive<{
     [key: string]: PayloadOptionLike[]
   }>({})
-  const optionsGroups = computed(() => Object.entries(optionsByRelations).map(([relation, options]) => ([relation, options.filter((item) => item.name.includes(searchTerm.value)).splice(0, 50)])))
-  const isSmall = computed(() => props.type === 'ash' || props.type === 'affinity')
-
-  const previewImage = computed(() => {
-    if (value.value?.image?.thumbnailURL) {
-      return value.value?.image?.thumbnailURL
+  const optionsGroups = computed(() => Object.entries(optionsByRelations).map(([relation, options]) => ([relation, options.filter((item) => item.name.toLowerCase().includes(searchTerm.value.toLowerCase())).splice(0, 50)])))
+  const previewEquipment = computed(() => {
+    if (props.values[props.name]) {
+      return unref(value)
     }
 
-    return 'https://cdn.soulsborne.build/test%2Fmainhand.png'
+    return null
   })
+
+  const LABELS = {
+    archetypes: 'Archetypes',
+    restrictions: 'Restrictions',
+    'er-affinities': 'Affinities',
+    'er-ammunitions': 'Arrows & Bolts',
+    'er-armors': 'Armors',
+    'er-ashes-of-war': 'Ashes of War',
+    'er-builds': 'Builds',
+    'er-classes': 'Classes',
+    'er-media': 'Media',
+    'er-incantations': 'Incantations',
+    'er-incantation-types': 'Incantations Types',
+    'er-shields': 'Shields',
+    'er-skills': 'Skills',
+    'er-sorceries': 'Sorceries',
+    'er-sorcery-types': 'Sorcery Type',
+    'er-statistics': 'Statistics',
+    'er-status-effects': 'Status Effects',
+    'er-talismans': 'Talismans',
+    'er-weapon-types': 'Weapon Types',
+    'er-weapons': 'Weapons'
+  }
 
   async function getOptions({ relation, query = {}, page = 1 }) {
     const stringifiedQuery = qs.stringify(
@@ -94,7 +101,7 @@
    * Get all options from all loaded relations
    */
   async function getAllOptions() {
-    if (hasFetchedAllPages.value) return console.log('skipped')
+    if (hasFetchedAllPages.value) return
 
     loading.value = true
 
@@ -146,51 +153,13 @@
         @update:open="getAllOptions">
         <PopoverTrigger class="relative">
           <FormControl>
-            <img
-              class="transition-opacity ease-in z-[1]"
-              :class="{
-                'size-32': !isSmall,
-                'size-16': isSmall,
-              }"
-              height="128"
-              width="128"
-              src="/elden-ring/builder/select-background.png"
-              alt="" />
-              <!-- Placeholder -->
-            <img
-              v-if="SELECT_IMAGES[type]"
-              class="absolute top-0 transform scale-75 p-1 object-contain transition-opacity ease-in z-[2]"
-              :class="{
-                'size-32': !isSmall,
-                'size-16': isSmall,
-                'opacity-50': loading || values[name]
-              }"
-              height="128"
-              width="128"
-              :src="SELECT_IMAGES[type]"
-              alt="" />
-            <!-- Item's image here -->
-            <div v-if="values[name]" class="absolute inset-0 z-[2]">
-              <img class="p-4" :src="previewImage" />
-            </div>
-            <img
-              class="absolute top-0 transition-opacity ease-in z-[3]"
-              :class="{
-                'size-32': !isSmall,
-                'size-16': isSmall,
-                'opacity-0': !false,
-                'opacity-50': false
-              }"
-              height="128"
-              width="128"
-              src="/elden-ring/builder/select-active.png"
-              alt="" />
-            <div
-              class="loader absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 transition-opacity ease-in z-[2]"
-              :class="{
-                'opacity-0': !loading
-              }">
-            </div>
+            <EquipmentImage
+              :equipment="previewEquipment"
+              :type="type"
+              :size="['ash', 'affinity'].includes(type) ? 'm' : 'l'"
+              :loading="loading"
+              is-select
+            />
           </FormControl>
         </PopoverTrigger>
         <PopoverContent class="w-[200px] p-0">
@@ -208,12 +177,12 @@
               <CommandGroup
                 v-for="[relation, options] in optionsGroups"
                 :key="relation"
-                :heading="relation">
+                :heading="LABELS[relation]">
                 <template
-                  v-for="(option, index) in (options as PayloadOptionLike[]).filter((option) => option.id !== value?.id)"
+                  v-for="(option, index) in (options as PayloadOptionLike[]).filter((option) => option.id !== previewEquipment?.id)"
                   :key="`${relation}:${option.id}`">
                   <CommandItem
-                    v-if="value && (index === 0)"
+                    v-if="previewEquipment && (index === 0)"
                     :value="value"
                     class="relative bg-primary"
                     @select="() => {
@@ -225,9 +194,11 @@
                     }"
                   >
                     <EquipmentImage
-                      class="size-8 mr-2"
-                      small
-                      :src="value?.image?.thumbnailURL ?? 'https://cdn.soulsborne.build/test%2Fmainhand.png'" />
+                      class="mr-2"
+                      size="xs"
+                      :equipment="value"
+                      :type="type"
+                      is-select />
                     <span class="flex-1" v-if="type !== 'ash'">
                       {{ value.name }}
                     </span>
@@ -257,9 +228,11 @@
                     }"
                   >
                     <EquipmentImage
-                      class="size-8 mr-2"
-                      small
-                      :src="option?.image?.thumbnailURL ?? 'https://cdn.soulsborne.build/test%2Fmainhand.png'" />
+                      class="mr-2"
+                      size="xs"
+                      :equipment="option"
+                      :type="type"
+                      is-select />
                     <span class="flex-1" v-if="type !== 'ash'">
                       {{ option.name }}
                     </span>

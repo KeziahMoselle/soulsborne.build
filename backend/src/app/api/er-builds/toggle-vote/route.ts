@@ -1,7 +1,6 @@
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { headers as getHeaders } from 'next/headers'
-
 import { z, ZodError } from 'zod'
 import { NextRequest } from 'next/server'
 
@@ -35,15 +34,11 @@ export const POST = async (req: NextRequest) => {
       depth: 0,
     })
 
-    console.log(user.id, typeof user.id)
-
-    // @ts-expect-error
     const indexOfVote = build.votes.indexOf(user.id)
 
     if (indexOfVote > -1) {
       build.votes.splice(indexOfVote, 1)
     } else {
-      // @ts-expect-error
       build.votes.push(user.id)
     }
 
@@ -60,16 +55,15 @@ export const POST = async (req: NextRequest) => {
     return Response.json(result)
   } catch (error) {
     if (error instanceof ZodError) {
-      payload.logger.error(`[${body.email}] ${error.message} ${error.issues.map((e) => e.message).join(', ')}`)
+      payload.logger.error(`${error.message}: ${error.issues.map((e) => e.message).join(', ')}`)
 
       return new Response(JSON.stringify(error), {
         status: 400
       })
-      return
     }
 
     if (error instanceof Error) {
-      payload.logger.error(`[${body.email}] ${error.message}`)
+      payload.logger.error(error.message)
       return new Response(JSON.stringify(error), {
         status: 400
       })

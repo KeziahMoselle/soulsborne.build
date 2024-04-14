@@ -130,19 +130,19 @@
     <div class="grid ml-8 mt-8 gap-2 grid-cols-2 lg:grid-cols-3">
       <EquipmentImage
         v-for="{ weapon } in mainWeapons"
-        :src="weapon?.image?.thumbnailURL ?? 'https://cdn.soulsborne.build/test%2Fmainhand.png'"
-        :alt="(weapon as ErWeapon)?.name" />
-      <EquipmentImage v-if="mainWeapons.length === 1" />
+        :equipment="weapon"
+        size="l" />
+      <EquipmentImage v-if="mainWeapons.length === 1" size="l" />
       <template v-if="mainWeapons.length === 0">
-        <EquipmentImage  />
-        <EquipmentImage  />
+        <EquipmentImage size="l" />
+        <EquipmentImage size="l" />
       </template>
 
       <div class="grid gap-1 col-span-4 grid-cols-4 lg:col-span-1 lg:grid-cols-2 lg:grid-rows-2">
         <EquipmentImage
-          v-for="(talisman, i) in (build.talismans as ErTalisman[])"
-          :src="talisman?.image?.thumbnailURL ?? `https://cdn.soulsborne.build/test%2Ftalisman1.png`"
-          :alt="talisman.name" />
+          v-for="talisman in (build.talismans as ErTalisman[])"
+          :equipment="talisman"
+          size="m" />
       </div>
     </div>
   </article>
