@@ -31,7 +31,7 @@
     "payload": "3.0.0-beta.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "sharp": "0.32.6",
+    "sharp": "0.33.3",
     "zod": "^3.22.4"
   },
   "devDependencies": {
