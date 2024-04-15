@@ -1,7 +1,7 @@
 ---
 import { apiFetch } from '@/api';
 import Layout from '../../layouts/Layout.astro';
-import type { Archetype, ErBuild, ErMedia, Restriction, User } from '@payload-types';
+import type { Archetype, Media, ErBuild, ErMedia, Restriction, User } from '@payload-types';
 import Tag from '@/components/molecules/EldenRing/Tag.vue';
 import LikeBuildButton from '@/components/molecules/LikeBuildButton.vue';
 import Build from '@/components/EldenRing/Build.vue';
@@ -40,7 +40,7 @@ const youtubeMatches = build.youtube_url?.match(REGEX_YOUTUBE_URL)
           <img class="-z-10 absolute top-0 left-0 h-full w-full" src="/background-text.png" alt="" />
           <img
             class="size-8 rounded-full"
-            src={(created_by?.image as ErMedia)?.thumbnailURL} alt="" />
+            src={(created_by?.image as Media)?.thumbnailURL} alt="" />
           <span>
             { created_by.name }
           </span>

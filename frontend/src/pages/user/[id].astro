@@ -1,0 +1,84 @@
+---
+import type { ErBuild, User, Media } from '@payload-types';
+import type { PayloadCollection } from '@/types';
+import { apiFetch } from '@/api';
+import Layout from '../../layouts/Layout.astro';
+import qs from 'qs'
+import BuildCard from '@/components/molecules/EldenRing/BuildCard.vue';
+
+const { id } = Astro.params
+const user = await apiFetch<User>(`/api/users/${id}`)
+
+const userBuildsQuery = qs.stringify(
+  {
+    where: {
+      created_by: {
+        equals: user.id
+      }
+    },
+    sort: '-createdAt',
+    limit: 20,
+  },
+  { addQueryPrefix: true },
+)
+const builds = await apiFetch<PayloadCollection<ErBuild>>(`/api/er-builds${userBuildsQuery}`)
+
+
+const votedBuildsQuery = qs.stringify(
+  {
+    where: {
+      votes: {
+        equals: user.id
+      }
+    },
+    sort: '-createdAt',
+    limit: 20,
+  },
+  { addQueryPrefix: true },
+)
+const votedBuilds = await apiFetch<PayloadCollection<ErBuild>>(`/api/er-builds${votedBuildsQuery}`)
+---
+<Layout title={`${user.name} - Profile`}>
+  <div class="py-8 bg-secondary">
+    <section class="container flex items-center gap-8">
+      <img
+        class="size-20 rounded-full"
+        src={(user?.image as Media)?.thumbnailURL} alt="" />
+      <h2 class="type-h1">{user.name}</h2>
+    </section>
+  </div>
+
+  <section class="container--xl">
+    <h3 class="type-h2 inline-block mt-8 mb-4">Created builds</h3>
+    <div
+      class=" grid gap-5 justify-center sm:grid-cols-2 lg:grid-cols-3"
+    >
+      {
+        builds.docs.map((build) => (
+          <BuildCard
+            build={build}
+            hasVoted={build.votes?.includes(Astro.locals.user?.id)}
+            client:visible
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="container--xl">
+    <h3 class="type-h2 inline-block mt-8 mb-4">Voted builds</h3>
+    <div
+      class="grid gap-5 justify-center sm:grid-cols-2 lg:grid-cols-3"
+    >
+      {
+        votedBuilds.docs.map((build) => (
+          <BuildCard
+            build={build}
+            hasVoted={build.votes?.includes(Astro.locals.user?.id)}
+            client:visible
+          />
+        ))
+      }
+    </div>
+  </section>
+</Layout>

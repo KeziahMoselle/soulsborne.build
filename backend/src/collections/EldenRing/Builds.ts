@@ -17,6 +17,8 @@ const ERBuilds: CollectionConfig = {
     read: isPublic,
     create: isUser
   },
+  timestamps: true,
+  versions: true,
   fields: [
     /**
      * Build informations
