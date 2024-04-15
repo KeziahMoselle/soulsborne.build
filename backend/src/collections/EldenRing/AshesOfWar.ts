@@ -1,5 +1,6 @@
 import { CollectionConfig } from 'payload/types'
 import { isPublic } from '../../access/isPublic'
+import { lexicalHTML } from '@payloadcms/richtext-lexical'
 
 const ERAshesOfWar: CollectionConfig = {
   slug: 'er-ashes-of-war',
@@ -35,11 +36,13 @@ const ERAshesOfWar: CollectionConfig = {
       label: 'Description',
       type: 'richText'
     },
+    lexicalHTML('description', { name: 'description_html' }),
     {
       name: 'location',
       label: 'Location',
       type: 'richText'
     },
+    lexicalHTML('location', { name: 'location_html' }),
     {
       name: 'availability',
       label: 'Availability',

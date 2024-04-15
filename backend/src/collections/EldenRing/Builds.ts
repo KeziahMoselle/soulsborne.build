@@ -2,6 +2,7 @@ import { CollectionConfig } from 'payload/types'
 // import { SlugField } from '@nouance/payload-better-fields-plugin'
 import { isPublic } from '../../access/isPublic'
 import { isUser } from '../../access/isUser'
+import { lexicalHTML } from '@payloadcms/richtext-lexical'
 
 const ERBuilds: CollectionConfig = {
   slug: 'er-builds',
@@ -31,8 +32,9 @@ const ERBuilds: CollectionConfig = {
     {
       name: 'description',
       label: 'Description',
-      type: 'richText'
+      type: 'richText',
     },
+    lexicalHTML('description', { name: 'description_html' }),
     {
       name: 'youtube_url',
       label: 'YouTube URL',

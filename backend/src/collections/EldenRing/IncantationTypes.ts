@@ -1,5 +1,6 @@
 import { CollectionConfig } from 'payload/types'
 import { isPublic } from '../../access/isPublic'
+import { lexicalHTML } from '@payloadcms/richtext-lexical'
 
 const ERIncantationType: CollectionConfig = {
   slug: 'er-incantation-types',
@@ -32,6 +33,7 @@ const ERIncantationType: CollectionConfig = {
       label: 'Description',
       type: 'richText'
     },
+    lexicalHTML('description', { name: 'description_html' }),
   ],
 }
 

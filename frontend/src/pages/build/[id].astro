@@ -103,7 +103,12 @@ const youtubeMatches = build.youtube_url?.match(REGEX_YOUTUBE_URL)
     <Build build={build} client:visible/>
   </section>
 
-  <section class="my-8">
-    {JSON.stringify(build.description, null, 2)}
-  </section>
+  {build.description_html && (
+    <section class="my-8">
+      <div
+        class="wysiwyg text-white text-opacity-80 md:ml-28"
+        set:html={build.description_html}>
+      </div>
+    </section>
+  )}
 </Layout>

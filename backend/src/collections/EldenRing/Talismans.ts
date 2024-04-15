@@ -1,5 +1,6 @@
 import { CollectionConfig } from 'payload/types'
 import { isPublic } from '../../access/isPublic'
+import { lexicalHTML } from '@payloadcms/richtext-lexical'
 
 const ERTalismans: CollectionConfig = {
   slug: 'er-talismans',
@@ -42,11 +43,13 @@ const ERTalismans: CollectionConfig = {
       label: 'Description',
       type: 'richText'
     },
+    lexicalHTML('description', { name: 'description_html' }),
     {
       name: 'effect',
       label: 'Effect',
       type: 'richText'
     },
+    lexicalHTML('effect', { name: 'effect_html' }),
   ],
 }
 

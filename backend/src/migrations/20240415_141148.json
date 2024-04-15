@@ -1,9 +1,1259 @@
 {
-  "id": "02c51af4-31cc-4f9c-914e-a54cfdff9998",
+  "id": "e852a688-6316-492d-95b8-5a803116f48d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
   "tables": {
+    "archetypes": {
+      "name": "archetypes",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description_html": {
+          "name": "description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "archetypes_created_at_idx": {
+          "name": "archetypes_created_at_idx",
+          "columns": [
+            "created_at"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "fashion_images": {
+      "name": "fashion_images",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "fashion_images_order_idx": {
+          "name": "fashion_images_order_idx",
+          "columns": [
+            "_order"
+          ],
+          "isUnique": false
+        },
+        "fashion_images_parent_id_idx": {
+          "name": "fashion_images_parent_id_idx",
+          "columns": [
+            "_parent_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "fashion_images__parent_id_fashion_id_fk": {
+          "name": "fashion_images__parent_id_fashion_id_fk",
+          "tableFrom": "fashion_images",
+          "tableTo": "fashion",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "fashion": {
+      "name": "fashion",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description_html": {
+          "name": "description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "youtube_url": {
+          "name": "youtube_url",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "game": {
+          "name": "game",
+          "type": "enum_fashion_game",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "votes_count": {
+          "name": "votes_count",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "fashion_created_at_idx": {
+          "name": "fashion_created_at_idx",
+          "columns": [
+            "created_at"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "fashion_rels": {
+      "name": "fashion_rels",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "path": {
+          "name": "path",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fashion_media_id": {
+          "name": "fashion_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_weapons_id": {
+          "name": "er_weapons_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_shields_id": {
+          "name": "er_shields_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_sorceries_id": {
+          "name": "er_sorceries_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_incantations_id": {
+          "name": "er_incantations_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_armors_id": {
+          "name": "er_armors_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "users_id": {
+          "name": "users_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "fashion_rels_order_idx": {
+          "name": "fashion_rels_order_idx",
+          "columns": [
+            "order"
+          ],
+          "isUnique": false
+        },
+        "fashion_rels_parent_idx": {
+          "name": "fashion_rels_parent_idx",
+          "columns": [
+            "parent_id"
+          ],
+          "isUnique": false
+        },
+        "fashion_rels_path_idx": {
+          "name": "fashion_rels_path_idx",
+          "columns": [
+            "path"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "fashion_rels_parent_id_fashion_id_fk": {
+          "name": "fashion_rels_parent_id_fashion_id_fk",
+          "tableFrom": "fashion_rels",
+          "tableTo": "fashion",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "fashion_rels_fashion_media_id_fashion_media_id_fk": {
+          "name": "fashion_rels_fashion_media_id_fashion_media_id_fk",
+          "tableFrom": "fashion_rels",
+          "tableTo": "fashion_media",
+          "columnsFrom": [
+            "fashion_media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "fashion_rels_er_weapons_id_er_weapons_id_fk": {
+          "name": "fashion_rels_er_weapons_id_er_weapons_id_fk",
+          "tableFrom": "fashion_rels",
+          "tableTo": "er_weapons",
+          "columnsFrom": [
+            "er_weapons_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "fashion_rels_er_shields_id_er_shields_id_fk": {
+          "name": "fashion_rels_er_shields_id_er_shields_id_fk",
+          "tableFrom": "fashion_rels",
+          "tableTo": "er_shields",
+          "columnsFrom": [
+            "er_shields_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "fashion_rels_er_sorceries_id_er_sorceries_id_fk": {
+          "name": "fashion_rels_er_sorceries_id_er_sorceries_id_fk",
+          "tableFrom": "fashion_rels",
+          "tableTo": "er_sorceries",
+          "columnsFrom": [
+            "er_sorceries_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "fashion_rels_er_incantations_id_er_incantations_id_fk": {
+          "name": "fashion_rels_er_incantations_id_er_incantations_id_fk",
+          "tableFrom": "fashion_rels",
+          "tableTo": "er_incantations",
+          "columnsFrom": [
+            "er_incantations_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "fashion_rels_er_armors_id_er_armors_id_fk": {
+          "name": "fashion_rels_er_armors_id_er_armors_id_fk",
+          "tableFrom": "fashion_rels",
+          "tableTo": "er_armors",
+          "columnsFrom": [
+            "er_armors_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "fashion_rels_users_id_users_id_fk": {
+          "name": "fashion_rels_users_id_users_id_fk",
+          "tableFrom": "fashion_rels",
+          "tableTo": "users",
+          "columnsFrom": [
+            "users_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "_fashion_v_version_images": {
+      "name": "_fashion_v_version_images",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "_uuid": {
+          "name": "_uuid",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_fashion_v_version_images_order_idx": {
+          "name": "_fashion_v_version_images_order_idx",
+          "columns": [
+            "_order"
+          ],
+          "isUnique": false
+        },
+        "_fashion_v_version_images_parent_id_idx": {
+          "name": "_fashion_v_version_images_parent_id_idx",
+          "columns": [
+            "_parent_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "_fashion_v_version_images__parent_id__fashion_v_id_fk": {
+          "name": "_fashion_v_version_images__parent_id__fashion_v_id_fk",
+          "tableFrom": "_fashion_v_version_images",
+          "tableTo": "_fashion_v",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "_fashion_v": {
+      "name": "_fashion_v",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "version_name": {
+          "name": "version_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_description": {
+          "name": "version_description",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_description_html": {
+          "name": "version_description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_youtube_url": {
+          "name": "version_youtube_url",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_game": {
+          "name": "version_game",
+          "type": "_enum__fashion_v_version_game_v",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_votes_count": {
+          "name": "version_votes_count",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_updated_at": {
+          "name": "version_updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_created_at": {
+          "name": "version_created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "_fashion_v_version_version_created_at_idx": {
+          "name": "_fashion_v_version_version_created_at_idx",
+          "columns": [
+            "version_created_at"
+          ],
+          "isUnique": false
+        },
+        "_fashion_v_created_at_idx": {
+          "name": "_fashion_v_created_at_idx",
+          "columns": [
+            "created_at"
+          ],
+          "isUnique": false
+        },
+        "_fashion_v_updated_at_idx": {
+          "name": "_fashion_v_updated_at_idx",
+          "columns": [
+            "updated_at"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "_fashion_v_rels": {
+      "name": "_fashion_v_rels",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "path": {
+          "name": "path",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fashion_id": {
+          "name": "fashion_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "fashion_media_id": {
+          "name": "fashion_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_weapons_id": {
+          "name": "er_weapons_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_shields_id": {
+          "name": "er_shields_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_sorceries_id": {
+          "name": "er_sorceries_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_incantations_id": {
+          "name": "er_incantations_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_armors_id": {
+          "name": "er_armors_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "users_id": {
+          "name": "users_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_fashion_v_rels_order_idx": {
+          "name": "_fashion_v_rels_order_idx",
+          "columns": [
+            "order"
+          ],
+          "isUnique": false
+        },
+        "_fashion_v_rels_parent_idx": {
+          "name": "_fashion_v_rels_parent_idx",
+          "columns": [
+            "parent_id"
+          ],
+          "isUnique": false
+        },
+        "_fashion_v_rels_path_idx": {
+          "name": "_fashion_v_rels_path_idx",
+          "columns": [
+            "path"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "_fashion_v_rels_parent_id__fashion_v_id_fk": {
+          "name": "_fashion_v_rels_parent_id__fashion_v_id_fk",
+          "tableFrom": "_fashion_v_rels",
+          "tableTo": "_fashion_v",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_fashion_v_rels_fashion_id_fashion_id_fk": {
+          "name": "_fashion_v_rels_fashion_id_fashion_id_fk",
+          "tableFrom": "_fashion_v_rels",
+          "tableTo": "fashion",
+          "columnsFrom": [
+            "fashion_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_fashion_v_rels_fashion_media_id_fashion_media_id_fk": {
+          "name": "_fashion_v_rels_fashion_media_id_fashion_media_id_fk",
+          "tableFrom": "_fashion_v_rels",
+          "tableTo": "fashion_media",
+          "columnsFrom": [
+            "fashion_media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_fashion_v_rels_er_weapons_id_er_weapons_id_fk": {
+          "name": "_fashion_v_rels_er_weapons_id_er_weapons_id_fk",
+          "tableFrom": "_fashion_v_rels",
+          "tableTo": "er_weapons",
+          "columnsFrom": [
+            "er_weapons_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_fashion_v_rels_er_shields_id_er_shields_id_fk": {
+          "name": "_fashion_v_rels_er_shields_id_er_shields_id_fk",
+          "tableFrom": "_fashion_v_rels",
+          "tableTo": "er_shields",
+          "columnsFrom": [
+            "er_shields_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_fashion_v_rels_er_sorceries_id_er_sorceries_id_fk": {
+          "name": "_fashion_v_rels_er_sorceries_id_er_sorceries_id_fk",
+          "tableFrom": "_fashion_v_rels",
+          "tableTo": "er_sorceries",
+          "columnsFrom": [
+            "er_sorceries_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_fashion_v_rels_er_incantations_id_er_incantations_id_fk": {
+          "name": "_fashion_v_rels_er_incantations_id_er_incantations_id_fk",
+          "tableFrom": "_fashion_v_rels",
+          "tableTo": "er_incantations",
+          "columnsFrom": [
+            "er_incantations_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_fashion_v_rels_er_armors_id_er_armors_id_fk": {
+          "name": "_fashion_v_rels_er_armors_id_er_armors_id_fk",
+          "tableFrom": "_fashion_v_rels",
+          "tableTo": "er_armors",
+          "columnsFrom": [
+            "er_armors_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_fashion_v_rels_users_id_users_id_fk": {
+          "name": "_fashion_v_rels_users_id_users_id_fk",
+          "tableFrom": "_fashion_v_rels",
+          "tableTo": "users",
+          "columnsFrom": [
+            "users_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "fashion_media": {
+      "name": "fashion_media",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "alt": {
+          "name": "alt",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "thumbnail_u_r_l": {
+          "name": "thumbnail_u_r_l",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "filename": {
+          "name": "filename",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "mime_type": {
+          "name": "mime_type",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "filesize": {
+          "name": "filesize",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "width": {
+          "name": "width",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "height": {
+          "name": "height",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "fashion_media_created_at_idx": {
+          "name": "fashion_media_created_at_idx",
+          "columns": [
+            "created_at"
+          ],
+          "isUnique": false
+        },
+        "fashion_media_filename_idx": {
+          "name": "fashion_media_filename_idx",
+          "columns": [
+            "filename"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "media": {
+      "name": "media",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "alt": {
+          "name": "alt",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "thumbnail_u_r_l": {
+          "name": "thumbnail_u_r_l",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "filename": {
+          "name": "filename",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "mime_type": {
+          "name": "mime_type",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "filesize": {
+          "name": "filesize",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "width": {
+          "name": "width",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "height": {
+          "name": "height",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "media_created_at_idx": {
+          "name": "media_created_at_idx",
+          "columns": [
+            "created_at"
+          ],
+          "isUnique": false
+        },
+        "media_filename_idx": {
+          "name": "media_filename_idx",
+          "columns": [
+            "filename"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "restrictions": {
+      "name": "restrictions",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description_html": {
+          "name": "description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "restrictions_created_at_idx": {
+          "name": "restrictions_created_at_idx",
+          "columns": [
+            "created_at"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "sliders_images": {
+      "name": "sliders_images",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "sliders_images_order_idx": {
+          "name": "sliders_images_order_idx",
+          "columns": [
+            "_order"
+          ],
+          "isUnique": false
+        },
+        "sliders_images_parent_id_idx": {
+          "name": "sliders_images_parent_id_idx",
+          "columns": [
+            "_parent_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "sliders_images__parent_id_sliders_id_fk": {
+          "name": "sliders_images__parent_id_sliders_id_fk",
+          "tableFrom": "sliders_images",
+          "tableTo": "sliders",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "sliders": {
+      "name": "sliders",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description_html": {
+          "name": "description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "youtube_url": {
+          "name": "youtube_url",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "votes_count": {
+          "name": "votes_count",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "sliders_created_at_idx": {
+          "name": "sliders_created_at_idx",
+          "columns": [
+            "created_at"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "sliders_rels": {
+      "name": "sliders_rels",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "path": {
+          "name": "path",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fashion_media_id": {
+          "name": "fashion_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "users_id": {
+          "name": "users_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "sliders_rels_order_idx": {
+          "name": "sliders_rels_order_idx",
+          "columns": [
+            "order"
+          ],
+          "isUnique": false
+        },
+        "sliders_rels_parent_idx": {
+          "name": "sliders_rels_parent_idx",
+          "columns": [
+            "parent_id"
+          ],
+          "isUnique": false
+        },
+        "sliders_rels_path_idx": {
+          "name": "sliders_rels_path_idx",
+          "columns": [
+            "path"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "sliders_rels_parent_id_sliders_id_fk": {
+          "name": "sliders_rels_parent_id_sliders_id_fk",
+          "tableFrom": "sliders_rels",
+          "tableTo": "sliders",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "sliders_rels_fashion_media_id_fashion_media_id_fk": {
+          "name": "sliders_rels_fashion_media_id_fashion_media_id_fk",
+          "tableFrom": "sliders_rels",
+          "tableTo": "fashion_media",
+          "columnsFrom": [
+            "fashion_media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "sliders_rels_users_id_users_id_fk": {
+          "name": "sliders_rels_users_id_users_id_fk",
+          "tableFrom": "sliders_rels",
+          "tableTo": "users",
+          "columnsFrom": [
+            "users_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "users_roles": {
       "name": "users_roles",
       "schema": "",
@@ -82,6 +1332,18 @@
           "type": "varchar",
           "primaryKey": false,
           "notNull": true
+        },
+        "bio": {
+          "name": "bio",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bio_html": {
+          "name": "bio_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
         },
         "updated_at": {
           "name": "updated_at",
@@ -167,8 +1429,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "archetypes": {
-      "name": "archetypes",
+    "users_rels": {
+      "name": "users_rels",
       "schema": "",
       "columns": {
         "id": {
@@ -177,93 +1439,82 @@
           "primaryKey": true,
           "notNull": true
         },
-        "name": {
-          "name": "name",
-          "type": "varchar",
+        "order": {
+          "name": "order",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
-        "description": {
-          "name": "description",
-          "type": "jsonb",
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": false
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp(3) with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp(3) with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "archetypes_created_at_idx": {
-          "name": "archetypes_created_at_idx",
-          "columns": [
-            "created_at"
-          ],
-          "isUnique": false
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "restrictions": {
-      "name": "restrictions",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
           "notNull": true
         },
-        "name": {
-          "name": "name",
+        "path": {
+          "name": "path",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
-        "description": {
-          "name": "description",
-          "type": "jsonb",
+        "media_id": {
+          "name": "media_id",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp(3) with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp(3) with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
         }
       },
       "indexes": {
-        "restrictions_created_at_idx": {
-          "name": "restrictions_created_at_idx",
+        "users_rels_order_idx": {
+          "name": "users_rels_order_idx",
           "columns": [
-            "created_at"
+            "order"
+          ],
+          "isUnique": false
+        },
+        "users_rels_parent_idx": {
+          "name": "users_rels_parent_idx",
+          "columns": [
+            "parent_id"
+          ],
+          "isUnique": false
+        },
+        "users_rels_path_idx": {
+          "name": "users_rels_path_idx",
+          "columns": [
+            "path"
           ],
           "isUnique": false
         }
       },
-      "foreignKeys": {},
+      "foreignKeys": {
+        "users_rels_parent_id_users_id_fk": {
+          "name": "users_rels_parent_id_users_id_fk",
+          "tableFrom": "users_rels",
+          "tableTo": "users",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "users_rels_media_id_media_id_fk": {
+          "name": "users_rels_media_id_media_id_fk",
+          "tableFrom": "users_rels",
+          "tableTo": "media",
+          "columnsFrom": [
+            "media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -286,6 +1537,12 @@
         "description": {
           "name": "description",
           "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description_html": {
+          "name": "description_html",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -358,6 +1615,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "er_statistics_id": {
           "name": "er_statistics_id",
           "type": "integer",
@@ -402,6 +1665,19 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "er_affinities_rels_er_media_id_er_media_id_fk": {
+          "name": "er_affinities_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "er_affinities_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "er_affinities_rels_er_statistics_id_er_statistics_id_fk": {
           "name": "er_affinities_rels_er_statistics_id_er_statistics_id_fk",
           "tableFrom": "er_affinities_rels",
@@ -438,6 +1714,12 @@
         "version_description": {
           "name": "version_description",
           "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_description_html": {
+          "name": "version_description_html",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -542,6 +1824,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "er_statistics_id": {
           "name": "er_statistics_id",
           "type": "integer",
@@ -599,6 +1887,19 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "_er_affinities_v_rels_er_media_id_er_media_id_fk": {
+          "name": "_er_affinities_v_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "_er_affinities_v_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "_er_affinities_v_rels_er_statistics_id_er_statistics_id_fk": {
           "name": "_er_affinities_v_rels_er_statistics_id_er_statistics_id_fk",
           "tableFrom": "_er_affinities_v_rels",
@@ -641,6 +1942,12 @@
         "description": {
           "name": "description",
           "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description_html": {
+          "name": "description_html",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -743,6 +2050,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "er_status_effects_id": {
           "name": "er_status_effects_id",
           "type": "integer",
@@ -780,6 +2093,19 @@
           "tableTo": "er_ammunitions",
           "columnsFrom": [
             "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "er_ammunitions_rels_er_media_id_er_media_id_fk": {
+          "name": "er_ammunitions_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "er_ammunitions_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
           ],
           "columnsTo": [
             "id"
@@ -829,6 +2155,12 @@
         "version_description": {
           "name": "version_description",
           "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_description_html": {
+          "name": "version_description_html",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -963,6 +2295,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "er_status_effects_id": {
           "name": "er_status_effects_id",
           "type": "integer",
@@ -1020,6 +2358,19 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "_er_ammunitions_v_rels_er_media_id_er_media_id_fk": {
+          "name": "_er_ammunitions_v_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "_er_ammunitions_v_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "_er_ammunitions_v_rels_er_status_effects_id_er_status_effects_id_fk": {
           "name": "_er_ammunitions_v_rels_er_status_effects_id_er_status_effects_id_fk",
           "tableFrom": "_er_ammunitions_v_rels",
@@ -1062,6 +2413,12 @@
         "description": {
           "name": "description",
           "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description_html": {
+          "name": "description_html",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -1184,6 +2541,95 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "er_armors_rels": {
+      "name": "er_armors_rels",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "path": {
+          "name": "path",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "er_armors_rels_order_idx": {
+          "name": "er_armors_rels_order_idx",
+          "columns": [
+            "order"
+          ],
+          "isUnique": false
+        },
+        "er_armors_rels_parent_idx": {
+          "name": "er_armors_rels_parent_idx",
+          "columns": [
+            "parent_id"
+          ],
+          "isUnique": false
+        },
+        "er_armors_rels_path_idx": {
+          "name": "er_armors_rels_path_idx",
+          "columns": [
+            "path"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "er_armors_rels_parent_id_er_armors_id_fk": {
+          "name": "er_armors_rels_parent_id_er_armors_id_fk",
+          "tableFrom": "er_armors_rels",
+          "tableTo": "er_armors",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "er_armors_rels_er_media_id_er_media_id_fk": {
+          "name": "er_armors_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "er_armors_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "_er_armors_v": {
       "name": "_er_armors_v",
       "schema": "",
@@ -1209,6 +2655,12 @@
         "version_description": {
           "name": "version_description",
           "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_description_html": {
+          "name": "version_description_html",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -1390,6 +2842,12 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": false
+        },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -1441,6 +2899,19 @@
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "_er_armors_v_rels_er_media_id_er_media_id_fk": {
+          "name": "_er_armors_v_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "_er_armors_v_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -1468,9 +2939,21 @@
           "primaryKey": false,
           "notNull": false
         },
+        "description_html": {
+          "name": "description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "location": {
           "name": "location",
           "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "location_html": {
+          "name": "location_html",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -1625,6 +3108,63 @@
           "tableTo": "er_affinities",
           "columnsFrom": [
             "er_affinities_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "er_builds_images": {
+      "name": "er_builds_images",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "er_builds_images_order_idx": {
+          "name": "er_builds_images_order_idx",
+          "columns": [
+            "_order"
+          ],
+          "isUnique": false
+        },
+        "er_builds_images_parent_id_idx": {
+          "name": "er_builds_images_parent_id_idx",
+          "columns": [
+            "_parent_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "er_builds_images__parent_id_er_builds_id_fk": {
+          "name": "er_builds_images__parent_id_er_builds_id_fk",
+          "tableFrom": "er_builds_images",
+          "tableTo": "er_builds",
+          "columnsFrom": [
+            "_parent_id"
           ],
           "columnsTo": [
             "id"
@@ -1835,6 +3375,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "description_html": {
+          "name": "description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "youtube_url": {
           "name": "youtube_url",
           "type": "varchar",
@@ -1914,6 +3460,12 @@
           "type": "varchar",
           "primaryKey": false,
           "notNull": true
+        },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
         },
         "restrictions_id": {
           "name": "restrictions_id",
@@ -2030,6 +3582,19 @@
           "tableTo": "er_builds",
           "columnsFrom": [
             "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "er_builds_rels_er_media_id_er_media_id_fk": {
+          "name": "er_builds_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "er_builds_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
           ],
           "columnsTo": [
             "id"
@@ -2223,6 +3788,744 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "_er_builds_v_version_images": {
+      "name": "_er_builds_v_version_images",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "_uuid": {
+          "name": "_uuid",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_er_builds_v_version_images_order_idx": {
+          "name": "_er_builds_v_version_images_order_idx",
+          "columns": [
+            "_order"
+          ],
+          "isUnique": false
+        },
+        "_er_builds_v_version_images_parent_id_idx": {
+          "name": "_er_builds_v_version_images_parent_id_idx",
+          "columns": [
+            "_parent_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "_er_builds_v_version_images__parent_id__er_builds_v_id_fk": {
+          "name": "_er_builds_v_version_images__parent_id__er_builds_v_id_fk",
+          "tableFrom": "_er_builds_v_version_images",
+          "tableTo": "_er_builds_v",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "_er_builds_v_version_mainhand_weapons": {
+      "name": "_er_builds_v_version_mainhand_weapons",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "_uuid": {
+          "name": "_uuid",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_er_builds_v_version_mainhand_weapons_order_idx": {
+          "name": "_er_builds_v_version_mainhand_weapons_order_idx",
+          "columns": [
+            "_order"
+          ],
+          "isUnique": false
+        },
+        "_er_builds_v_version_mainhand_weapons_parent_id_idx": {
+          "name": "_er_builds_v_version_mainhand_weapons_parent_id_idx",
+          "columns": [
+            "_parent_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "_er_builds_v_version_mainhand_weapons__parent_id__er_builds_v_id_fk": {
+          "name": "_er_builds_v_version_mainhand_weapons__parent_id__er_builds_v_id_fk",
+          "tableFrom": "_er_builds_v_version_mainhand_weapons",
+          "tableTo": "_er_builds_v",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "_er_builds_v_version_offhand_weapons": {
+      "name": "_er_builds_v_version_offhand_weapons",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "_uuid": {
+          "name": "_uuid",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_er_builds_v_version_offhand_weapons_order_idx": {
+          "name": "_er_builds_v_version_offhand_weapons_order_idx",
+          "columns": [
+            "_order"
+          ],
+          "isUnique": false
+        },
+        "_er_builds_v_version_offhand_weapons_parent_id_idx": {
+          "name": "_er_builds_v_version_offhand_weapons_parent_id_idx",
+          "columns": [
+            "_parent_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "_er_builds_v_version_offhand_weapons__parent_id__er_builds_v_id_fk": {
+          "name": "_er_builds_v_version_offhand_weapons__parent_id__er_builds_v_id_fk",
+          "tableFrom": "_er_builds_v_version_offhand_weapons",
+          "tableTo": "_er_builds_v",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "_er_builds_v_version_statistics": {
+      "name": "_er_builds_v_version_statistics",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "value": {
+          "name": "value",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "_uuid": {
+          "name": "_uuid",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_er_builds_v_version_statistics_order_idx": {
+          "name": "_er_builds_v_version_statistics_order_idx",
+          "columns": [
+            "_order"
+          ],
+          "isUnique": false
+        },
+        "_er_builds_v_version_statistics_parent_id_idx": {
+          "name": "_er_builds_v_version_statistics_parent_id_idx",
+          "columns": [
+            "_parent_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "_er_builds_v_version_statistics__parent_id__er_builds_v_id_fk": {
+          "name": "_er_builds_v_version_statistics__parent_id__er_builds_v_id_fk",
+          "tableFrom": "_er_builds_v_version_statistics",
+          "tableTo": "_er_builds_v",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "_er_builds_v": {
+      "name": "_er_builds_v",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "version_name": {
+          "name": "version_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_description": {
+          "name": "version_description",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_description_html": {
+          "name": "version_description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_youtube_url": {
+          "name": "version_youtube_url",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_is_two_handed": {
+          "name": "version_is_two_handed",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_votes_count": {
+          "name": "version_votes_count",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_level": {
+          "name": "version_level",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_updated_at": {
+          "name": "version_updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_created_at": {
+          "name": "version_created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "_er_builds_v_version_version_created_at_idx": {
+          "name": "_er_builds_v_version_version_created_at_idx",
+          "columns": [
+            "version_created_at"
+          ],
+          "isUnique": false
+        },
+        "_er_builds_v_created_at_idx": {
+          "name": "_er_builds_v_created_at_idx",
+          "columns": [
+            "created_at"
+          ],
+          "isUnique": false
+        },
+        "_er_builds_v_updated_at_idx": {
+          "name": "_er_builds_v_updated_at_idx",
+          "columns": [
+            "updated_at"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "_er_builds_v_rels": {
+      "name": "_er_builds_v_rels",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "path": {
+          "name": "path",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "er_builds_id": {
+          "name": "er_builds_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "restrictions_id": {
+          "name": "restrictions_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "archetypes_id": {
+          "name": "archetypes_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "users_id": {
+          "name": "users_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_weapons_id": {
+          "name": "er_weapons_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_ashes_of_war_id": {
+          "name": "er_ashes_of_war_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_affinities_id": {
+          "name": "er_affinities_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_shields_id": {
+          "name": "er_shields_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_ammunitions_id": {
+          "name": "er_ammunitions_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_armors_id": {
+          "name": "er_armors_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_talismans_id": {
+          "name": "er_talismans_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_sorceries_id": {
+          "name": "er_sorceries_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_incantations_id": {
+          "name": "er_incantations_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_classes_id": {
+          "name": "er_classes_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "er_statistics_id": {
+          "name": "er_statistics_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_er_builds_v_rels_order_idx": {
+          "name": "_er_builds_v_rels_order_idx",
+          "columns": [
+            "order"
+          ],
+          "isUnique": false
+        },
+        "_er_builds_v_rels_parent_idx": {
+          "name": "_er_builds_v_rels_parent_idx",
+          "columns": [
+            "parent_id"
+          ],
+          "isUnique": false
+        },
+        "_er_builds_v_rels_path_idx": {
+          "name": "_er_builds_v_rels_path_idx",
+          "columns": [
+            "path"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "_er_builds_v_rels_parent_id__er_builds_v_id_fk": {
+          "name": "_er_builds_v_rels_parent_id__er_builds_v_id_fk",
+          "tableFrom": "_er_builds_v_rels",
+          "tableTo": "_er_builds_v",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_er_builds_v_rels_er_builds_id_er_builds_id_fk": {
+          "name": "_er_builds_v_rels_er_builds_id_er_builds_id_fk",
+          "tableFrom": "_er_builds_v_rels",
+          "tableTo": "er_builds",
+          "columnsFrom": [
+            "er_builds_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_er_builds_v_rels_er_media_id_er_media_id_fk": {
+          "name": "_er_builds_v_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "_er_builds_v_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_er_builds_v_rels_restrictions_id_restrictions_id_fk": {
+          "name": "_er_builds_v_rels_restrictions_id_restrictions_id_fk",
+          "tableFrom": "_er_builds_v_rels",
+          "tableTo": "restrictions",
+          "columnsFrom": [
+            "restrictions_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_er_builds_v_rels_archetypes_id_archetypes_id_fk": {
+          "name": "_er_builds_v_rels_archetypes_id_archetypes_id_fk",
+          "tableFrom": "_er_builds_v_rels",
+          "tableTo": "archetypes",
+          "columnsFrom": [
+            "archetypes_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_er_builds_v_rels_users_id_users_id_fk": {
+          "name": "_er_builds_v_rels_users_id_users_id_fk",
+          "tableFrom": "_er_builds_v_rels",
+          "tableTo": "users",
+          "columnsFrom": [
+            "users_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_er_builds_v_rels_er_weapons_id_er_weapons_id_fk": {
+          "name": "_er_builds_v_rels_er_weapons_id_er_weapons_id_fk",
+          "tableFrom": "_er_builds_v_rels",
+          "tableTo": "er_weapons",
+          "columnsFrom": [
+            "er_weapons_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_er_builds_v_rels_er_ashes_of_war_id_er_ashes_of_war_id_fk": {
+          "name": "_er_builds_v_rels_er_ashes_of_war_id_er_ashes_of_war_id_fk",
+          "tableFrom": "_er_builds_v_rels",
+          "tableTo": "er_ashes_of_war",
+          "columnsFrom": [
+            "er_ashes_of_war_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_er_builds_v_rels_er_affinities_id_er_affinities_id_fk": {
+          "name": "_er_builds_v_rels_er_affinities_id_er_affinities_id_fk",
+          "tableFrom": "_er_builds_v_rels",
+          "tableTo": "er_affinities",
+          "columnsFrom": [
+            "er_affinities_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_er_builds_v_rels_er_shields_id_er_shields_id_fk": {
+          "name": "_er_builds_v_rels_er_shields_id_er_shields_id_fk",
+          "tableFrom": "_er_builds_v_rels",
+          "tableTo": "er_shields",
+          "columnsFrom": [
+            "er_shields_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_er_builds_v_rels_er_ammunitions_id_er_ammunitions_id_fk": {
+          "name": "_er_builds_v_rels_er_ammunitions_id_er_ammunitions_id_fk",
+          "tableFrom": "_er_builds_v_rels",
+          "tableTo": "er_ammunitions",
+          "columnsFrom": [
+            "er_ammunitions_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_er_builds_v_rels_er_armors_id_er_armors_id_fk": {
+          "name": "_er_builds_v_rels_er_armors_id_er_armors_id_fk",
+          "tableFrom": "_er_builds_v_rels",
+          "tableTo": "er_armors",
+          "columnsFrom": [
+            "er_armors_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_er_builds_v_rels_er_talismans_id_er_talismans_id_fk": {
+          "name": "_er_builds_v_rels_er_talismans_id_er_talismans_id_fk",
+          "tableFrom": "_er_builds_v_rels",
+          "tableTo": "er_talismans",
+          "columnsFrom": [
+            "er_talismans_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_er_builds_v_rels_er_sorceries_id_er_sorceries_id_fk": {
+          "name": "_er_builds_v_rels_er_sorceries_id_er_sorceries_id_fk",
+          "tableFrom": "_er_builds_v_rels",
+          "tableTo": "er_sorceries",
+          "columnsFrom": [
+            "er_sorceries_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_er_builds_v_rels_er_incantations_id_er_incantations_id_fk": {
+          "name": "_er_builds_v_rels_er_incantations_id_er_incantations_id_fk",
+          "tableFrom": "_er_builds_v_rels",
+          "tableTo": "er_incantations",
+          "columnsFrom": [
+            "er_incantations_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_er_builds_v_rels_er_classes_id_er_classes_id_fk": {
+          "name": "_er_builds_v_rels_er_classes_id_er_classes_id_fk",
+          "tableFrom": "_er_builds_v_rels",
+          "tableTo": "er_classes",
+          "columnsFrom": [
+            "er_classes_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_er_builds_v_rels_er_statistics_id_er_statistics_id_fk": {
+          "name": "_er_builds_v_rels_er_statistics_id_er_statistics_id_fk",
+          "tableFrom": "_er_builds_v_rels",
+          "tableTo": "er_statistics",
+          "columnsFrom": [
+            "er_statistics_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "er_classes_statistics": {
       "name": "er_classes_statistics",
       "schema": "",
@@ -2371,6 +4674,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "er_weapons_id": {
           "name": "er_weapons_id",
           "type": "integer",
@@ -2438,6 +4747,19 @@
           "tableTo": "er_classes",
           "columnsFrom": [
             "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "er_classes_rels_er_media_id_er_media_id_fk": {
+          "name": "er_classes_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "er_classes_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
           ],
           "columnsTo": [
             "id"
@@ -2527,6 +4849,99 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "er_media": {
+      "name": "er_media",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "alt": {
+          "name": "alt",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "thumbnail_u_r_l": {
+          "name": "thumbnail_u_r_l",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "filename": {
+          "name": "filename",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "mime_type": {
+          "name": "mime_type",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "filesize": {
+          "name": "filesize",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "width": {
+          "name": "width",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "height": {
+          "name": "height",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "er_media_created_at_idx": {
+          "name": "er_media_created_at_idx",
+          "columns": [
+            "created_at"
+          ],
+          "isUnique": false
+        },
+        "er_media_filename_idx": {
+          "name": "er_media_filename_idx",
+          "columns": [
+            "filename"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "er_incantations_requirements": {
       "name": "er_incantations_requirements",
       "schema": "",
@@ -2612,9 +5027,21 @@
           "primaryKey": false,
           "notNull": false
         },
+        "description_html": {
+          "name": "description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "effect": {
           "name": "effect",
           "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "effect_html": {
+          "name": "effect_html",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -2693,6 +5120,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "er_incantation_types_id": {
           "name": "er_incantation_types_id",
           "type": "integer",
@@ -2736,6 +5169,19 @@
           "tableTo": "er_incantations",
           "columnsFrom": [
             "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "er_incantations_rels_er_media_id_er_media_id_fk": {
+          "name": "er_incantations_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "er_incantations_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
           ],
           "columnsTo": [
             "id"
@@ -2864,9 +5310,21 @@
           "primaryKey": false,
           "notNull": false
         },
+        "version_description_html": {
+          "name": "version_description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "version_effect": {
           "name": "version_effect",
           "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_effect_html": {
+          "name": "version_effect_html",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -2977,6 +5435,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "er_incantation_types_id": {
           "name": "er_incantation_types_id",
           "type": "integer",
@@ -3040,6 +5504,19 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "_er_incantations_v_rels_er_media_id_er_media_id_fk": {
+          "name": "_er_incantations_v_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "_er_incantations_v_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "_er_incantations_v_rels_er_incantation_types_id_er_incantation_types_id_fk": {
           "name": "_er_incantations_v_rels_er_incantation_types_id_er_incantation_types_id_fk",
           "tableFrom": "_er_incantations_v_rels",
@@ -3092,6 +5569,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "description_html": {
+          "name": "description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp(3) with time zone",
@@ -3124,6 +5607,95 @@
         }
       },
       "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "er_incantation_types_rels": {
+      "name": "er_incantation_types_rels",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "path": {
+          "name": "path",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "er_incantation_types_rels_order_idx": {
+          "name": "er_incantation_types_rels_order_idx",
+          "columns": [
+            "order"
+          ],
+          "isUnique": false
+        },
+        "er_incantation_types_rels_parent_idx": {
+          "name": "er_incantation_types_rels_parent_idx",
+          "columns": [
+            "parent_id"
+          ],
+          "isUnique": false
+        },
+        "er_incantation_types_rels_path_idx": {
+          "name": "er_incantation_types_rels_path_idx",
+          "columns": [
+            "path"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "er_incantation_types_rels_parent_id_er_incantation_types_id_fk": {
+          "name": "er_incantation_types_rels_parent_id_er_incantation_types_id_fk",
+          "tableFrom": "er_incantation_types_rels",
+          "tableTo": "er_incantation_types",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "er_incantation_types_rels_er_media_id_er_media_id_fk": {
+          "name": "er_incantation_types_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "er_incantation_types_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -3281,6 +5853,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "description_html": {
+          "name": "description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "weight": {
           "name": "weight",
           "type": "numeric",
@@ -3422,6 +6000,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "er_skills_id": {
           "name": "er_skills_id",
           "type": "integer",
@@ -3471,6 +6055,19 @@
           "tableTo": "er_shields",
           "columnsFrom": [
             "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "er_shields_rels_er_media_id_er_media_id_fk": {
+          "name": "er_shields_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "er_shields_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
           ],
           "columnsTo": [
             "id"
@@ -3687,6 +6284,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "version_description_html": {
+          "name": "version_description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "version_weight": {
           "name": "version_weight",
           "type": "numeric",
@@ -3860,6 +6463,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "er_skills_id": {
           "name": "er_skills_id",
           "type": "integer",
@@ -3922,6 +6531,19 @@
           "tableTo": "er_shields",
           "columnsFrom": [
             "er_shields_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_er_shields_v_rels_er_media_id_er_media_id_fk": {
+          "name": "_er_shields_v_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "_er_shields_v_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
           ],
           "columnsTo": [
             "id"
@@ -4000,9 +6622,21 @@
           "primaryKey": false,
           "notNull": false
         },
+        "description_html": {
+          "name": "description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "location": {
           "name": "location",
           "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "location_html": {
+          "name": "location_html",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -4126,9 +6760,21 @@
           "primaryKey": false,
           "notNull": false
         },
+        "description_html": {
+          "name": "description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "effect": {
           "name": "effect",
           "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "effect_html": {
+          "name": "effect_html",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -4207,6 +6853,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "er_sorcery_types_id": {
           "name": "er_sorcery_types_id",
           "type": "integer",
@@ -4250,6 +6902,19 @@
           "tableTo": "er_sorceries",
           "columnsFrom": [
             "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "er_sorceries_rels_er_media_id_er_media_id_fk": {
+          "name": "er_sorceries_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "er_sorceries_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
           ],
           "columnsTo": [
             "id"
@@ -4378,9 +7043,21 @@
           "primaryKey": false,
           "notNull": false
         },
+        "version_description_html": {
+          "name": "version_description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "version_effect": {
           "name": "version_effect",
           "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_effect_html": {
+          "name": "version_effect_html",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -4491,6 +7168,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "er_sorcery_types_id": {
           "name": "er_sorcery_types_id",
           "type": "integer",
@@ -4554,6 +7237,19 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "_er_sorceries_v_rels_er_media_id_er_media_id_fk": {
+          "name": "_er_sorceries_v_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "_er_sorceries_v_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "_er_sorceries_v_rels_er_sorcery_types_id_er_sorcery_types_id_fk": {
           "name": "_er_sorceries_v_rels_er_sorcery_types_id_er_sorcery_types_id_fk",
           "tableFrom": "_er_sorceries_v_rels",
@@ -4606,6 +7302,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "description_html": {
+          "name": "description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp(3) with time zone",
@@ -4638,6 +7340,95 @@
         }
       },
       "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "er_sorcery_types_rels": {
+      "name": "er_sorcery_types_rels",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "path": {
+          "name": "path",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "er_sorcery_types_rels_order_idx": {
+          "name": "er_sorcery_types_rels_order_idx",
+          "columns": [
+            "order"
+          ],
+          "isUnique": false
+        },
+        "er_sorcery_types_rels_parent_idx": {
+          "name": "er_sorcery_types_rels_parent_idx",
+          "columns": [
+            "parent_id"
+          ],
+          "isUnique": false
+        },
+        "er_sorcery_types_rels_path_idx": {
+          "name": "er_sorcery_types_rels_path_idx",
+          "columns": [
+            "path"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "er_sorcery_types_rels_parent_id_er_sorcery_types_id_fk": {
+          "name": "er_sorcery_types_rels_parent_id_er_sorcery_types_id_fk",
+          "tableFrom": "er_sorcery_types_rels",
+          "tableTo": "er_sorcery_types",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "er_sorcery_types_rels_er_media_id_er_media_id_fk": {
+          "name": "er_sorcery_types_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "er_sorcery_types_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -4726,6 +7517,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "description_html": {
+          "name": "description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp(3) with time zone",
@@ -4783,9 +7580,21 @@
           "primaryKey": false,
           "notNull": false
         },
+        "description_html": {
+          "name": "description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "effect": {
           "name": "effect",
           "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "effect_html": {
+          "name": "effect_html",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -4824,6 +7633,95 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "er_status_effects_rels": {
+      "name": "er_status_effects_rels",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "path": {
+          "name": "path",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "er_status_effects_rels_order_idx": {
+          "name": "er_status_effects_rels_order_idx",
+          "columns": [
+            "order"
+          ],
+          "isUnique": false
+        },
+        "er_status_effects_rels_parent_idx": {
+          "name": "er_status_effects_rels_parent_idx",
+          "columns": [
+            "parent_id"
+          ],
+          "isUnique": false
+        },
+        "er_status_effects_rels_path_idx": {
+          "name": "er_status_effects_rels_path_idx",
+          "columns": [
+            "path"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "er_status_effects_rels_parent_id_er_status_effects_id_fk": {
+          "name": "er_status_effects_rels_parent_id_er_status_effects_id_fk",
+          "tableFrom": "er_status_effects_rels",
+          "tableTo": "er_status_effects",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "er_status_effects_rels_er_media_id_er_media_id_fk": {
+          "name": "er_status_effects_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "er_status_effects_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "er_talismans": {
       "name": "er_talismans",
       "schema": "",
@@ -4852,9 +7750,21 @@
           "primaryKey": false,
           "notNull": false
         },
+        "description_html": {
+          "name": "description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "effect": {
           "name": "effect",
           "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "effect_html": {
+          "name": "effect_html",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -4893,6 +7803,95 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "er_talismans_rels": {
+      "name": "er_talismans_rels",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "path": {
+          "name": "path",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "er_talismans_rels_order_idx": {
+          "name": "er_talismans_rels_order_idx",
+          "columns": [
+            "order"
+          ],
+          "isUnique": false
+        },
+        "er_talismans_rels_parent_idx": {
+          "name": "er_talismans_rels_parent_idx",
+          "columns": [
+            "parent_id"
+          ],
+          "isUnique": false
+        },
+        "er_talismans_rels_path_idx": {
+          "name": "er_talismans_rels_path_idx",
+          "columns": [
+            "path"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "er_talismans_rels_parent_id_er_talismans_id_fk": {
+          "name": "er_talismans_rels_parent_id_er_talismans_id_fk",
+          "tableFrom": "er_talismans_rels",
+          "tableTo": "er_talismans",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "er_talismans_rels_er_media_id_er_media_id_fk": {
+          "name": "er_talismans_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "er_talismans_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "_er_talismans_v": {
       "name": "_er_talismans_v",
       "schema": "",
@@ -4921,9 +7920,21 @@
           "primaryKey": false,
           "notNull": false
         },
+        "version_description_html": {
+          "name": "version_description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "version_effect": {
           "name": "version_effect",
           "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_effect_html": {
+          "name": "version_effect_html",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -5021,6 +8032,12 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": false
+        },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -5072,6 +8089,19 @@
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "_er_talismans_v_rels_er_media_id_er_media_id_fk": {
+          "name": "_er_talismans_v_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "_er_talismans_v_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -5096,6 +8126,12 @@
         "description": {
           "name": "description",
           "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description_html": {
+          "name": "description_html",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -5282,6 +8318,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "description_html": {
+          "name": "description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "weight": {
           "name": "weight",
           "type": "numeric",
@@ -5423,6 +8465,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "er_weapon_types_id": {
           "name": "er_weapon_types_id",
           "type": "integer",
@@ -5478,6 +8526,19 @@
           "tableTo": "er_weapons",
           "columnsFrom": [
             "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "er_weapons_rels_er_media_id_er_media_id_fk": {
+          "name": "er_weapons_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "er_weapons_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
           ],
           "columnsTo": [
             "id"
@@ -5701,6 +8762,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "version_description_html": {
+          "name": "version_description_html",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "version_weight": {
           "name": "version_weight",
           "type": "numeric",
@@ -5874,6 +8941,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "er_media_id": {
+          "name": "er_media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "er_weapon_types_id": {
           "name": "er_weapon_types_id",
           "type": "integer",
@@ -5942,6 +9015,19 @@
           "tableTo": "er_weapons",
           "columnsFrom": [
             "er_weapons_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_er_weapons_v_rels_er_media_id_er_media_id_fk": {
+          "name": "_er_weapons_v_rels_er_media_id_er_media_id_fk",
+          "tableFrom": "_er_weapons_v_rels",
+          "tableTo": "er_media",
+          "columnsFrom": [
+            "er_media_id"
           ],
           "columnsTo": [
             "id"
@@ -6203,6 +9289,26 @@
     }
   },
   "enums": {
+    "enum_fashion_game": {
+      "name": "enum_fashion_game",
+      "values": {
+        "er": "er",
+        "ds": "ds",
+        "ds2": "ds2",
+        "ds3": "ds3",
+        "bb": "bb"
+      }
+    },
+    "_enum__fashion_v_version_game_v": {
+      "name": "_enum__fashion_v_version_game_v",
+      "values": {
+        "er": "er",
+        "ds": "ds",
+        "ds2": "ds2",
+        "ds3": "ds3",
+        "bb": "bb"
+      }
+    },
     "enum_users_roles": {
       "name": "enum_users_roles",
       "values": {

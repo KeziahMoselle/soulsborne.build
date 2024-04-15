@@ -8,10 +8,13 @@
 
 export interface Config {
   collections: {
-    users: User;
-    media: Media;
     archetypes: Archetype;
+    fashion: Fashion;
+    'fashion-media': FashionMedia;
+    media: Media;
     restrictions: Restriction;
+    sliders: Slider;
+    users: User;
     'er-affinities': ErAffinity;
     'er-ammunitions': ErAmmunition;
     'er-armors': ErArmor;
@@ -41,6 +44,606 @@ export interface Config {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "archetypes".
+ */
+export interface Archetype {
+  id: number;
+  name?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  description_html?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fashion".
+ */
+export interface Fashion {
+  id: number;
+  name?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  description_html?: string | null;
+  youtube_url?: string | null;
+  images?:
+    | {
+        image?: number | FashionMedia | null;
+        id?: string | null;
+      }[]
+    | null;
+  game?: ('er' | 'ds' | 'ds2' | 'ds3' | 'bb') | null;
+  mainhand_weapons?:
+    | ({
+        relationTo: 'er-weapons';
+        value: number | ErWeapon;
+      } | null)
+    | ({
+        relationTo: 'er-shields';
+        value: number | ErShield;
+      } | null);
+  offhand_weapons?:
+    | ({
+        relationTo: 'er-weapons';
+        value: number | ErWeapon;
+      } | null)
+    | ({
+        relationTo: 'er-shields';
+        value: number | ErShield;
+      } | null);
+  magic?:
+    | (
+        | {
+            relationTo: 'er-sorceries';
+            value: number | ErSorcery;
+          }
+        | {
+            relationTo: 'er-incantations';
+            value: number | ErIncantation;
+          }
+      )[]
+    | null;
+  armors?: (number | ErArmor)[] | null;
+  votes?: (number | User)[] | null;
+  votes_count?: number | null;
+  created_by?: (number | null) | User;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fashion-media".
+ */
+export interface FashionMedia {
+  id: number;
+  alt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-weapons".
+ */
+export interface ErWeapon {
+  id: number;
+  image?: number | ErMedia | null;
+  weapon_type?: (number | null) | ErWeaponType;
+  skill?: (number | null) | ErSkill;
+  name?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  description_html?: string | null;
+  weight?: number | null;
+  attack?: {
+    physical?: number | null;
+    magic?: number | null;
+    fire?: number | null;
+    lightning?: number | null;
+    holy?: number | null;
+    critical?: number | null;
+  };
+  defense?: {
+    physical?: number | null;
+    magic?: number | null;
+    fire?: number | null;
+    lightning?: number | null;
+    holy?: number | null;
+    boost?: number | null;
+  };
+  scaling?:
+    | {
+        statistic: number | ErStatistic;
+        letter: 'S' | 'A' | 'B' | 'C' | 'D' | 'E' | 'TODO';
+        id?: string | null;
+      }[]
+    | null;
+  requirements?:
+    | {
+        statistic: number | ErStatistic;
+        value: number;
+        id?: string | null;
+      }[]
+    | null;
+  passives?: (number | ErStatusEffect)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-media".
+ */
+export interface ErMedia {
+  id: number;
+  alt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-weapon-types".
+ */
+export interface ErWeaponType {
+  id: number;
+  name?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  description_html?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-skills".
+ */
+export interface ErSkill {
+  id: number;
+  name?: string | null;
+  fp_cost?: number | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  description_html?: string | null;
+  location?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  location_html?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-statistics".
+ */
+export interface ErStatistic {
+  id: number;
+  name?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  description_html?: string | null;
+  softcaps?:
+    | {
+        level?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-status-effects".
+ */
+export interface ErStatusEffect {
+  id: number;
+  image?: number | ErMedia | null;
+  name?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  description_html?: string | null;
+  effect?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  effect_html?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-shields".
+ */
+export interface ErShield {
+  id: number;
+  image?: number | ErMedia | null;
+  shield_type?: ('Small Shield' | 'Medium Shield' | 'Greatshield') | null;
+  skill?: (number | null) | ErSkill;
+  name?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  description_html?: string | null;
+  weight?: number | null;
+  attack?: {
+    physical?: number | null;
+    magic?: number | null;
+    fire?: number | null;
+    lightning?: number | null;
+    holy?: number | null;
+    critical?: number | null;
+  };
+  defense?: {
+    physical?: number | null;
+    magic?: number | null;
+    fire?: number | null;
+    lightning?: number | null;
+    holy?: number | null;
+    boost?: number | null;
+  };
+  scaling?:
+    | {
+        statistic: number | ErStatistic;
+        letter: 'S' | 'A' | 'B' | 'C' | 'D' | 'E' | 'TODO';
+        id?: string | null;
+      }[]
+    | null;
+  requirements?:
+    | {
+        statistic: number | ErStatistic;
+        value: number;
+        id?: string | null;
+      }[]
+    | null;
+  passives?: (number | ErStatusEffect)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-sorceries".
+ */
+export interface ErSorcery {
+  id: number;
+  image?: number | ErMedia | null;
+  name?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  description_html?: string | null;
+  effect?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  effect_html?: string | null;
+  sorcery_type?: (number | null) | ErSorceryType;
+  slots?: number | null;
+  cost?: number | null;
+  requirements?:
+    | {
+        statistic: number | ErStatistic;
+        value: number;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-sorcery-types".
+ */
+export interface ErSorceryType {
+  id: number;
+  image?: number | ErMedia | null;
+  name?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  description_html?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-incantations".
+ */
+export interface ErIncantation {
+  id: number;
+  image?: number | ErMedia | null;
+  name?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  description_html?: string | null;
+  effect?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  effect_html?: string | null;
+  incantation_type?: (number | null) | ErIncantationType;
+  slots?: number | null;
+  cost?: number | null;
+  requirements?:
+    | {
+        statistic: number | ErStatistic;
+        value: number;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-incantation-types".
+ */
+export interface ErIncantationType {
+  id: number;
+  image?: number | ErMedia | null;
+  name?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  description_html?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "er-armors".
+ */
+export interface ErArmor {
+  id: number;
+  image?: number | ErMedia | null;
+  armor_type?: ('Helm' | 'Chest' | 'Gauntlet' | 'Leg') | null;
+  name?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  description_html?: string | null;
+  weight?: number | null;
+  damage_negation?: {
+    physical?: number | null;
+    vs_strike?: number | null;
+    vs_slash?: number | null;
+    vs_pierce?: number | null;
+    magic?: number | null;
+    fire?: number | null;
+    lightning?: number | null;
+    holy?: number | null;
+  };
+  resistance?: {
+    immunity?: number | null;
+    robustness?: number | null;
+    focus?: number | null;
+    vitality?: number | null;
+    poise?: number | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -62,6 +665,7 @@ export interface User {
     };
     [k: string]: unknown;
   } | null;
+  bio_html?: string | null;
   roles: ('admin' | 'editor' | 'user')[];
   updatedAt: string;
   createdAt: string;
@@ -93,31 +697,6 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "archetypes".
- */
-export interface Archetype {
-  id: number;
-  name?: string | null;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "restrictions".
  */
 export interface Restriction {
@@ -138,6 +717,43 @@ export interface Restriction {
     };
     [k: string]: unknown;
   } | null;
+  description_html?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sliders".
+ */
+export interface Slider {
+  id: number;
+  name?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  description_html?: string | null;
+  youtube_url?: string | null;
+  images?:
+    | {
+        image?: number | FashionMedia | null;
+        id?: string | null;
+      }[]
+    | null;
+  votes?: (number | User)[] | null;
+  votes_count?: number | null;
+  created_by?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
 }
@@ -164,56 +780,9 @@ export interface ErAffinity {
     };
     [k: string]: unknown;
   } | null;
+  description_html?: string | null;
   type?: ('Physical' | 'Magic' | 'Flame' | 'Golden' | 'Occult') | null;
   affected_statistics?: (number | ErStatistic)[] | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-media".
- */
-export interface ErMedia {
-  id: number;
-  alt?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-statistics".
- */
-export interface ErStatistic {
-  id: number;
-  name?: string | null;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  softcaps?:
-    | {
-        level?: number | null;
-        id?: string | null;
-      }[]
-    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -241,6 +810,7 @@ export interface ErAmmunition {
     };
     [k: string]: unknown;
   } | null;
+  description_html?: string | null;
   attack?: {
     physical?: number | null;
     magic?: number | null;
@@ -250,92 +820,6 @@ export interface ErAmmunition {
     critical?: number | null;
   };
   passives?: (number | ErStatusEffect)[] | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-status-effects".
- */
-export interface ErStatusEffect {
-  id: number;
-  image?: number | ErMedia | null;
-  name?: string | null;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  effect?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-armors".
- */
-export interface ErArmor {
-  id: number;
-  image?: number | ErMedia | null;
-  armor_type?: ('Helm' | 'Chest' | 'Gauntlet' | 'Leg') | null;
-  name?: string | null;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  weight?: number | null;
-  damage_negation?: {
-    physical?: number | null;
-    vs_strike?: number | null;
-    vs_slash?: number | null;
-    vs_pierce?: number | null;
-    magic?: number | null;
-    fire?: number | null;
-    lightning?: number | null;
-    holy?: number | null;
-  };
-  resistance?: {
-    immunity?: number | null;
-    robustness?: number | null;
-    focus?: number | null;
-    vitality?: number | null;
-    poise?: number | null;
-  };
   updatedAt: string;
   createdAt: string;
 }
@@ -362,6 +846,7 @@ export interface ErAshesOfWar {
     };
     [k: string]: unknown;
   } | null;
+  description_html?: string | null;
   location?: {
     root: {
       type: string;
@@ -377,74 +862,9 @@ export interface ErAshesOfWar {
     };
     [k: string]: unknown;
   } | null;
+  location_html?: string | null;
   availability?: (number | ErWeaponType)[] | null;
   affinity?: (number | null) | ErAffinity;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-skills".
- */
-export interface ErSkill {
-  id: number;
-  name?: string | null;
-  fp_cost?: number | null;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  location?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-weapon-types".
- */
-export interface ErWeaponType {
-  id: number;
-  name?: string | null;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -470,6 +890,7 @@ export interface ErBuild {
     };
     [k: string]: unknown;
   } | null;
+  description_html?: string | null;
   youtube_url?: string | null;
   images?:
     | {
@@ -527,126 +948,6 @@ export interface ErBuild {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-weapons".
- */
-export interface ErWeapon {
-  id: number;
-  image?: number | ErMedia | null;
-  weapon_type?: (number | null) | ErWeaponType;
-  skill?: (number | null) | ErSkill;
-  name?: string | null;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  weight?: number | null;
-  attack?: {
-    physical?: number | null;
-    magic?: number | null;
-    fire?: number | null;
-    lightning?: number | null;
-    holy?: number | null;
-    critical?: number | null;
-  };
-  defense?: {
-    physical?: number | null;
-    magic?: number | null;
-    fire?: number | null;
-    lightning?: number | null;
-    holy?: number | null;
-    boost?: number | null;
-  };
-  scaling?:
-    | {
-        statistic: number | ErStatistic;
-        letter: 'S' | 'A' | 'B' | 'C' | 'D' | 'E' | 'TODO';
-        id?: string | null;
-      }[]
-    | null;
-  requirements?:
-    | {
-        statistic: number | ErStatistic;
-        value: number;
-        id?: string | null;
-      }[]
-    | null;
-  passives?: (number | ErStatusEffect)[] | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-shields".
- */
-export interface ErShield {
-  id: number;
-  image?: number | ErMedia | null;
-  shield_type?: ('Small Shield' | 'Medium Shield' | 'Greatshield') | null;
-  skill?: (number | null) | ErSkill;
-  name?: string | null;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  weight?: number | null;
-  attack?: {
-    physical?: number | null;
-    magic?: number | null;
-    fire?: number | null;
-    lightning?: number | null;
-    holy?: number | null;
-    critical?: number | null;
-  };
-  defense?: {
-    physical?: number | null;
-    magic?: number | null;
-    fire?: number | null;
-    lightning?: number | null;
-    holy?: number | null;
-    boost?: number | null;
-  };
-  scaling?:
-    | {
-        statistic: number | ErStatistic;
-        letter: 'S' | 'A' | 'B' | 'C' | 'D' | 'E' | 'TODO';
-        id?: string | null;
-      }[]
-    | null;
-  requirements?:
-    | {
-        statistic: number | ErStatistic;
-        value: number;
-        id?: string | null;
-      }[]
-    | null;
-  passives?: (number | ErStatusEffect)[] | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "er-talismans".
  */
 export interface ErTalisman {
@@ -669,6 +970,7 @@ export interface ErTalisman {
     };
     [k: string]: unknown;
   } | null;
+  description_html?: string | null;
   effect?: {
     root: {
       type: string;
@@ -684,160 +986,7 @@ export interface ErTalisman {
     };
     [k: string]: unknown;
   } | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-sorceries".
- */
-export interface ErSorcery {
-  id: number;
-  image?: number | ErMedia | null;
-  name?: string | null;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  effect?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  sorcery_type?: (number | null) | ErSorceryType;
-  slots?: number | null;
-  cost?: number | null;
-  requirements?:
-    | {
-        statistic: number | ErStatistic;
-        value: number;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-sorcery-types".
- */
-export interface ErSorceryType {
-  id: number;
-  image?: number | ErMedia | null;
-  name?: string | null;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-incantations".
- */
-export interface ErIncantation {
-  id: number;
-  image?: number | ErMedia | null;
-  name?: string | null;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  effect?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  incantation_type?: (number | null) | ErIncantationType;
-  slots?: number | null;
-  cost?: number | null;
-  requirements?:
-    | {
-        statistic: number | ErStatistic;
-        value: number;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "er-incantation-types".
- */
-export interface ErIncantationType {
-  id: number;
-  image?: number | ErMedia | null;
-  name?: string | null;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
+  effect_html?: string | null;
   updatedAt: string;
   createdAt: string;
 }

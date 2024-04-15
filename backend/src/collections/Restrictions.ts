@@ -1,5 +1,6 @@
 import { CollectionConfig } from 'payload/types'
 import { isPublic } from '../access/isPublic'
+import { lexicalHTML } from '@payloadcms/richtext-lexical'
 
 const Restrictions: CollectionConfig = {
   slug: 'restrictions',
@@ -24,6 +25,7 @@ const Restrictions: CollectionConfig = {
       label: 'Description',
       type: 'richText'
     },
+    lexicalHTML('description', { name: 'description_html' }),
   ],
 }
 

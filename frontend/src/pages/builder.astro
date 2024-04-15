@@ -13,7 +13,6 @@ const [stats, archetypes, restrictions] = await Promise.all([
   apiFetch<PayloadCollection<Restriction>>('/api/restrictions?sort=id')
 ])
 ---
-
 <Layout title="Create a build">
   { !user && (
     <p class="container text-destructive">⚠️ You cannot create a build because you are not logged in.</p>

@@ -1,21 +1,7 @@
 import path from 'path'
 import {
-  AlignFeature,
-  BlockQuoteFeature,
-  BlocksFeature,
-  BoldFeature,
-  CheckListFeature,
-  HeadingFeature,
-  IndentFeature,
-  InlineCodeFeature,
-  ItalicFeature,
+  HTMLConverterFeature,
   lexicalEditor,
-  LinkFeature,
-  OrderedListFeature,
-  ParagraphFeature,
-  RelationshipFeature,
-  UnorderedListFeature,
-  UploadFeature,
 } from '@payloadcms/richtext-lexical'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { cloudStorage } from '@payloadcms/plugin-cloud-storage'
@@ -25,11 +11,17 @@ import { buildConfig } from 'payload/config'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
-import Users from './src/collections/Users'
-import Archetypes from './src/collections/Archetypes'
+// General collections
+import Archetypes from '@/collections/Archetypes'
+import Fashion from '@/collections/Fashion'
+import FashionMedia from '@/collections/FashionMedia'
 import Media from '@/collections/Media'
-import Restrictions from './src/collections/Restrictions'
-import ERCollections from './src/collections/EldenRing'
+import Restrictions from '@/collections/Restrictions'
+import Sliders from '@/collections/Sliders'
+import Users from '@/collections/Users'
+
+// Games
+import ERCollections from '@/collections/EldenRing'
 
 export const ALLOWED_ORIGINS = [
   // Back
@@ -61,8 +53,25 @@ const adapter = s3Adapter({
 export default buildConfig({
   cors: ALLOWED_ORIGINS,
   csrf: ALLOWED_ORIGINS,
-  editor: lexicalEditor(),
-  collections: [Users, Media, Archetypes, Restrictions, ...ERCollections],
+  editor: lexicalEditor({
+    features: ({ defaultFeatures }) => [
+      ...defaultFeatures,
+      // The HTMLConverter Feature is the feature which manages the HTML serializers. If you do not pass any arguments to it, it will use the default serializers.
+      HTMLConverterFeature({}),
+    ],
+  }),
+  collections: [
+    // General collections
+    Archetypes,
+    Fashion,
+    FashionMedia,
+    Media,
+    Restrictions,
+    Sliders,
+    Users,
+    // Games
+    ...ERCollections
+  ],
   plugins: [
     cloudStorage({
       collections: {

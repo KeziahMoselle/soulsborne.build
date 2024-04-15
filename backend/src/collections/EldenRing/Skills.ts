@@ -1,5 +1,6 @@
 import { CollectionConfig } from 'payload/types'
 import { isPublic } from '../../access/isPublic'
+import { lexicalHTML } from '@payloadcms/richtext-lexical'
 
 const ERStatistics: CollectionConfig = {
   slug: 'er-skills',
@@ -34,11 +35,13 @@ const ERStatistics: CollectionConfig = {
       label: 'Description',
       type: 'richText'
     },
+    lexicalHTML('description', { name: 'description_html' }),
     {
       name: 'location',
       label: 'Location',
       type: 'richText'
     },
+    lexicalHTML('location', { name: 'location_html' }),
   ],
 }
 

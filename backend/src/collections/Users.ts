@@ -1,6 +1,7 @@
 import { CollectionConfig } from 'payload/types'
 import { isAdmin, isAdminFieldLevel } from '../access/isAdmin'
 import { isAdminOrSelf, isAdminOrSelfFieldLevel } from '../access/isAdminOrSelf'
+import { lexicalHTML } from '@payloadcms/richtext-lexical'
 
 const Users: CollectionConfig = {
   slug: 'users',
@@ -36,6 +37,7 @@ const Users: CollectionConfig = {
       label: 'Bio',
       type: 'richText',
     },
+    lexicalHTML('bio', { name: 'bio_html' }),
     {
       name: 'roles',
       label: 'Roles',
