@@ -12,6 +12,7 @@ export interface Config {
     fashion: Fashion;
     'fashion-media': FashionMedia;
     media: Media;
+    preregistrations: Preregistration;
     restrictions: Restriction;
     sliders: Slider;
     users: User;
@@ -694,6 +695,16 @@ export interface Media {
   filesize?: number | null;
   width?: number | null;
   height?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "preregistrations".
+ */
+export interface Preregistration {
+  id: number;
+  email: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

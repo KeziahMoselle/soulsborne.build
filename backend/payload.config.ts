@@ -1,8 +1,5 @@
 import path from 'path'
-import {
-  HTMLConverterFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
+import { HTMLConverterFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { cloudStorage } from '@payloadcms/plugin-cloud-storage'
 import { s3Adapter } from '@payloadcms/plugin-cloud-storage/s3'
@@ -16,6 +13,7 @@ import Archetypes from '@/collections/Archetypes'
 import Fashion from '@/collections/Fashion'
 import FashionMedia from '@/collections/FashionMedia'
 import Media from '@/collections/Media'
+import Preregistrations from '@/collections/Preregistrations'
 import Restrictions from '@/collections/Restrictions'
 import Sliders from '@/collections/Sliders'
 import Users from '@/collections/Users'
@@ -37,7 +35,6 @@ export const ALLOWED_ORIGINS = [
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-
 const adapter = s3Adapter({
   config: {
     credentials: {
@@ -45,7 +42,7 @@ const adapter = s3Adapter({
       secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
     },
     region: 'auto',
-    endpoint: process.env.S3_ENDPOINT
+    endpoint: process.env.S3_ENDPOINT,
   },
   bucket: process.env.S3_BUCKET,
 })
@@ -66,16 +63,17 @@ export default buildConfig({
     Fashion,
     FashionMedia,
     Media,
+    Preregistrations,
     Restrictions,
     Sliders,
     Users,
     // Games
-    ...ERCollections
+    ...ERCollections,
   ],
   plugins: [
     cloudStorage({
       collections: {
-        'media': {
+        media: {
           adapter,
           disablePayloadAccessControl: true,
         },
@@ -83,8 +81,8 @@ export default buildConfig({
           adapter,
           disablePayloadAccessControl: true,
         },
-      }
-    })
+      },
+    }),
   ],
   secret: process.env.PAYLOAD_SECRET,
   typescript: {
@@ -96,10 +94,10 @@ export default buildConfig({
     },
   }),
   admin: {
-    user: Users.slug
+    user: Users.slug,
   },
   i18n: {
     supportedLanguages: { en },
   },
-  sharp
+  sharp,
 })
