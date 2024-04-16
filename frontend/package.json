@@ -52,5 +52,5 @@
   "engines": {
     "node": ">=20"
   },
-  "packageManager": "pnpm@9.0.0"
+  "packageManager": "npm@10.5.2"
 }
