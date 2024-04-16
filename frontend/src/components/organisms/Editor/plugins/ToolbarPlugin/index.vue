@@ -21,7 +21,12 @@ import {
   $isParentElementRTL,
   $patchStyleText,
 } from '@lexical/selection'
-import { $findMatchingParent, $getNearestBlockElementAncestorOrThrow, $getNearestNodeOfType, mergeRegister } from '@lexical/utils'
+import {
+  $findMatchingParent,
+  $getNearestBlockElementAncestorOrThrow,
+  $getNearestNodeOfType,
+  mergeRegister,
+} from '@lexical/utils'
 import { $isDecoratorBlockNode, useLexicalComposer } from 'lexical-vue'
 import { onMounted, onUnmounted, ref } from 'vue'
 import { $isListNode, ListNode } from '@lexical/list'
@@ -77,16 +82,15 @@ function $updateToolbar() {
   const selection = $getSelection()
   if ($isRangeSelection(selection)) {
     const anchorNode = selection.anchor.getNode()
-    let element
-        = anchorNode.getKey() === 'root'
-          ? anchorNode
-          : $findMatchingParent(anchorNode, (e) => {
+    let element =
+      anchorNode.getKey() === 'root'
+        ? anchorNode
+        : $findMatchingParent(anchorNode, e => {
             const parent = e.getParent()
             return parent !== null && $isRootOrShadowRoot(parent)
           })
 
-    if (element === null)
-      element = anchorNode.getTopLevelElementOrThrow()
+    if (element === null) element = anchorNode.getTopLevelElementOrThrow()
 
     const elementKey = element.getKey()
     const elementDOM = editor.getElementByKey(elementKey)
@@ -102,24 +106,18 @@ function $updateToolbar() {
     // Update links
     const node = getSelectedNode(selection)
     const parent = node.getParent()
-    if ($isLinkNode(parent) || $isLinkNode(node))
-      isLink.value = true
-    else
-      isLink.value = false
+    if ($isLinkNode(parent) || $isLinkNode(node)) isLink.value = true
+    else isLink.value = false
 
     if (elementDOM !== null) {
       selectedElementKey.value = elementKey
       if ($isListNode(element)) {
-        const parentList = $getNearestNodeOfType<ListNode>(
-          anchorNode,
-          ListNode,
-        )
+        const parentList = $getNearestNodeOfType<ListNode>(anchorNode, ListNode)
         const type = parentList
           ? parentList.getListType()
           : element.getListType()
         blockType.value = type
-      }
-      else {
+      } else {
         const type = $isHeadingNode(element)
           ? element.getTag()
           : element.getType()
@@ -127,18 +125,36 @@ function $updateToolbar() {
           blockType.value = type as keyof typeof blockTypeToBlockName
 
         if ($isCodeNode(element)) {
-          const language
-              = element.getLanguage() as keyof typeof CODE_LANGUAGE_MAP
-          codeLanguage.value = language ? CODE_LANGUAGE_MAP[language] || language : ''
+          const language =
+            element.getLanguage() as keyof typeof CODE_LANGUAGE_MAP
+          codeLanguage.value = language
+            ? CODE_LANGUAGE_MAP[language] || language
+            : ''
         }
       }
     }
 
     // Handle buttons
-    fontSize.value = $getSelectionStyleValueForProperty(selection, 'font-size', '15px')
-    fontColor.value = $getSelectionStyleValueForProperty(selection, 'color', '#000')
-    bgColor.value = $getSelectionStyleValueForProperty(selection, 'background-color', '#fff')
-    fontFamily.value = $getSelectionStyleValueForProperty(selection, 'font-family', 'Arial')
+    fontSize.value = $getSelectionStyleValueForProperty(
+      selection,
+      'font-size',
+      '15px',
+    )
+    fontColor.value = $getSelectionStyleValueForProperty(
+      selection,
+      'color',
+      '#000',
+    )
+    bgColor.value = $getSelectionStyleValueForProperty(
+      selection,
+      'background-color',
+      '#fff',
+    )
+    fontFamily.value = $getSelectionStyleValueForProperty(
+      selection,
+      'font-family',
+      'Arial',
+    )
 
     // let matchingParent
     if ($isLinkNode(parent)) {
@@ -212,7 +228,7 @@ onMounted(() => {
 onMounted(() => {
   const unregister = editor.registerCommand(
     KEY_MODIFIER_COMMAND,
-    (payload) => {
+    payload => {
       const event: KeyboardEvent = payload
       const { code, ctrlKey, metaKey } = event
 
@@ -222,8 +238,7 @@ onMounted(() => {
         if (!isLink.value) {
           emit('isLinkEditMode', true)
           url = sanitizeUrl('https://')
-        }
-        else {
+        } else {
           emit('isLinkEditMode', false)
           url = null
         }
@@ -243,19 +258,20 @@ function insertLink() {
   if (!isLink.value) {
     emit('isLinkEditMode', true)
     editor.dispatchCommand(TOGGLE_LINK_COMMAND, sanitizeUrl('https://'))
-  }
-  else {
+  } else {
     emit('isLinkEditMode', false)
     editor.dispatchCommand(TOGGLE_LINK_COMMAND, null)
   }
 }
 
-function applyStyleText(styles: Record<string, string>, skipHistoryStack?: boolean) {
+function applyStyleText(
+  styles: Record<string, string>,
+  skipHistoryStack?: boolean,
+) {
   editor.update(
     () => {
       const selection = $getSelection()
-      if (selection !== null)
-        $patchStyleText(selection, styles)
+      if (selection !== null) $patchStyleText(selection, styles)
     },
     skipHistoryStack ? { tag: 'historic' } : {},
   )
@@ -266,14 +282,13 @@ function clearFormatting() {
     const selection = $getSelection()
     if ($isRangeSelection(selection)) {
       $selectAll()
-      selection.getNodes().forEach((node) => {
+      selection.getNodes().forEach(node => {
         if ($isTextNode(node)) {
           node.setFormat(0)
           node.setStyle('')
           $getNearestBlockElementAncestorOrThrow(node).setFormat('')
         }
-        if ($isDecoratorBlockNode(node))
-          node.setFormat('')
+        if ($isDecoratorBlockNode(node)) node.setFormat('')
       })
     }
   })
@@ -291,8 +306,7 @@ function onCodeLanguageSelect(value: string) {
   editor.update(() => {
     if (selectedElementKey.value !== null) {
       const node = $getNodeByKey(selectedElementKey.value)
-      if ($isCodeNode(node))
-        node.setLanguage(value)
+      if ($isCodeNode(node)) node.setLanguage(value)
     }
   })
 }
@@ -300,17 +314,24 @@ function onCodeLanguageSelect(value: string) {
 
 <template>
   <div ref="toolbarRef" class="toolbar">
-    <button :disabled="!canUndo" class="toolbar-item spaced" aria-label="Undo" @click="editor.dispatchCommand(UNDO_COMMAND, undefined)">
+    <button
+      :disabled="!canUndo"
+      class="toolbar-item spaced"
+      aria-label="Undo"
+      @click="editor.dispatchCommand(UNDO_COMMAND, undefined)"
+    >
       <i class="format undo" />
     </button>
-    <button :disabled="!canRedo" class="toolbar-item spaced" aria-label="Redo" @click="editor.dispatchCommand(REDO_COMMAND, undefined)">
+    <button
+      :disabled="!canRedo"
+      class="toolbar-item spaced"
+      aria-label="Redo"
+      @click="editor.dispatchCommand(REDO_COMMAND, undefined)"
+    >
       <i class="format redo" />
     </button>
     <Divider />
-    <BlockFormatDropDown
-      :block-type="blockType"
-      :editor="editor"
-    />
+    <BlockFormatDropDown :block-type="blockType" :editor="editor" />
     <Divider />
     <DropDown
       v-if="blockType === 'code'"
@@ -320,9 +341,9 @@ function onCodeLanguageSelect(value: string) {
     >
       <DropDownItem
         v-for="[value, name] in CODE_LANGUAGE_OPTIONS"
-        :key="value" :class="`item ${dropDownActiveClass(
-          value === codeLanguage,
-        )}`" @click="onCodeLanguageSelect(value)"
+        :key="value"
+        :class="`item ${dropDownActiveClass(value === codeLanguage)}`"
+        @click="onCodeLanguageSelect(value)"
       >
         <span class="text">{{ name }}</span>
       </DropDownItem>

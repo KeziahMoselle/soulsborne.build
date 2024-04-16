@@ -26,7 +26,7 @@ export const FORM = [
               equals: 'Bolt'
             }
           } */
-        }
+        },
       ],
     },
     {
@@ -40,7 +40,7 @@ export const FORM = [
               equals: 'Bolt'
             }
           } */
-        }
+        },
       ],
     },
   ],
@@ -71,7 +71,7 @@ export const FORM = [
               equals: 'Greatbolt'
             }
           } */
-        }
+        },
       ],
     },
     {
@@ -85,7 +85,7 @@ export const FORM = [
               equals: 'Greatbolt'
             }
           } */
-        }
+        },
       ],
     },
   ],
@@ -98,9 +98,9 @@ export const FORM = [
           slug: 'er-armors',
           query: {
             armor_type: {
-              equals: 'Helm'
+              equals: 'Helm',
             },
-          }
+          },
         },
       ],
     },
@@ -112,9 +112,9 @@ export const FORM = [
           slug: 'er-armors',
           query: {
             armor_type: {
-              equals: 'Chest'
+              equals: 'Chest',
             },
-          }
+          },
         },
       ],
     },
@@ -126,9 +126,9 @@ export const FORM = [
           slug: 'er-armors',
           query: {
             armor_type: {
-              equals: 'Gauntlet'
+              equals: 'Gauntlet',
             },
-          }
+          },
         },
       ],
     },
@@ -140,9 +140,9 @@ export const FORM = [
           slug: 'er-armors',
           query: {
             armor_type: {
-              equals: 'Leg'
+              equals: 'Leg',
             },
-          }
+          },
         },
       ],
     },
@@ -173,5 +173,5 @@ export const FORM = [
     name: `magic-${id + 1}`,
     type: 'magic',
     relationTo: ['er-sorceries', 'er-incantations'],
-  }))
+  })),
 ]

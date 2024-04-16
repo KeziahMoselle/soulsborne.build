@@ -36,7 +36,9 @@ function onChange(editorState) {
           </div>
         </template>
         <template #placeholder>
-          <div class="editor-placeholder absolute top-2 left-7 text-white text-opacity-70">
+          <div
+            class="editor-placeholder absolute top-2 left-7 text-white text-opacity-70"
+          >
             Enter description of your build...
           </div>
         </template>

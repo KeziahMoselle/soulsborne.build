@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { logout } from '@/api';
+import { logout } from '@/api'
 import { LogOutIcon } from 'lucide-vue-next'
 </script>
 

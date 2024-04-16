@@ -1,12 +1,20 @@
 ---
-import { apiFetch } from '@/api';
-import Layout from '../../layouts/Layout.astro';
-import type { Archetype, Media, ErBuild, ErMedia, Restriction, User } from '@payload-types';
-import Tag from '@/components/molecules/EldenRing/Tag.vue';
-import LikeBuildButton from '@/components/molecules/LikeBuildButton.vue';
-import Build from '@/components/EldenRing/Build.vue';
+import { apiFetch } from '@/api'
+import Layout from '../../layouts/Layout.astro'
+import type {
+  Archetype,
+  Media,
+  ErBuild,
+  ErMedia,
+  Restriction,
+  User,
+} from '@payload-types'
+import Tag from '@/components/molecules/EldenRing/Tag.vue'
+import LikeBuildButton from '@/components/molecules/LikeBuildButton.vue'
+import Build from '@/components/EldenRing/Build.vue'
 
-const REGEX_YOUTUBE_URL = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/
+const REGEX_YOUTUBE_URL =
+  /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/
 
 const { id } = Astro.params
 
@@ -16,99 +24,127 @@ const youtubeMatches = build.youtube_url?.match(REGEX_YOUTUBE_URL)
 ---
 
 <script>
-  import Plyr from 'plyr';
+  import Plyr from 'plyr'
   import mediumZoom from 'medium-zoom'
   import 'plyr/dist/plyr.css'
 
-  new Plyr('#player');
+  new Plyr('#player')
   mediumZoom('.zoomable')
 </script>
 
 <Layout title={`${build.name} - Build`}>
-  <section class="group/header z-[1] relative bg-secondary py-8 mb-8 overflow-hidden">
+  <section
+    class="group/header z-[1] relative bg-secondary py-8 mb-8 overflow-hidden"
+  >
     <img
       class="-z-10 absolute inset-0 object-cover object-center h-full w-full opacity-20"
-      src={(build.images?.[0]?.image as ErMedia)?.thumbnailURL ?? 'https://cdn.soulsborne.build/Limgrave%20Erdtree%20-%20MENU_Load_00002_PS5.jpg'}
-      alt="" />
+      src={(build.images?.[0]?.image as ErMedia)?.thumbnailURL ??
+        'https://cdn.soulsborne.build/Limgrave%20Erdtree%20-%20MENU_Load_00002_PS5.jpg'}
+      alt=""
+    />
     <div class="absolute inset-0 block bg-primary opacity-20 -z-[9]"></div>
 
     <div class="container grid md:grid-cols-12">
       <div class="md:col-span-11">
         <a
           href={`/user/${created_by.id}`}
-          class="relative inline-flex items-center gap-4 pr-12 transition duration-500 hover:brightness-125">
-          <img class="-z-10 absolute top-0 left-0 h-full w-full" src="/background-text.png" alt="" />
+          class="relative inline-flex items-center gap-4 pr-12 transition duration-500 hover:brightness-125"
+        >
+          <img
+            class="-z-10 absolute top-0 left-0 h-full w-full"
+            src="/background-text.png"
+            alt=""
+          />
           <img
             class="size-8 rounded-full"
-            src={(created_by?.image as Media)?.thumbnailURL} alt="" />
+            src={(created_by?.image as Media)?.thumbnailURL}
+            alt=""
+          />
           <span>
-            { created_by.name }
+            {created_by.name}
           </span>
         </a>
-        <h1 class="type-h1">{ build.name }</h1>
+        <h1 class="type-h1">{build.name}</h1>
         <div class="flex gap-2">
-          { build.archetypes.map((archetype) => (
-            <Tag label={(archetype as Archetype).name} />
-          ))}
-          { build.restrictions.map((restriction) => (
-            <Tag label={(restriction as Restriction).name} />
-          ))}
+          {
+            build.archetypes.map(archetype => (
+              <Tag label={(archetype as Archetype).name} />
+            ))
+          }
+          {
+            build.restrictions.map(restriction => (
+              <Tag label={(restriction as Restriction).name} />
+            ))
+          }
         </div>
       </div>
 
-      <div class="mt-4 self-center justify-self-start md:justify-self-end md:mt-0">
+      <div
+        class="mt-4 self-center justify-self-start md:justify-self-end md:mt-0"
+      >
         <LikeBuildButton
           build={build}
           hasVoted={build.votes?.includes(Astro.locals.user?.id)}
-          client:visible />
+          client:visible
+        />
       </div>
     </div>
   </section>
 
-  <section class:list={[
-    'container grid gap-4',
+  <section
+    class:list={[
+      'container grid gap-4',
+      {
+        'md:grid-cols-2': build.youtube_url && build.images.length > 0,
+      },
+    ]}
+  >
     {
-      'md:grid-cols-2': build.youtube_url && build.images.length > 0
+      build.youtube_url && (
+        <div class="plyr__video-embed" id="player">
+          <iframe
+            src={`https://www.youtube.com/embed/${youtubeMatches[1]}?origin=https://plyr.io&amp;iv_load_policy=3&amp;modestbranding=1&amp;playsinline=1&amp;showinfo=0&amp;rel=0&amp;enablejsapi=1`}
+            allowfullscreen
+            allowtransparency
+            allow="autoplay"
+          />
+        </div>
+      )
     }
-  ]}>
-    {build.youtube_url && (
-      <div class="plyr__video-embed" id="player">
-        <iframe
-          src={`https://www.youtube.com/embed/${youtubeMatches[1]}?origin=https://plyr.io&amp;iv_load_policy=3&amp;modestbranding=1&amp;playsinline=1&amp;showinfo=0&amp;rel=0&amp;enablejsapi=1`}
-          allowfullscreen
-          allowtransparency
-          allow="autoplay"
-        ></iframe>
-      </div>
-    )}
 
     <div
       class:list={[
         'grid gap-2',
         {
           'grid-cols-2': build.images.length > 1,
-          'grid-rows-2': build.images.length > 2
-        }
-      ]}>
-      { build.images.map(({ image }: { image: ErMedia }) => (
-        <img
-          class="zoomable aspect-video h-full object-contain"
-          src={image.thumbnailURL}
-          alt="" />
-      ))}
+          'grid-rows-2': build.images.length > 2,
+        },
+      ]}
+    >
+      {
+        build.images.map(({ image }: { image: ErMedia }) => (
+          <img
+            class="zoomable aspect-video h-full object-contain"
+            src={image.thumbnailURL}
+            alt=""
+          />
+        ))
+      }
     </div>
   </section>
 
   <section class="mt-8 py-8 border-t">
-    <Build build={build} client:visible/>
+    <Build build={build} client:visible />
   </section>
 
-  {build.description_html && (
-    <section class="my-8">
-      <div
-        class="wysiwyg text-white text-opacity-80 md:ml-28"
-        set:html={build.description_html}>
-      </div>
-    </section>
-  )}
+  {
+    build.description_html && (
+      <section class="my-8">
+        <div
+          class="wysiwyg text-white text-opacity-80 md:ml-28"
+          set:html={build.description_html}
+        />
+      </section>
+    )
+  }
 </Layout>

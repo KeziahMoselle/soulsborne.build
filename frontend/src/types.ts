@@ -1,4 +1,4 @@
-import type { User } from "@payload-types"
+import type { User } from '@payload-types'
 
 export interface PayloadCollection<CollectionType> {
   totalDocs: number
@@ -14,8 +14,8 @@ export interface PayloadCollection<CollectionType> {
 }
 
 export interface PayloadCreateResponse<CollectionType> {
-  message: string;
-  doc: CollectionType;
+  message: string
+  doc: CollectionType
 }
 
 export interface PayloadUserResponse {
@@ -26,26 +26,26 @@ export interface PayloadUserResponse {
 }
 
 export interface PayloadOptionLike {
-  id: number;
-  name: string;
+  id: number
+  name: string
   image?: PayloadMedia | null
 }
 
 export interface PayloadMediaResponse {
-  doc:     PayloadMedia;
-  message: string;
+  doc: PayloadMedia
+  message: string
 }
 
 export interface PayloadMedia {
-  id:           number;
-  alt:          null;
-  updatedAt:    Date;
-  createdAt:    Date;
-  url:          string;
-  thumbnailURL: string;
-  filename:     string;
-  mimeType:     string;
-  filesize:     number;
-  width:        number;
-  height:       number;
+  id: number
+  alt: null
+  updatedAt: Date
+  createdAt: Date
+  url: string
+  thumbnailURL: string
+  filename: string
+  mimeType: string
+  filesize: number
+  width: number
+  height: number
 }

@@ -37,18 +37,14 @@ const selfColor = ref(transformColor('hex', props.color))
 const inputColor = ref(props.color)
 const innerDivRef = ref<HTMLDivElement | null>(null)
 
-const saturationPosition = computed(
-  () => ({
-    x: (selfColor.value.hsv.s / 100) * WIDTH,
-    y: ((100 - selfColor.value.hsv.v) / 100) * HEIGHT,
-  }),
-)
+const saturationPosition = computed(() => ({
+  x: (selfColor.value.hsv.s / 100) * WIDTH,
+  y: ((100 - selfColor.value.hsv.v) / 100) * HEIGHT,
+}))
 
-const huePosition = computed(
-  () => ({
-    x: (selfColor.value.hsv.h / 360) * WIDTH,
-  }),
-)
+const huePosition = computed(() => ({
+  x: (selfColor.value.hsv.h / 360) * WIDTH,
+}))
 
 function onSetHex(hex: string) {
   inputColor.value = hex
@@ -86,8 +82,7 @@ watchEffect(() => {
 })
 
 watchEffect(() => {
-  if (props.color === undefined)
-    return
+  if (props.color === undefined) return
   const newColor = transformColor('hex', props.color)
   selfColor.value = newColor
   inputColor.value = newColor.hex
@@ -119,16 +114,14 @@ function toHex(value: string): string {
     ctx.fillStyle = value
 
     return ctx.fillStyle
-  }
-  else if (value.length === 4 || value.length === 5) {
+  } else if (value.length === 4 || value.length === 5) {
     value = value
       .split('')
       .map((v, i) => (i ? v + v : '#'))
       .join('')
 
     return value
-  }
-  else if (value.length === 7 || value.length === 9) {
+  } else if (value.length === 7 || value.length === 9) {
     return value
   }
 
@@ -210,15 +203,13 @@ function transformColor<M extends keyof Color, C extends Color[M]>(
     hex = toHex(value)
     rgb = hex2rgb(hex)
     hsv = rgb2hsv(rgb)
-  }
-  else if (format === 'rgb') {
+  } else if (format === 'rgb') {
     const value = color as Color['rgb']
 
     rgb = value
     hex = rgb2hex(rgb)
     hsv = rgb2hsv(rgb)
-  }
-  else if (format === 'hsv') {
+  } else if (format === 'hsv') {
     const value = color as Color['hsv']
 
     hsv = value
@@ -236,14 +227,21 @@ function transformColor<M extends keyof Color, C extends Color[M]>(
     class="color-picker-wrapper"
     :style="`width: ${WIDTH}px`"
   >
-    <TextInput label="Hex" :model-value="inputColor" @update:model-value="onSetHex" />
+    <TextInput
+      label="Hex"
+      :model-value="inputColor"
+      @update:model-value="onSetHex"
+    />
     <div class="color-picker-basic-color">
       <button
         v-for="basicColor in basicColors"
         :key="basicColor"
         :class="basicColor === selfColor.hex ? ' active' : ''"
         :style="{ backgroundColor: basicColor }"
-        @click="inputColor = basicColor; selfColor = transformColor('hex', basicColor)"
+        @click="
+          inputColor = basicColor
+          selfColor = transformColor('hex', basicColor)
+        "
       />
     </div>
     <MoveWrapper
@@ -260,10 +258,7 @@ function transformColor<M extends keyof Color, C extends Color[M]>(
         }"
       />
     </MoveWrapper>
-    <MoveWrapper
-      class="color-picker-hue"
-      @change="onMoveHue"
-    >
+    <MoveWrapper class="color-picker-hue" @change="onMoveHue">
       <div
         class="color-picker-hue_cursor"
         :style="{

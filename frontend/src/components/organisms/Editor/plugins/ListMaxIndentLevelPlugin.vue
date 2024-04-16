@@ -12,11 +12,14 @@ import { useLexicalComposer } from 'lexical-vue'
 import { onMounted, onUnmounted } from 'vue'
 import invariant from 'tiny-invariant'
 
-const props = withDefaults(defineProps<{
-  maxDepth?: number
-}>(), {
-  maxDepth: 7,
-})
+const props = withDefaults(
+  defineProps<{
+    maxDepth?: number
+  }>(),
+  {
+    maxDepth: 7,
+  },
+)
 
 function getElementNodesInSelection(selection: RangeSelection) {
   const nodesInSelection = selection.getNodes()
@@ -38,8 +41,7 @@ const highPriority = 3
 function isIndentPermitted(maxDepth: number) {
   const selection = $getSelection() as RangeSelection
 
-  if (!$isRangeSelection(selection))
-    return false
+  if (!$isRangeSelection(selection)) return false
 
   const elementNodesInSelection = getElementNodesInSelection(selection)
 
@@ -47,12 +49,17 @@ function isIndentPermitted(maxDepth: number) {
 
   for (const elementNode of elementNodesInSelection) {
     if ($isListNode(elementNode)) {
-      totalDepth = Math.max($getListDepth(elementNode as ListNode) + 1, totalDepth)
-    }
-    else if ($isListItemNode(elementNode)) {
+      totalDepth = Math.max(
+        $getListDepth(elementNode as ListNode) + 1,
+        totalDepth,
+      )
+    } else if ($isListItemNode(elementNode)) {
       const parent = elementNode.getParent() as ListNode
       if (!$isListNode(parent as ListNode))
-        invariant(false, 'ListMaxIndentLevelPlugin: A ListItemNode must have a ListNode for a parent.')
+        invariant(
+          false,
+          'ListMaxIndentLevelPlugin: A ListItemNode must have a ListNode for a parent.',
+        )
 
       totalDepth = Math.max($getListDepth(parent) + 1, totalDepth)
     }

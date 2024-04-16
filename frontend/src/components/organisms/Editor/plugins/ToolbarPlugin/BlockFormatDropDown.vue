@@ -1,10 +1,21 @@
 <script setup lang="ts">
 import { $createCodeNode } from '@lexical/code'
-import { $createParagraphNode, $createTextNode, $getSelection, $isRangeSelection, type LexicalEditor } from 'lexical'
+import {
+  $createParagraphNode,
+  $createTextNode,
+  $getSelection,
+  $isRangeSelection,
+  type LexicalEditor,
+} from 'lexical'
 import { $wrapNodes } from '@lexical/selection'
 import type { HeadingTagType } from '@lexical/rich-text'
 import { $createHeadingNode, $createQuoteNode } from '@lexical/rich-text'
-import { INSERT_CHECK_LIST_COMMAND, INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND, REMOVE_LIST_COMMAND } from '@lexical/list'
+import {
+  INSERT_CHECK_LIST_COMMAND,
+  INSERT_ORDERED_LIST_COMMAND,
+  INSERT_UNORDERED_LIST_COMMAND,
+  REMOVE_LIST_COMMAND,
+} from '@lexical/list'
 import { blockTypeToBlockName, dropDownActiveClass } from './shared'
 import DropDown from '@/components/organisms/Editor/ui/DropDown.vue'
 import DropDownItem from '@/components/organisms/Editor/ui/DropDownItem.vue'
@@ -31,8 +42,7 @@ function formatHeading(headingSize: HeadingTagType) {
       const selection = $getSelection()
 
       if ($isRangeSelection(selection)) {
-        $wrapNodes(selection, () =>
-          $createHeadingNode(headingSize))
+        $wrapNodes(selection, () => $createHeadingNode(headingSize))
       }
     })
   }
@@ -41,22 +51,19 @@ function formatHeading(headingSize: HeadingTagType) {
 function formatBulletList() {
   if (props.blockType !== 'bullet')
     props.editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined)
-  else
-    props.editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined)
+  else props.editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined)
 }
 
 function formatCheckList() {
   if (props.blockType !== 'check')
     props.editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined)
-  else
-    props.editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined)
+  else props.editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined)
 }
 
 function formatNumberedList() {
   if (props.blockType !== 'number')
     props.editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined)
-  else
-    props.editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined)
+  else props.editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined)
 }
 
 function formatQuote() {
@@ -79,8 +86,7 @@ function formatCode() {
       if ($isRangeSelection(selection)) {
         if (selection.isCollapsed()) {
           $wrapNodes(selection, () => $createCodeNode())
-        }
-        else {
+        } else {
           const textContent = selection.getTextContent()
           const codeNode = $createCodeNode()
           selection.insertNodes([codeNode])
@@ -120,28 +126,37 @@ function formatCode() {
       <i class="icon h2" />
       <span class="text">Heading 2</span>
     </DropDownItem>
-    <DropDownItem :class="`item ${dropDownActiveClass(blockType === 'h3')}`" @click="formatHeading('h3')">
+    <DropDownItem
+      :class="`item ${dropDownActiveClass(blockType === 'h3')}`"
+      @click="formatHeading('h3')"
+    >
       <i class="icon h3" />
       <span class="text">Heading 3</span>
     </DropDownItem>
     <DropDownItem
-      :class="`item ${dropDownActiveClass(blockType === 'bullet')}`" @click="formatBulletList"
+      :class="`item ${dropDownActiveClass(blockType === 'bullet')}`"
+      @click="formatBulletList"
     >
       <i class="icon bullet-list" />
       <span class="text">Bullet List</span>
     </DropDownItem>
     <DropDownItem
-      :class="`item ${dropDownActiveClass(blockType === 'number')}`" @click="formatNumberedList"
+      :class="`item ${dropDownActiveClass(blockType === 'number')}`"
+      @click="formatNumberedList"
     >
       <i class="icon numbered-list" />
       <span class="text">Numbered List</span>
     </DropDownItem>
-    <DropDownItem :class="`item ${dropDownActiveClass(blockType === 'check')}`" @click="formatCheckList">
+    <DropDownItem
+      :class="`item ${dropDownActiveClass(blockType === 'check')}`"
+      @click="formatCheckList"
+    >
       <i class="icon check-list" />
       <span class="text">Check List</span>
     </DropDownItem>
     <DropDownItem
-      :class="`item ${dropDownActiveClass(blockType === 'quote')}`" @click="formatQuote"
+      :class="`item ${dropDownActiveClass(blockType === 'quote')}`"
+      @click="formatQuote"
     >
       <i class="icon quote" />
       <span class="text">Quote</span>

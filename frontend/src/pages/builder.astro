@@ -1,32 +1,40 @@
 ---
-import { apiFetch } from "@/api";
-import ERBuilder from "@/components/EldenRing/Builder.vue";
-import Layout from "@/layouts/Layout.astro";
-import type { PayloadCollection } from "@/types";
-import type { Archetype, ErStatistic, Restriction } from "@payload-types";
+import { apiFetch } from '@/api'
+import ERBuilder from '@/components/EldenRing/Builder.vue'
+import Layout from '@/layouts/Layout.astro'
+import type { PayloadCollection } from '@/types'
+import type { Archetype, ErStatistic, Restriction } from '@payload-types'
 
-const { user } = Astro.locals;
+const { user } = Astro.locals
 
 const [stats, archetypes, restrictions] = await Promise.all([
   apiFetch<PayloadCollection<ErStatistic>>('/api/er-statistics?sort=id'),
   apiFetch<PayloadCollection<Archetype>>('/api/archetypes?sort=id'),
-  apiFetch<PayloadCollection<Restriction>>('/api/restrictions?sort=id')
+  apiFetch<PayloadCollection<Restriction>>('/api/restrictions?sort=id'),
 ])
 ---
+
 <Layout title="Create a build">
-  { !user && (
-    <p class="container text-destructive">⚠️ You cannot create a build because you are not logged in.</p>
-  )}
-  {/*
+  {
+    !user && (
+      <p class="container text-destructive">
+        ⚠️ You cannot create a build because you are not logged in.
+      </p>
+    )
+  }
+  {
+    /*
     Switch the builder depending on the current selected game
     Data are fetched in the component loaded to avoid loading
     too much data
-  */}
+  */
+  }
   <div class="container--xl">
     <ERBuilder
       client:only
       stats={stats}
       archetypes={archetypes}
-      restrictions={restrictions} />
+      restrictions={restrictions}
+    />
   </div>
 </Layout>

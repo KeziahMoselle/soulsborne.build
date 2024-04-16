@@ -149,7 +149,8 @@
     margin-bottom: 1rem;
   }
 
-  ul, ol {
+  ul,
+  ol {
     list-style: inherit;
     padding-left: 2rem;
   }
@@ -158,7 +159,7 @@
 .loader {
   --s: 25px;
 
-  --_d: calc(0.353*var(--s));
+  --_d: calc(0.353 * var(--s));
   width: calc(var(--s) + var(--_d));
   aspect-ratio: 1;
   display: grid;
@@ -166,12 +167,24 @@
   animation: l2 0.8s infinite;
 }
 .loader:before {
-  content: "";
-  clip-path: polygon(var(--_d) 0,100% 0,100% calc(100% - var(--_d)),calc(100% - var(--_d)) 100%,0 100%,0 var(--_d));
-  background:
-    conic-gradient(from -90deg at var(--s) var(--_d),
-     #fff 135deg,#666 0 270deg,#aaa 0);
+  content: '';
+  clip-path: polygon(
+    var(--_d) 0,
+    100% 0,
+    100% calc(100% - var(--_d)),
+    calc(100% - var(--_d)) 100%,
+    0 100%,
+    0 var(--_d)
+  );
+  background: conic-gradient(
+    from -90deg at var(--s) var(--_d),
+    #fff 135deg,
+    #666 0 270deg,
+    #aaa 0
+  );
 }
-@keyframes l2{
-  50% {filter:drop-shadow(0 0 5px #fff)}
+@keyframes l2 {
+  50% {
+    filter: drop-shadow(0 0 5px #fff);
+  }
 }

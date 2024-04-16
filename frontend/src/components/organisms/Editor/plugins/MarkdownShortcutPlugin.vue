@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import { LexicalMarkdownShortcutPlugin } from 'lexical-vue'
-import type {
-  Transformer,
-} from '@lexical/markdown'
+import type { Transformer } from '@lexical/markdown'
 import {
   CHECK_LIST,
   ELEMENT_TRANSFORMERS,

@@ -26,8 +26,7 @@ function move(e: MouseEvent): void {
 }
 
 function onMouseDown(e: MouseEvent): void {
-  if (e.button !== 0)
-    return
+  if (e.button !== 0) return
 
   move(e)
 
@@ -38,8 +37,7 @@ function onMouseDown(e: MouseEvent): void {
   }
 
   const onMouseUp = (_e: MouseEvent): void => {
-    if (draggedRef.value)
-      emit('skipAddingToHistoryStack', false)
+    if (draggedRef.value) emit('skipAddingToHistoryStack', false)
 
     document.removeEventListener('mousemove', onMouseMove, false)
     document.removeEventListener('mouseup', onMouseUp, false)
@@ -54,10 +52,7 @@ function onMouseDown(e: MouseEvent): void {
 </script>
 
 <template>
-  <div
-    ref="divRef"
-    @mousedown="onMouseDown"
-  >
+  <div ref="divRef" @mousedown="onMouseDown">
     <slot />
   </div>
 </template>

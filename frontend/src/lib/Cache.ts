@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * Cache Class
  */
@@ -14,9 +16,9 @@ export default class Cache {
    * @returns {cache}               A new Cache instance.
    */
   constructor({ name, ttl = 0 }) {
-    this.name = name;
-    this.store = {};
-    this.expire = ttl === 0 ? false : ttl * 1000 * 60;
+    this.name = name
+    this.store = {}
+    this.expire = ttl === 0 ? false : ttl * 1000 * 60
   }
 
   /**
@@ -25,12 +27,12 @@ export default class Cache {
    * @returns {string}    The saved item or undefined if its TTL has expired.
    */
   get(key) {
-    const now = Date.now();
-    const value = this.store[key];
+    const now = Date.now()
+    const value = this.store[key]
     if (value === undefined || (value.expire !== false && value.expire < now)) {
-      return '';
+      return ''
     }
-    return value.data;
+    return value.data
   }
 
   /**
@@ -39,11 +41,11 @@ export default class Cache {
    * @param {*}      value The value of the item.
    */
   set(key, value) {
-    const now = Date.now();
+    const now = Date.now()
     this.store[key] = {
       expire: this.expire === false ? false : now + this.expire,
       data: value,
-    };
+    }
   }
 
   /**
@@ -51,14 +53,14 @@ export default class Cache {
    * @param  {string} key The key of the item.
    */
   remove(key) {
-    delete this.store[key];
+    delete this.store[key]
   }
 
   /**
    * Clear the cache.
    */
   clear() {
-    this.store = {};
+    this.store = {}
   }
 }
 

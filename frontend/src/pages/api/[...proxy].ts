@@ -1,4 +1,4 @@
-import type { APIRoute } from "astro"
+import type { APIRoute } from 'astro'
 
 const getProxyUrl = (request: Request) => {
   const proxyUrl = new URL(import.meta.env.PUBLIC_PAYLOAD_URL)

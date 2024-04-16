@@ -1,13 +1,13 @@
 ---
-import { getMostVotedBuilds } from "@/api";
-import Layout from "../layouts/Layout.astro";
-import BuildCard from "@/components/molecules/EldenRing/BuildCard.vue";
-import { ArrowLeft, ArrowRight } from "lucide-vue-next";
+import { getMostVotedBuilds } from '@/api'
+import Layout from '../layouts/Layout.astro'
+import BuildCard from '@/components/molecules/EldenRing/BuildCard.vue'
+import { ArrowLeft, ArrowRight } from 'lucide-vue-next'
 
 const builds = await getMostVotedBuilds({
   limit: 12,
-  page: Number(Astro.url.searchParams.get('page'))
-});
+  page: Number(Astro.url.searchParams.get('page')),
+})
 ---
 
 <Layout title="Explore builds">
@@ -16,7 +16,7 @@ const builds = await getMostVotedBuilds({
       class="container--xl grid gap-5 justify-center sm:grid-cols-2 lg:grid-cols-3"
     >
       {
-        builds.docs.map((build) => (
+        builds.docs.map(build => (
           <BuildCard
             build={build}
             hasVoted={build.votes?.includes(Astro.locals.user?.id)}
@@ -32,26 +32,26 @@ const builds = await getMostVotedBuilds({
         class:list={[
           'button',
           {
-            'button--disabled': !builds.hasPrevPage
-          }
+            'button--disabled': !builds.hasPrevPage,
+          },
         ]}
-        class="button ">
+        class="button"
+      >
         <ArrowLeft />
         Previous
-      </a
-      >
+      </a>
       <a
         href={`?page=${builds.nextPage}`}
         class:list={[
           'button',
           {
-            'button--disabled': !builds.hasNextPage
-          }
+            'button--disabled': !builds.hasNextPage,
+          },
         ]}
-        >
+      >
         Next
         <ArrowRight />
       </a>
-    </n>
+    </nav>
   </section>
 </Layout>

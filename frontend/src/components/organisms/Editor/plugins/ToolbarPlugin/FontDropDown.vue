@@ -5,14 +5,17 @@ import { dropDownActiveClass } from './shared'
 import DropDown from '@/components/organisms/Editor/ui/DropDown.vue'
 import DropDownItem from '@/components/organisms/Editor/ui/DropDownItem.vue'
 
-const props = withDefaults(defineProps<{
-  editor: LexicalEditor
-  value: string
-  customStyle: string
-  disabled?: boolean
-}>(), {
-  disabled: false,
-})
+const props = withDefaults(
+  defineProps<{
+    editor: LexicalEditor
+    value: string
+    customStyle: string
+    disabled?: boolean
+  }>(),
+  {
+    disabled: false,
+  },
+)
 
 function handleClick(option: string) {
   props.editor.update(() => {
@@ -25,7 +28,10 @@ function handleClick(option: string) {
   })
 }
 
-const buttonAriaLabel = props.customStyle === 'font-family' ? 'Formatting options for font family' : 'Formatting options for font size'
+const buttonAriaLabel =
+  props.customStyle === 'font-family'
+    ? 'Formatting options for font family'
+    : 'Formatting options for font size'
 
 const FONT_FAMILY_OPTIONS: [string, string][] = [
   ['Arial', 'Arial'],
@@ -56,11 +62,15 @@ const FONT_SIZE_OPTIONS: [string, string][] = [
     :disabled="disabled"
     :button-class-name="`toolbar-item ${customStyle}`"
     :button-label="value"
-    :button-icon-class-name="customStyle === 'font-family' ? 'icon block-type font-family' : ''"
+    :button-icon-class-name="
+      customStyle === 'font-family' ? 'icon block-type font-family' : ''
+    "
     :button-aria-label="buttonAriaLabel"
   >
     <DropDownItem
-      v-for="[option, text] in (customStyle === 'font-family' ? FONT_FAMILY_OPTIONS : FONT_SIZE_OPTIONS)"
+      v-for="[option, text] in customStyle === 'font-family'
+        ? FONT_FAMILY_OPTIONS
+        : FONT_SIZE_OPTIONS"
       :key="option"
       :class="`item ${dropDownActiveClass(value === option)} ${customStyle === 'font-size' ? 'fontsize-item' : ''}`"
       @click="handleClick"

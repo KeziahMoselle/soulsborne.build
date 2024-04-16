@@ -1,33 +1,49 @@
 <script setup lang="ts">
 import type { PayloadCollection } from '@/types'
 import { computed, ref } from 'vue'
-import { ComboboxAnchor, ComboboxInput, ComboboxPortal, ComboboxRoot } from 'radix-vue'
-import { CommandEmpty, CommandGroup, CommandItem, CommandList } from '@/components/ui/command'
-import { TagsInput, TagsInputInput, TagsInputItem, TagsInputItemDelete, TagsInputItemText } from '@/components/ui/tags-input'
+import {
+  ComboboxAnchor,
+  ComboboxInput,
+  ComboboxPortal,
+  ComboboxRoot,
+} from 'radix-vue'
+import {
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command'
+import {
+  TagsInput,
+  TagsInputInput,
+  TagsInputItem,
+  TagsInputItemDelete,
+  TagsInputItemText,
+} from '@/components/ui/tags-input'
 import { onClickOutside } from '@vueuse/core'
 import { useFieldArray } from 'vee-validate'
 
 const props = defineProps<{
   label: string
   name: string
-  docs: PayloadCollection<Partial<{ id: number; name: string; }>>
+  docs: PayloadCollection<Partial<{ id: number; name: string }>>
 }>()
 
 const input = ref(null)
-const { remove, push, fields } = useFieldArray(props.name);
+const { remove, push, fields } = useFieldArray(props.name)
 const open = ref(false)
 const searchTerm = ref('')
-const fieldsValues = computed(() => fields.value.map((field) => field.value))
-const filteredTags = computed(
-  () => props.docs.docs
+const fieldsValues = computed(() => fields.value.map(field => field.value))
+const filteredTags = computed(() =>
+  props.docs.docs
     .filter(i => !fieldsValues.value.includes(i.id))
-    .map((i) => ({
+    .map(i => ({
       label: i.name,
       value: i.id,
-    }))
+    })),
 )
 
-onClickOutside(input, () => open.value = false)
+onClickOutside(input, () => (open.value = false))
 
 function onSelect(ev) {
   push(ev.detail.value)
@@ -37,12 +53,13 @@ function onSelect(ev) {
 </script>
 
 <template>
-  <TagsInput
-    ref="input"
-    class="px-0 gap-0 w-full md:w-80"
-    @click="open = true">
+  <TagsInput ref="input" class="px-0 gap-0 w-full md:w-80" @click="open = true">
     <div class="flex gap-2 flex-wrap items-center px-3">
-      <TagsInputItem v-for="(field, idx) in fields" :key="field.key" :value="docs.docs.find((doc) => doc.id === field.value).name">
+      <TagsInputItem
+        v-for="(field, idx) in fields"
+        :key="field.key"
+        :value="docs.docs.find(doc => doc.id === field.value).name"
+      >
         <TagsInputItemText />
         <TagsInputItemDelete @click="remove(idx)" />
       </TagsInputItem>
@@ -51,7 +68,11 @@ function onSelect(ev) {
     <ComboboxRoot v-model:open="open" class="w-full">
       <ComboboxAnchor as-child>
         <ComboboxInput :placeholder="`- Select ${label} -`" as-child>
-          <TagsInputInput class="w-full px-3" :class="fields.length > 0 ? 'mt-2' : ''" @keydown.enter.prevent />
+          <TagsInputInput
+            class="w-full px-3"
+            :class="fields.length > 0 ? 'mt-2' : ''"
+            @keydown.enter.prevent
+          />
         </ComboboxInput>
       </ComboboxAnchor>
 

@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import { useCycleList } from '@vueuse/core';
-import { onMounted, onUnmounted, ref } from 'vue';
+import { useCycleList } from '@vueuse/core'
+import { onMounted, onUnmounted, ref } from 'vue'
 
-  interface Image {
-    src: string
-    alt: string
-  }
+interface Image {
+  src: string
+  alt: string
+}
 
-  const props = defineProps<{
-    class: string
-    images: Image[]
-  }>()
+const props = defineProps<{
+  class: string
+  images: Image[]
+}>()
 
-  let interval
-  const { next, index: activeIndex } = useCycleList(props.images)
+let interval
+const { next, index: activeIndex } = useCycleList(props.images)
 
-  onMounted(() => {
-    interval = setInterval(next, 3000)
-  })
+onMounted(() => {
+  interval = setInterval(next, 3000)
+})
 
-  onUnmounted(() => {
-    clearInterval(interval)
-  })
+onUnmounted(() => {
+  clearInterval(interval)
+})
 </script>
 
 <template>
@@ -34,7 +34,8 @@ import { onMounted, onUnmounted, ref } from 'vue';
       class="absolute w-full top-0 transition duration-500 transform will-change-transform"
       :class="{
         'opacity-100': activeIndex === index,
-        'opacity-0 translate-y-9': activeIndex !== index
-      }" />
+        'opacity-0 translate-y-9': activeIndex !== index,
+      }"
+    />
   </span>
 </template>

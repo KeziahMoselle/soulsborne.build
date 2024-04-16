@@ -1,6 +1,6 @@
-import { apiFetch } from "@/api";
-import type { PayloadUserResponse } from "@/types";
-import { defineMiddleware, sequence } from "astro:middleware"
+import { apiFetch } from '@/api'
+import type { PayloadUserResponse } from '@/types'
+import { defineMiddleware, sequence } from 'astro:middleware'
 
 const auth = defineMiddleware(async ({ cookies, locals, redirect }, next) => {
   if (!cookies.has('payload-token')) {
@@ -12,7 +12,7 @@ const auth = defineMiddleware(async ({ cookies, locals, redirect }, next) => {
   try {
     data = await apiFetch('/api/users/me', {
       headers: {
-        'Cookie': `payload-token=${cookies.get('payload-token').value}`
+        Cookie: `payload-token=${cookies.get('payload-token').value}`,
       },
     })
   } catch (error) {

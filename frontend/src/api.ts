@@ -3,11 +3,17 @@ import type { ErBuild } from '@payload-types'
 import { toast } from 'vue-sonner'
 import qs from 'qs'
 
-export async function apiFetch<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+export async function apiFetch<T>(
+  endpoint: string,
+  options: RequestInit = {},
+): Promise<T> {
   return fetchJSON(`${import.meta.env.PUBLIC_PAYLOAD_URL}${endpoint}`, options)
 }
 
-export async function fetchJSON<T>(url: string, options: RequestInit = {}): Promise<T> {
+export async function fetchJSON<T>(
+  url: string,
+  options: RequestInit = {},
+): Promise<T> {
   const defaultOptions: RequestInit = {
     headers: {
       'Content-Type': 'application/json',
@@ -24,8 +30,8 @@ export async function fetchJSON<T>(url: string, options: RequestInit = {}): Prom
     ...options,
   }
 
-  const result = await fetch(`${url}`, mergedOptions).then(async (res) => {
-    const json = await res.json() as T
+  const result = await fetch(`${url}`, mergedOptions).then(async res => {
+    const json = (await res.json()) as T
 
     if (res.ok) {
       return json
@@ -33,7 +39,10 @@ export async function fetchJSON<T>(url: string, options: RequestInit = {}): Prom
 
     throw new Error(
       // @ts-ignore
-      json.message ? json.message : `Error fetching page data: ${res.statusText} (${res.status})}`
+      json.message
+        // @ts-ignore
+        ? json.message
+        : `Error fetching page data: ${res.statusText} (${res.status})}`,
     )
   })
 
@@ -63,7 +72,7 @@ export async function login(payload: ILoginPayload) {
     },
     error: () => {
       return 'There was an error'
-    }
+    },
   })
 
   return isSuccess
@@ -90,10 +99,10 @@ export async function register(payload: IRegisterPayload) {
       location.href = '/login'
       return `Successfully registered!`
     },
-    error: (error) => {
+    error: error => {
       // @ts-ignore
       return error.message
-    }
+    },
   })
 
   return isSuccess
@@ -112,11 +121,17 @@ export async function logout() {
     },
     error: () => {
       return 'There was an error'
-    }
+    },
   })
 }
 
-export async function getMostVotedBuilds({ limit, page = 1 }: { limit: number; page?: number }) {
+export async function getMostVotedBuilds({
+  limit,
+  page = 1,
+}: {
+  limit: number
+  page?: number
+}) {
   const stringifiedQuery = qs.stringify(
     {
       sort: 'votes',
@@ -136,8 +151,8 @@ export async function toggleVoteBuild({ buildId }) {
   const updatedBuild = await apiFetch<ErBuild>(`/api/er-builds/toggle-vote`, {
     method: 'POST',
     body: JSON.stringify({
-      buildId
-    })
+      buildId,
+    }),
   })
 
   return updatedBuild

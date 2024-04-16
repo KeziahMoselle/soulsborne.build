@@ -1,26 +1,26 @@
 <script setup>
-  import { ref } from 'vue'
-  import Input from '@/components/ui/input/Input.vue';
-  import { login } from '../../api'
+import { ref } from 'vue'
+import Input from '@/components/ui/input/Input.vue'
+import { login } from '../../api'
 
-  const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL
+const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL
 
-  const emit = defineEmits(['login'])
+const emit = defineEmits(['login'])
 
-  const form = ref(null)
+const form = ref(null)
 
-  async function submit() {
-    const formData = new FormData(form.value);
+async function submit() {
+  const formData = new FormData(form.value)
 
-    const succeeded = await login({
-      email: formData.get('email'),
-      password: formData.get('password')
-    })
+  const succeeded = await login({
+    email: formData.get('email'),
+    password: formData.get('password'),
+  })
 
-    if (succeeded) {
-      emit('login')
-    }
+  if (succeeded) {
+    emit('login')
   }
+}
 </script>
 
 <template>
@@ -29,7 +29,8 @@
     ref="form"
     method="POST"
     :action="`${PAYLOAD_URL}/api/users/login`"
-    @submit.prevent="submit">
+    @submit.prevent="submit"
+  >
     <Input type="email" name="email" placeholder="your@email.com" required />
     <Input type="password" name="password" placeholder="password" required />
     <div class="text-center">

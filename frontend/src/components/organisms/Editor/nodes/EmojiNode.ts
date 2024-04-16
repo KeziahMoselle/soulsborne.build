@@ -54,18 +54,14 @@ export class EmojiNode extends TextNode {
     config: EditorConfig,
   ): boolean {
     const inner = dom.firstChild
-    if (inner === null)
-      return true
+    if (inner === null) return true
 
     super.updateDOM(prevNode, inner as HTMLElement, config)
     return false
   }
 
   static importJSON(serializedNode: SerializedEmojiNode): EmojiNode {
-    const node = $createEmojiNode(
-      serializedNode.className,
-      serializedNode.text,
-    )
+    const node = $createEmojiNode(serializedNode.className, serializedNode.text)
     node.setFormat(serializedNode.format)
     node.setDetail(serializedNode.detail)
     node.setMode(serializedNode.mode)

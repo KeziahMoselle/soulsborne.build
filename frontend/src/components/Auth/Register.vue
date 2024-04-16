@@ -1,27 +1,27 @@
 <script setup>
-  import { ref } from 'vue'
-  import { register } from '../../api'
-import Input from '@/components/ui/input/Input.vue';
+import { ref } from 'vue'
+import { register } from '../../api'
+import Input from '@/components/ui/input/Input.vue'
 
-  const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL
+const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL
 
-  const emit = defineEmits(['registered'])
+const emit = defineEmits(['registered'])
 
-  const form = ref(null)
+const form = ref(null)
 
-  async function submit() {
-    const formData = new FormData(form.value);
+async function submit() {
+  const formData = new FormData(form.value)
 
-    const succeeded = await register({
-      name: formData.get('name'),
-      email: formData.get('email'),
-      password: formData.get('password')
-    })
+  const succeeded = await register({
+    name: formData.get('name'),
+    email: formData.get('email'),
+    password: formData.get('password'),
+  })
 
-    if (succeeded) {
-      emit('registered')
-    }
+  if (succeeded) {
+    emit('registered')
   }
+}
 </script>
 
 <template>
@@ -30,10 +30,29 @@ import Input from '@/components/ui/input/Input.vue';
     ref="form"
     method="POST"
     :action="`${PAYLOAD_URL}/api/register`"
-    @submit.prevent="submit">
-    <Input class="text-slate-900" type="text" name="name" placeholder="Name" required />
-    <Input class="text-slate-900" type="email" name="email" placeholder="your@email.com" required />
-    <Input class="text-slate-900" type="password" name="password" placeholder="password" required />
+    @submit.prevent="submit"
+  >
+    <Input
+      class="text-slate-900"
+      type="text"
+      name="name"
+      placeholder="Name"
+      required
+    />
+    <Input
+      class="text-slate-900"
+      type="email"
+      name="email"
+      placeholder="your@email.com"
+      required
+    />
+    <Input
+      class="text-slate-900"
+      type="password"
+      name="password"
+      placeholder="password"
+      required
+    />
     <div class="text-center">
       <button class="button" type="submit">Register</button>
     </div>

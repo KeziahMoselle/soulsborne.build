@@ -2,7 +2,11 @@
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link'
 import { $findMatchingParent, mergeRegister } from '@lexical/utils'
 import type { BaseSelection, CommandListenerPriority } from 'lexical'
-import { $getSelection, $isRangeSelection, SELECTION_CHANGE_COMMAND } from 'lexical'
+import {
+  $getSelection,
+  $isRangeSelection,
+  SELECTION_CHANGE_COMMAND,
+} from 'lexical'
 import { useLexicalComposer } from 'lexical-vue'
 import { onMounted, onUnmounted, ref, watchEffect } from 'vue'
 import { getSelectedNode } from '../utils/getSelectedNode'
@@ -24,8 +28,7 @@ function positionEditorElement(editor: HTMLDivElement, rect: DOMRect | null) {
     editor.style.opacity = '0'
     editor.style.top = '-1000px'
     editor.style.left = '-1000px'
-  }
-  else {
+  } else {
     editor.style.opacity = '1'
     editor.style.top = `${rect.top + rect.height + window.pageYOffset + 10}px`
     editor.style.left = `${
@@ -40,27 +43,23 @@ function updateLinkEditor() {
     const node = getSelectedNode(selection)
     const linkParent = $findMatchingParent(node, $isLinkNode)
 
-    if (linkParent)
-      linkUrl.value = linkParent.getURL()
-    else if ($isLinkNode(node))
-      linkUrl.value = node.getURL()
-    else
-      linkUrl.value = ''
+    if (linkParent) linkUrl.value = linkParent.getURL()
+    else if ($isLinkNode(node)) linkUrl.value = node.getURL()
+    else linkUrl.value = ''
   }
   const editorElem = editorRef.value
   const nativeSelection = window.getSelection()
   const activeElement = document.activeElement
 
-  if (!editorElem)
-    return
+  if (!editorElem) return
 
   const rootElement = editor.getRootElement()
   if (
-    selection !== null
-    && !nativeSelection?.isCollapsed
-    && rootElement !== null
-    && rootElement.contains(nativeSelection!.anchorNode)
-    && editor.isEditable()
+    selection !== null &&
+    !nativeSelection?.isCollapsed &&
+    rootElement !== null &&
+    rootElement.contains(nativeSelection!.anchorNode) &&
+    editor.isEditable()
   ) {
     const domRange = nativeSelection?.getRangeAt(0)
     let rect
@@ -72,17 +71,14 @@ function updateLinkEditor() {
       }
 
       rect = inner.getBoundingClientRect()
-    }
-    else {
+    } else {
       rect = domRange!.getBoundingClientRect()
     }
 
-    if (!mouseDownRef.value)
-      positionEditorElement(editorElem, rect)
+    if (!mouseDownRef.value) positionEditorElement(editorElem, rect)
 
     lastSelection.value = selection
-  }
-  else if (!activeElement || activeElement.className !== 'link-input') {
+  } else if (!activeElement || activeElement.className !== 'link-input') {
     positionEditorElement(editorElem, null)
     lastSelection.value = null
     isEditMode.value = false
@@ -120,8 +116,7 @@ onMounted(() => {
 })
 
 watchEffect(() => {
-  if (isEditMode.value && inputRef.value)
-    inputRef.value.focus()
+  if (isEditMode.value && inputRef.value) inputRef.value.focus()
 })
 
 onUnmounted(() => {
@@ -152,9 +147,11 @@ function onEnter() {
       type="text"
       @keydown.esc.prevent="isEditMode = false"
       @keydown.enter.prevent="onEnter"
-    >
+    />
     <div v-else class="link-input">
-      <a :href="linkUrl" target="_BLANK" rel="noopener noreferrer">{{ linkUrl }}</a>
+      <a :href="linkUrl" target="_BLANK" rel="noopener noreferrer">{{
+        linkUrl
+      }}</a>
       <div
         class="link-edit"
         role="button"

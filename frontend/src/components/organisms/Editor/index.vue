@@ -9,9 +9,7 @@ const emit = defineEmits(['change'])
 
 const config: CreateEditorArgs = {
   theme: PlaygroundEditorTheme,
-  nodes: [
-    ...PlaygroundNodes,
-  ],
+  nodes: [...PlaygroundNodes],
   editable: true,
 }
 

@@ -26,9 +26,11 @@ const inputValue = ref<string>(props.selectionFontSize)
  * @param updateType - The type of change, either increment or decrement
  * @returns the next font size
  */
-function calculateNextFontSize(currentFontSize: number, updateType: updateFontSizeType | null) {
-  if (!updateType)
-    return currentFontSize
+function calculateNextFontSize(
+  currentFontSize: number,
+  updateType: updateFontSizeType | null,
+) {
+  if (!updateType) return currentFontSize
 
   let updatedFontSize: number = currentFontSize
   switch (updateType) {
@@ -88,16 +90,15 @@ function calculateNextFontSize(currentFontSize: number, updateType: updateFontSi
  * Patches the selection with the updated font size.
  */
 
-function updateFontSizeInSelection(newFontSize: string | null, updateType: updateFontSizeType | null) {
+function updateFontSizeInSelection(
+  newFontSize: string | null,
+  updateType: updateFontSizeType | null,
+) {
   const getNextFontSize = (prevFontSize: string | null): string => {
-    if (!prevFontSize)
-      prevFontSize = `${DEFAULT_FONT_SIZE}px`
+    if (!prevFontSize) prevFontSize = `${DEFAULT_FONT_SIZE}px`
 
     prevFontSize = prevFontSize.slice(0, -2)
-    const nextFontSize = calculateNextFontSize(
-      Number(prevFontSize),
-      updateType,
-    )
+    const nextFontSize = calculateNextFontSize(Number(prevFontSize), updateType)
     return `${nextFontSize}px`
   }
 
@@ -143,22 +144,28 @@ function handleButtonClick(updateType: updateFontSizeType) {
       updateType,
     )
     updateFontSizeInSelection(`${String(nextFontSize)}px`, null)
-  }
-  else {
+  } else {
     updateFontSizeInSelection(null, updateType)
   }
 }
 
-watch(() => props.selectionFontSize, (newVal) => {
-  inputValue.value = newVal
-}, { immediate: true })
+watch(
+  () => props.selectionFontSize,
+  newVal => {
+    inputValue.value = newVal
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
   <button
     type="button"
     class="toolbar-item font-decrement"
-    :disabled="disabled || (selectionFontSize !== '' && Number(inputValue) <= MIN_ALLOWED_FONT_SIZE)"
+    :disabled="
+      disabled ||
+      (selectionFontSize !== '' && Number(inputValue) <= MIN_ALLOWED_FONT_SIZE)
+    "
     @click="handleButtonClick(updateFontSizeType.decrement)"
   >
     <i class="format minus-icon" />
@@ -172,12 +179,15 @@ watch(() => props.selectionFontSize, (newVal) => {
     :min="MIN_ALLOWED_FONT_SIZE"
     :max="MAX_ALLOWED_FONT_SIZE"
     @keydown="handleKeyPress"
-  >
+  />
 
   <button
     type="button"
     class="toolbar-item font-decrement"
-    :disabled="disabled || (selectionFontSize !== '' && Number(inputValue) >= MAX_ALLOWED_FONT_SIZE)"
+    :disabled="
+      disabled ||
+      (selectionFontSize !== '' && Number(inputValue) >= MAX_ALLOWED_FONT_SIZE)
+    "
     @click="handleButtonClick(updateFontSizeType.increment)"
   >
     <i class="format add-icon" />

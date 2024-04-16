@@ -6,6 +6,7 @@
   }
 }
 
-.vue3-marquee.horizontal:not([style*="running"]) > .overlay::before, .vue3-marquee.horizontal > .overlay::after {
+.vue3-marquee.horizontal:not([style*='running']) > .overlay::before,
+.vue3-marquee.horizontal > .overlay::after {
   background: none !important;
 }

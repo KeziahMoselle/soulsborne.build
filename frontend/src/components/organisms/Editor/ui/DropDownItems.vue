@@ -10,8 +10,7 @@ function registerItem(itemRef: HTMLButtonElement) {
 }
 
 function handleKeyDown(event: KeyboardEvent) {
-  if (!items.value)
-    return
+  if (!items.value) return
 
   const key = event.key
 
@@ -20,23 +19,21 @@ function handleKeyDown(event: KeyboardEvent) {
 
   if (key === 'Escape' || key === 'Tab') {
     emit('close')
-  }
-  else if (key === 'ArrowUp') {
+  } else if (key === 'ArrowUp') {
     if (!highlightedItem.value) {
       highlightedItem.value = items.value[0]
-    }
-    else {
+    } else {
       const index = items.value.indexOf(highlightedItem.value) - 1
-      highlightedItem.value = items.value[index === -1 ? items.value.length - 1 : index]
+      highlightedItem.value =
+        items.value[index === -1 ? items.value.length - 1 : index]
     }
-  }
-  else if (key === 'ArrowDown') {
+  } else if (key === 'ArrowDown') {
     if (!highlightedItem.value) {
       highlightedItem.value = items.value[0]
-    }
-    else {
+    } else {
       const index = items.value.indexOf(highlightedItem.value) + 1
-      highlightedItem.value = items.value[index === items.value.length ? 0 : index]
+      highlightedItem.value =
+        items.value[index === items.value.length ? 0 : index]
     }
   }
 }
@@ -45,8 +42,7 @@ onMounted(() => {
   if (items.value && !highlightedItem.value)
     highlightedItem.value = items.value[0]
 
-  if (highlightedItem.value)
-    highlightedItem.value.focus()
+  if (highlightedItem.value) highlightedItem.value.focus()
 })
 
 provide('DropDownContext', {

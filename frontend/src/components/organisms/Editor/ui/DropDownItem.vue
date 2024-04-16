@@ -6,14 +6,15 @@ defineProps<{
 }>()
 const button = ref<HTMLButtonElement | null>(null)
 
-const ctx = inject<{ registerItem: (itemRef: HTMLButtonElement) => void }>('DropDownContext')
+const ctx = inject<{ registerItem: (itemRef: HTMLButtonElement) => void }>(
+  'DropDownContext',
+)
 
 if (!ctx?.registerItem)
   throw new Error('DropDownItem must be used within a DropDown')
 
 onMounted(() => {
-  if (button.value)
-    ctx.registerItem(button.value)
+  if (button.value) ctx.registerItem(button.value)
 })
 </script>
 

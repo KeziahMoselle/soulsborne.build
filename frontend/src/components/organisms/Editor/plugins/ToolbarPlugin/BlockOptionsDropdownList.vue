@@ -1,36 +1,26 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useLexicalComposer } from 'lexical-vue'
-import type {
-  RangeSelection,
-} from 'lexical'
-import {
-  $createParagraphNode,
-  $getSelection,
-  $isRangeSelection,
-} from 'lexical'
+import type { RangeSelection } from 'lexical'
+import { $createParagraphNode, $getSelection, $isRangeSelection } from 'lexical'
 import {
   INSERT_ORDERED_LIST_COMMAND,
   INSERT_UNORDERED_LIST_COMMAND,
   REMOVE_LIST_COMMAND,
 } from '@lexical/list'
-import {
-  $wrapNodes,
-} from '@lexical/selection'
-import {
-  $createHeadingNode,
-  $createQuoteNode,
-} from '@lexical/rich-text'
-import {
-  $createCodeNode,
-} from '@lexical/code'
+import { $wrapNodes } from '@lexical/selection'
+import { $createHeadingNode, $createQuoteNode } from '@lexical/rich-text'
+import { $createCodeNode } from '@lexical/code'
 
-const props = withDefaults(defineProps<{
-  toolbarRef: HTMLDivElement | null
-  blockType?: string
-}>(), {
-  blockType: 'paragraph',
-})
+const props = withDefaults(
+  defineProps<{
+    toolbarRef: HTMLDivElement | null
+    blockType?: string
+  }>(),
+  {
+    blockType: 'paragraph',
+  },
+)
 const emit = defineEmits<{
   (e: 'update:showBlockOptionsDropDown', value: boolean): void
 }>()
@@ -48,7 +38,10 @@ onMounted(() => {
 function handle(event: Event) {
   const target = event.target as Node
 
-  if (!dropDownRef.value?.contains(target) && !props.toolbarRef?.contains(target))
+  if (
+    !dropDownRef.value?.contains(target) &&
+    !props.toolbarRef?.contains(target)
+  )
     emit('update:showBlockOptionsDropDown', false)
 }
 
@@ -100,9 +93,7 @@ function formatSmallHeading() {
 function formatBulletList() {
   if (props.blockType !== 'ul')
     editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined)
-
-  else
-    editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined)
+  else editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined)
 
   emit('update:showBlockOptionsDropDown', false)
 }
@@ -110,9 +101,7 @@ function formatBulletList() {
 function formatNumberedList() {
   if (props.blockType !== 'ol')
     editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined)
-
-  else
-    editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined)
+  else editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined)
 
   emit('update:showBlockOptionsDropDown', false)
 }
