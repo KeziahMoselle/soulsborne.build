@@ -29,6 +29,5 @@
   "engines": {
     "node": ">=20"
   },
-  "packageManager": "pnpm@9.0.0",
   "license": "GPL-3.0-only"
 }
