@@ -222,55 +222,28 @@ function transformColor<M extends keyof Color, C extends Color[M]>(
 </script>
 
 <template>
-  <div
-    ref="innerDivRef"
-    class="color-picker-wrapper"
-    :style="`width: ${WIDTH}px`"
-  >
-    <TextInput
-      label="Hex"
-      :model-value="inputColor"
-      @update:model-value="onSetHex"
-    />
+  <div ref="innerDivRef" class="color-picker-wrapper" :style="`width: ${WIDTH}px`">
+    <TextInput label="Hex" :model-value="inputColor" @update:model-value="onSetHex" />
     <div class="color-picker-basic-color">
-      <button
-        v-for="basicColor in basicColors"
-        :key="basicColor"
-        :class="basicColor === selfColor.hex ? ' active' : ''"
+      <button v-for="basicColor in basicColors" :key="basicColor" :class="basicColor === selfColor.hex ? ' active' : ''"
         :style="{ backgroundColor: basicColor }"
-        @click="
-          inputColor = basicColor
-          selfColor = transformColor('hex', basicColor)
-        "
-      />
+        @click="inputColor = basicColor;selfColor = transformColor('hex', basicColor)" />
     </div>
-    <MoveWrapper
-      class="color-picker-saturation"
-      :style="{ backgroundColor: `hsl(${selfColor.hsv.h}, 100%, 50%)` }"
-      @change="onMoveSaturation"
-    >
-      <div
-        class="color-picker-saturation_cursor"
-        :style="{
+    <MoveWrapper class="color-picker-saturation" :style="{ backgroundColor: `hsl(${selfColor.hsv.h}, 100%, 50%)` }"
+      @change="onMoveSaturation">
+      <div class="color-picker-saturation_cursor" :style="{
           backgroundColor: selfColor.hex,
           left: `${saturationPosition.x}px`,
           top: `${saturationPosition.y}px`,
-        }"
-      />
+        }" />
     </MoveWrapper>
     <MoveWrapper class="color-picker-hue" @change="onMoveHue">
-      <div
-        class="color-picker-hue_cursor"
-        :style="{
+      <div class="color-picker-hue_cursor" :style="{
           backgroundColor: `hsl(${selfColor.hsv.h}, 100%, 50%)`,
           left: `${huePosition.x}px`,
-        }"
-      />
+        }" />
     </MoveWrapper>
-    <div
-      class="color-picker-color"
-      :style="{ backgroundColor: selfColor.hex }"
-    />
+    <div class="color-picker-color" :style="{ backgroundColor: selfColor.hex }" />
   </div>
 </template>
 
@@ -309,6 +282,7 @@ function transformColor<M extends keyof Color, C extends Color[M]>(
     linear-gradient(to right, white, transparent);
   user-select: none;
 }
+
 .color-picker-saturation_cursor {
   position: absolute;
   width: 20px;
@@ -319,21 +293,20 @@ function transformColor<M extends keyof Color, C extends Color[M]>(
   box-sizing: border-box;
   transform: translate(-10px, -10px);
 }
+
 .color-picker-hue {
   width: 100%;
   position: relative;
   margin-top: 15px;
   height: 12px;
-  background-image: linear-gradient(
-    to right,
-    rgb(255, 0, 0),
-    rgb(255, 255, 0),
-    rgb(0, 255, 0),
-    rgb(0, 255, 255),
-    rgb(0, 0, 255),
-    rgb(255, 0, 255),
-    rgb(255, 0, 0)
-  );
+  background-image: linear-gradient(to right,
+      rgb(255, 0, 0),
+      rgb(255, 255, 0),
+      rgb(0, 255, 0),
+      rgb(0, 255, 255),
+      rgb(0, 0, 255),
+      rgb(255, 0, 255),
+      rgb(255, 0, 0));
   user-select: none;
   border-radius: 12px;
 }

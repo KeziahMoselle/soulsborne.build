@@ -24,6 +24,7 @@
     "@vueuse/core": "^10.9.0",
     "astro": "^4.5.17",
     "astro-purgecss": "^4.1.0",
+    "astro-seo": "^0.8.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "lexical": "0.13.1",

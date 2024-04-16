@@ -1,6 +1,7 @@
 ---
 import type { Media } from '@payload-types'
 import '@/styles/globals.scss'
+import { SEO } from "astro-seo";
 import { Toaster } from 'vue-sonner'
 import { Menu } from 'lucide-vue-next'
 import GameSelect from '@/components/molecules/GameSelect.vue'
@@ -22,7 +23,32 @@ const { user } = Astro.locals
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title} | soulsborne.build</title>
+    <SEO
+      title={title}
+      titleTemplate="%s | soulsborne.build"
+      description="soulsborne.build is a website focused on the soulsborne series (Dark Souls, Bloodborne, Elden Ring) which aims to centralize community created content like builds and character appearances as well as some interesting lore data visualization."
+      openGraph={{
+        basic: {
+          title: title,
+          type: "image",
+          image: "https://cdn.soulsborne.build/og/banner.jpg",
+        }
+      }}
+      twitter={{
+        creator: "@KeziahMoselle"
+      }}
+      extend={{
+        link: [{ rel: "icon", href: "/favicon.ico" }],
+        meta: [
+          {
+            name: "twitter:image",
+            content: "https://cdn.soulsborne.build/og/banner.jpg",
+          },
+          { name: "twitter:title", content: `${title} | soulsborne.build` },
+        ],
+      }}
+    />
+
     <link rel="stylesheet" href="https://use.typekit.net/okw0knf.css" />
     {
       import.meta.env.PROD && (
@@ -114,7 +140,7 @@ const { user } = Astro.locals
     </main>
 
     <footer>
-      <div class="text-center px-4 mb-4 mt-24 max-w-md mx-auto">
+      <div class="text-center text-white text-opacity-70 px-4 mb-4 mt-24 max-w-md mx-auto">
         <p>
           Soulsborne.build is not affiliated with or endorsed by BANDAI NAMCO,
           FROMSOFTWARE, Inc.

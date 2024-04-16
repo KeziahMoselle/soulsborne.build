@@ -179,7 +179,7 @@ const CORE_MEMBERS = [
     <h2 class="type-h2 text-center mb-16">Major features upcoming</h2>
 
     <div class="grid gap-5 lg:grid-cols-3">
-      <CardImage title="Builder" src="" alt="">
+      <CardImage title="Builder" src="/builder.png" alt="">
         Lorem ipsum dolor sit amet consectetur. Elit cras libero quam sociis.
         Egestas cursus condimentum dui aliquet convallis eget. Libero orci
         tincidunt quis nibh at in rhoncus elementum. In amet placerat luctus
@@ -191,7 +191,7 @@ const CORE_MEMBERS = [
         tincidunt quis nibh at in rhoncus elementum. In amet placerat luctus
         cras sem.
       </CardImage>
-      <CardImage title="Lore tree graph" src="" alt="">
+      <CardImage title="Lore tree graph" src="/lore-graph-tree.png" alt="Lore tree graph">
         Lorem ipsum dolor sit amet consectetur. Elit cras libero quam sociis.
         Egestas cursus condimentum dui aliquet convallis eget. Libero orci
         tincidunt quis nibh at in rhoncus elementum. In amet placerat luctus
@@ -214,7 +214,10 @@ const CORE_MEMBERS = [
       Pre-register your account and get notified when we launch !
     </p>
 
-    <PreregisterInput client:visible />
+    <div class="flex flex-col justify-center">
+      <PreregisterInput client:visible />
+      <p class="drop-shadow-md text-base mt-2">We will only send you 1 email at release time.</p>
+    </div>
   </section>
 
   <!-- Changelog -->
