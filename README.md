@@ -1,12 +1,14 @@
 # https://soulsborne.build/
 
-> Description of the website here
+> soulsborne.build is a website focused on the soulsborne series (Dark Souls, Bloodborne, Elden Ring) which aims to centralize community created content like builds and character appearances as well as some interesting lore data visualization.
 
 You can join our Discord server to chat and contribute: https://discord.com/invite/hw9x6ujjPk
 
 ## Features
 
-- Coming soon
+- Create, vote and share your Elden Ring builds
+- Create, vote and share your Elden Ring fashion (WIP)
+- Lore graph tree, an easy to understand relational graph of items/NPCs (WIP)
 
 ## Stack
 
@@ -43,27 +45,25 @@ Install globally:
 
 1. Copy the `.env.example` file to `.env` in both `backend` and `frontend` directories and fill in the values
 
-2. Install the dependencies via pnpm
+2. Install the dependencies via pnpm in both directories
 
 ```bash
 pnpm install
 ```
 
-```bash
-pnpm run setup
-```
-
-3. Start the local PostgreSQL database by running
+3. Start the local PostgreSQL database by running (in `/backend` directory)
 ```bash
 start-database.sh
 ```
 
-4. Run the development server for both the backend and frontend directories
+4. Run the development server for both the backend and frontend directories (run in each directories)
 
 ```bash
 pnpm dev
 ```
 
-5. Open the project
+5. (optional) You can seed some initial data by visiting http://localhost:3000/api/seed (this is currently being migrated into a separate script in `/backend/src/scripts/seed.ts`)
+
+6. Open the project
    1. PayloadCMS is accessible here: http://localhost:3000/admin
    2. Astro is accessible here: http://localhost:4321/
