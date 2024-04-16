@@ -13,11 +13,11 @@ async function preregister(e) {
 
 <template>
   <form @submit.prevent="preregister" class="flex items-center">
-    <div class="flex-1 relative">
+    <div class="flex flex-col items-center gap-4 flex-1 relative">
       <input name="email" type="email" placeholder="Your best email address"
         class="w-full pl-8 pr-8 py-4 bg-white text-black border border-ring placeholder:italic md:text-xl leading-6 transition focus:invalid:border-destructive focus:border-primary focus:outline-none lg:pr-36"
         required />
-      <button class="button absolute right-2 top-2">Notify me</button>
+      <button class="button  sm:absolute sm:right-2 sm:top-2">Notify me</button>
     </div>
   </form>
 </template>

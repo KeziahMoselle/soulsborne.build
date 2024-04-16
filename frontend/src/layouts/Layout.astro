@@ -1,7 +1,7 @@
 ---
 import type { Media } from '@payload-types'
 import '@/styles/globals.scss'
-import { SEO } from "astro-seo";
+import { SEO } from 'astro-seo'
 import { Toaster } from 'vue-sonner'
 import { Menu } from 'lucide-vue-next'
 import GameSelect from '@/components/molecules/GameSelect.vue'
@@ -30,21 +30,21 @@ const { user } = Astro.locals
       openGraph={{
         basic: {
           title: title,
-          type: "image",
-          image: "https://cdn.soulsborne.build/og/banner.jpg",
-        }
+          type: 'image',
+          image: 'https://cdn.soulsborne.build/og/banner.jpg',
+        },
       }}
       twitter={{
-        creator: "@KeziahMoselle"
+        creator: '@KeziahMoselle',
       }}
       extend={{
-        link: [{ rel: "icon", href: "/favicon.ico" }],
+        link: [{ rel: 'icon', href: '/favicon.ico' }],
         meta: [
           {
-            name: "twitter:image",
-            content: "https://cdn.soulsborne.build/og/banner.jpg",
+            name: 'twitter:image',
+            content: 'https://cdn.soulsborne.build/og/banner.jpg',
           },
-          { name: "twitter:title", content: `${title} | soulsborne.build` },
+          { name: 'twitter:title', content: `${title} | soulsborne.build` },
         ],
       }}
     />
@@ -140,7 +140,9 @@ const { user } = Astro.locals
     </main>
 
     <footer>
-      <div class="text-center text-white text-opacity-70 px-4 mb-4 mt-24 max-w-md mx-auto">
+      <div
+        class="text-sm text-center text-white text-opacity-70 px-4 mb-4 mt-24 max-w-xl mx-auto"
+      >
         <p>
           Soulsborne.build is not affiliated with or endorsed by BANDAI NAMCO,
           FROMSOFTWARE, Inc.
