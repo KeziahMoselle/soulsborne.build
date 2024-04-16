@@ -8,10 +8,10 @@ import { NextRequest } from 'next/server'
 const bodySchema = z.object({
   name: z.string().min(1),
   email: z.string().email(),
-  password: z.string()
+  password: z.string(),
 })
 
-export const GET = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   const requestBody = await req.json()
   const headers = getHeaders()
   const payload = await getPayload({
@@ -32,8 +32,8 @@ export const GET = async (req: NextRequest) => {
         name: body.name,
         email: body.email,
         password: body.password,
-        roles: ['user']
-      }
+        roles: ['user'],
+      },
     })
 
     return Response.json({ success: true, user })

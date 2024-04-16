@@ -144,6 +144,10 @@
   @apply text-accent-foreground underline hover:no-underline;
 }
 
+input {
+  @apply text-white;
+}
+
 .wysiwyg {
   p {
     margin-bottom: 1rem;
