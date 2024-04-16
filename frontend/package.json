@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.7.0",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -50,7 +50,7 @@
     "wrangler": "^3.47.0"
   },
   "engines": {
-    "node": ">=20",
-    "npm": "~10.5.0"
-  }
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@9.0.0"
 }

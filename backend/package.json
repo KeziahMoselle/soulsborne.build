@@ -1,6 +1,6 @@
 {
-  "name": "payload.soulsborne.build",
-  "version": "0.1.0",
+  "name": "backend",
+  "version": "0.7.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,9 +12,6 @@
     "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
     "generate:types": "payload generate:types",
     "seed": "tsx ./src/scripts/seed.ts"
-  },
-  "engines": {
-    "node": ">=18.19.0"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.552.0",
@@ -45,5 +42,8 @@
     "tsx": "^4.7.1",
     "typescript": "^5.4.2"
   },
-  "packageManager": "pnpm@8.15.4+sha256.cea6d0bdf2de3a0549582da3983c70c92ffc577ff4410cbf190817ddc35137c2"
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@9.0.0"
 }

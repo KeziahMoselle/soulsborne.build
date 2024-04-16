@@ -1,0 +1,34 @@
+{
+  "name": "soulsborne.build",
+  "version": "0.7.0",
+  "description": "Share your soulsborne builds and appearances",
+  "homepage": "https://soulsborne.build",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KeziahMoselle/soulsborne.build"
+  },
+  "bugs": {
+    "url": "https://github.com/KeziahMoselle/soulsborne.build/issues",
+    "email": "contact@soulsborne.build"
+  },
+  "author": {
+    "name": "Keziah Moselle",
+    "email": "contact@keziahmoselle.fr",
+    "url": "https://keziahmoselle.fr"
+  },
+  "contributors": [
+    {
+      "name": "Mehdi Tsr"
+    },
+    {
+      "name": "Audrey Basmadjian",
+      "url": "https://akara.fr"
+    }
+  ],
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "license": "GPL-3.0-only"
+}
