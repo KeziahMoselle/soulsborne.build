@@ -3,18 +3,62 @@ import BuildCard from "@/components/molecules/EldenRing/BuildCard.vue";
 import Layout from "../layouts/Layout.astro";
 import TranslateImages from "@/components/atoms/TranslateImages.vue";
 import { getMostVotedBuilds } from "@/api";
+import CardImage from "@/components/molecules/CardImage.vue";
+import PreregisterInput from "@/components/molecules/PreregisterInput.vue";
 
 const builds = await getMostVotedBuilds({ limit: 3 });
+
+const CORE_MEMBERS = [
+	{
+		image: {
+			src: '/members/keziah.png',
+			alt: 'Keziah, core member of the project'
+		},
+		name: 'Keziah',
+		title: 'Developer',
+		link: {
+			href: 'https://keziahmoselle.fr',
+			label: 'keziahmoselle.fr'
+		}
+	},
+	{
+		image: {
+			src: '/members/mehdi.png',
+			alt: 'Mehdi, core member of the project'
+		},
+		name: 'Mehdi',
+		title: 'Developer',
+		link: {
+			href: 'https://lepiredev.fr',
+			label: 'lepiredev.fr'
+		}
+	},
+	{
+		image: {
+			src: '/members/audrey.png',
+			alt: 'Audrey, core member of the project'
+		},
+		name: 'Audrey',
+		title: 'Designer/Artisan',
+		link: {
+			href: 'https://akara.fr',
+			label: 'akara.fr'
+		}
+	},
+]
 ---
 
 <Layout title="Home">
+	<!-- Hero image -->
 	<div class="relative">
 		<img
 			class="-z-10 absolute top-0 w-full max-h-screen object-cover object-top"
 			src="/hero/gideon.webp"
-			alt=""
+			alt="Gideon the all knowing during the intro cinematic"
 		/>
 	</div>
+
+	<!-- Hero -->
 	<section class="container px-4">
 		<h1
 			class="hidden text-center font-display text-4xl leading-relaxed md:text-7xl md:leading-xl my-20 md:mt-44 md:block"
@@ -68,6 +112,7 @@ const builds = await getMostVotedBuilds({ limit: 3 });
 		</h1>
 	</section>
 
+	<!-- About the project -->
 	<section class="container">
 		<div
 			class="bg-secondary border border-primary px-4 py-8 my-8 md:px-16 md:my-16"
@@ -107,7 +152,8 @@ const builds = await getMostVotedBuilds({ limit: 3 });
 		</div>
 	</section>
 
-	<section class="mb-16">
+	<!-- Builds cross nav -->
+	<section class="mb-14">
 		<h2 class="type-h2 text-center mb-16">Most popular builds</h2>
 
 		<div
@@ -126,6 +172,156 @@ const builds = await getMostVotedBuilds({ limit: 3 });
 
 		<div class="flex justify-center mt-16">
 			<a href="/builds" class="button">View more builds</a>
+		</div>
+	</section>
+
+	<!-- Major features teasing -->
+	<section class="container--xl">
+		<h2 class="type-h2 text-center mb-16">Major features upcoming</h2>
+
+		<div class="grid gap-5 lg:grid-cols-3">
+			<CardImage
+				title="Builder"
+				src=""
+				alt="">
+				Lorem ipsum dolor sit amet consectetur. Elit cras libero quam sociis. Egestas cursus condimentum dui aliquet convallis eget. Libero orci tincidunt quis nibh at in rhoncus elementum. In amet placerat luctus cras sem.
+			</CardImage>
+			<CardImage
+				title="Fashion souls"
+				src=""
+				alt="">
+				Lorem ipsum dolor sit amet consectetur. Elit cras libero quam sociis. Egestas cursus condimentum dui aliquet convallis eget. Libero orci tincidunt quis nibh at in rhoncus elementum. In amet placerat luctus cras sem.
+			</CardImage>
+			<CardImage
+				title="Lore tree graph"
+				src=""
+				alt="">
+				Lorem ipsum dolor sit amet consectetur. Elit cras libero quam sociis. Egestas cursus condimentum dui aliquet convallis eget. Libero orci tincidunt quis nibh at in rhoncus elementum. In amet placerat luctus cras sem.
+			</CardImage>
+		</div>
+	</section>
+
+	<!-- Get notified on release -->
+	<section class="relative grid gap-y-8 px-4 py-16 my-20 lg:px-28 lg:py-32 lg:my-40 lg:grid-cols-2">
+		<img
+			class="absolute inset-0 h-full object-cover object-top"
+			src="/hero/malenia.jpg"
+			alt="Malenia vs Radhan during the intro cinematic" />
+
+		<p class="text-4xl lg:type-h1 drop-shadow-md max-w-lg">
+			Pre-register your account and get notified when we launch !
+		</p>
+
+		<PreregisterInput client:visible />
+	</section>
+
+	<!-- Changelog -->
+	<section class="container">
+		<h2 class="type-h2 text-center mb-16">Changelog</h2>
+
+		<div class="bg-secondary border border-primary px-4 py-4 flex flex-col gap-y-8 lg:px-28 lg:py-8">
+			<article class="wysiwyg font-mono">
+				<h4>v0.3.0</h4>
+				<ul>
+					<li>Homepage</li>
+				</ul>
+			</article>
+
+			<article class="wysiwyg font-mono">
+				<h4>v0.2.0</h4>
+				<ul>
+					<li>Builder β</li>
+					<li>Builds listing without filters and sort</li>
+					<li>User profile with created and voted builds</li>
+				</ul>
+			</article>
+
+			<article class="wysiwyg font-mono">
+				<h4>v0.1.0</h4>
+				<ul>
+					<li>Database modeling and initial seeding</li>
+					<li>Login/Register</li>
+					<li>Builder α</li>
+				</ul>
+			</article>
+		</div>
+	</section>
+
+	<div class="container">
+		<img class="my-14 w-full object-contain" src="/separator.png" alt="" />
+	</div>
+
+	<!-- Members & Contributors -->
+	<section class="container">
+		<div class="bg-secondary border border-primary px-4 py-4 flex flex-col gap-y-8 lg:px-28 lg:py-8">
+			<h2 class="type-h2 text-center mt-4 mb-8">Core members</h2>
+
+			<!-- Core members -->
+			<div class="grid gap-y-8 gap-5 lg:grid-cols-3">
+				{CORE_MEMBERS.map((member) => (
+					<div class="flex gap-4">
+						<div class="relative">
+							<img class="size-[100px]" src="/avatar-background.png" alt="" />
+							<img class="size-[70px] absolute top-[15px] left-[15px]" src={member.image.src} alt={member.image.alt} />
+						</div>
+						<div class="flex flex-col justify-between">
+							<div>
+								<span class="type-h3 block">{member.name}</span>
+								<span class="type-h4 italic block">{member.title}</span>
+							</div>
+
+							<a class="hover:underline" href={member.link.href}>{member.link.label}</a>
+						</div>
+					</div>
+				))}
+			</div>
+
+			<!-- TODO: contributors whenever we have external contributors -->
+			<!-- <h2 class="type-h2 text-center mt-20 mb-16">& contributors</h2>
+
+			<div class="grid gap-x-4 lg:grid-cols-3">
+				<div class="w-44">
+					<ul>
+						<li>
+
+						</li>
+					</ul>
+				</div>
+			</div> -->
+		</div>
+	</section>
+
+	<!-- Contributing -->
+	<section class="container">
+		<div class="relative bg-secondary border border-primary px-4 py-4 lg:px-28 lg:py-8 my-14">
+			<h2 class="type-h2 text-center mt-4 mb-8">Join the project</h2>
+			<img
+				class="absolute inset-0 opacity-50 md:opacity-100 h-full w-full object-cover pointer-events-none"
+				src="/discord-background.png"
+				alt="Discord" />
+
+			<div class="wysiwyg text-xl leading-6">
+				<p>We are building this website in the open and we would love your contributions!</p>
+				<p>We currently need contributors for:</p>
+				<ul>
+					<li>
+						Adding missing items (weapons, armors...) in our CMS
+						<ul>
+							<li>We imported most of the items thanks to <a class="link" href="https://eldenring.fanapis.com/">https://eldenring.fanapis.com/</a> but it still requires some work</li>
+						</ul>
+
+					</li>
+					<li>Upload the images of items in our CMS</li>
+					<li>Double check if data are correct</li>
+					<li>Lore experts for the lore graph tree feature</li>
+				</ul>
+			</div>
+
+			<div class="flex justify-center mt-8">
+				<a class="button button--discord" href="https://discord.gg/kpvXugU7Uk">
+					Join us on Discord
+				</a>
+			</div>
 		</div>
 	</section>
 </Layout>

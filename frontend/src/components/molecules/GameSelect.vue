@@ -22,7 +22,7 @@ import {
           </a>
         </NavigationMenuTrigger>
         <NavigationMenuContent>
-          <ul class="flex flex-col gap-y-2 px-5 py-2 w-[109px] md:w-[264px]">
+          <ul class="flex flex-col gap-y-2 px-5 py-2 w-[93px] md:w-[216px]">
             <li class="opacity-70 cursor-not-allowed flex items-center justify-center" title="Coming in v2">
               <picture>
                 <source media="(max-width: 767px)" srcset="/img/darksouls-icon.png" />

@@ -2,7 +2,7 @@
 import type { Media } from '@payload-types'
 import '@/styles/globals.scss'
 import { Toaster } from 'vue-sonner'
-import { SquareMenu } from 'lucide-vue-next'
+import { Menu } from 'lucide-vue-next'
 import GameSelect from "@/components/molecules/GameSelect.vue"
 import Logout from '@/components/Auth/Logout.vue'
 
@@ -77,7 +77,7 @@ const { user } = Astro.locals;
 
         <!-- Mobile nav -->
         <button class="pr-4 md:hidden">
-          <SquareMenu class="size-8" />
+          <Menu class="size-8" />
         </button>
       </div>
     </header>
@@ -86,9 +86,39 @@ const { user } = Astro.locals;
       <slot />
     </main>
 
-    <footer class="p-4 bg-secondary border-t">
-      <div class="container ">
-        <p>footer</p>
+    <footer>
+      <div class="text-center mb-4 mt-24 max-w-md mx-auto">
+        <p>Soulsborne.build is not affiliated with or endorsed by BANDAI NAMCO, FROMSOFTWARE, Inc.</p>
+        <p>All game assets used belongs to BANDAI NAMCO, FROMSOFTWARE, Inc.</p>
+      </div>
+
+      <div class="p-4 bg-secondary border-t">
+        <div class="container grid gap-y-4 place-items-center md:grid-cols-3">
+          <div class="flex items-center gap-x-6">
+            <a class="transform transition hover:scale-105" href="https://github.com/KeziahMoselle/soulsborne.build">
+              <img src="/icons/github.svg" alt="GitHub" />
+            </a>
+            <a class="transform transition hover:scale-105" href="https://twitter.com/soulsbornebuild">
+              <img src="/icons/twitter.svg" alt="Twitter" />
+            </a>
+            <a class="transform transition hover:scale-105" href="https://discord.gg/kpvXugU7Uk">
+              <img src="/icons/discord.svg" alt="Discord" />
+            </a>
+          </div>
+
+          <nav class="flex justify-center items-center">
+            <ul class="flex gap-x-6 text-xl leading-6">
+              <li><a class="hover:underline" href="#">Terms of Use</a></li>
+              <li><a class="hover:underline" href="#">Privacy Policy</a></li>
+            </ul>
+          </nav>
+
+          <div class="flex justify-end">
+            <a href="https://ko-fi.com/nierreinguide">
+              <img class="h-7 w-auto" src="/kofi-button-blue.png" alt="Support me on Ko-Fi" />
+            </a>
+          </div>
+        </div>
       </div>
     </footer>
 

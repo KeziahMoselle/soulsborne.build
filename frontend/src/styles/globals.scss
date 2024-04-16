@@ -127,12 +127,32 @@
   }
 }
 
+.button--discord {
+  @apply rounded-full py-4 border-none font-sans text-lg leading-5 font-medium;
+  background-color: hsla(235, 86%, 65%, 1);
+
+  &:hover {
+    background-color: hsla(235, 86%, 65%, 0.8);
+  }
+}
+
 .button--disabled {
   @apply pointer-events-none opacity-50;
 }
 
 .link {
   @apply text-accent-foreground underline hover:no-underline;
+}
+
+.wysiwyg {
+  p {
+    margin-bottom: 1rem;
+  }
+
+  ul, ol {
+    list-style: inherit;
+    padding-left: 2rem;
+  }
 }
 
 .loader {
