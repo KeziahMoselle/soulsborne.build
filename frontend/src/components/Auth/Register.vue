@@ -33,21 +33,21 @@ async function submit() {
     @submit.prevent="submit"
   >
     <Input
-      class="text-slate-900"
+      class="text-slate-50"
       type="text"
       name="name"
       placeholder="Name"
       required
     />
     <Input
-      class="text-slate-900"
+      class="text-slate-50"
       type="email"
       name="email"
       placeholder="your@email.com"
       required
     />
     <Input
-      class="text-slate-900"
+      class="text-slate-50"
       type="password"
       name="password"
       placeholder="password"
