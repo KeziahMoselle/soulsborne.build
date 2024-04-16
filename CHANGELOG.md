@@ -1,8 +1,33 @@
 # Changelog
 
+## v0.7.0...v0.8.0
+
+[compare changes](https://github.com/KeziahMoselle/soulsborne.build/compare/v0.7.0...main)
+
+### 🚀 Enhancements
+
+- **frontend:** Astro seo, images on features ([2e2d49b](https://github.com/KeziahMoselle/soulsborne.build/commit/2e2d49b))
+- **homepage:** Various improvements ([23d6238](https://github.com/KeziahMoselle/soulsborne.build/commit/23d6238))
+- Preregistration ([4f1ff55](https://github.com/KeziahMoselle/soulsborne.build/commit/4f1ff55))
+
+### 🩹 Fixes
+
+- Build ([b1a26cb](https://github.com/KeziahMoselle/soulsborne.build/commit/b1a26cb))
+- Build ([996f52f](https://github.com/KeziahMoselle/soulsborne.build/commit/996f52f))
+- Build? ([#59](https://github.com/KeziahMoselle/soulsborne.build/pull/59))
+- Styles ([5036aeb](https://github.com/KeziahMoselle/soulsborne.build/commit/5036aeb))
+
+### 🏡 Chore
+
+- Update lock files ([6c8c566](https://github.com/KeziahMoselle/soulsborne.build/commit/6c8c566))
+- Add umami ([df23e07](https://github.com/KeziahMoselle/soulsborne.build/commit/df23e07))
+- Prettier, purgecss, format, and update readme ([c4a5483](https://github.com/KeziahMoselle/soulsborne.build/commit/c4a5483))
+
+### ❤️ Contributors
+
+- KeziahMoselle <contact@keziahmoselle.fr>
 
 ## v0.7.0
-
 
 ### 🚀 Enhancements
 
@@ -62,7 +87,7 @@
 - **build:** Improve layout of images/video ([6b0a279](https://github.com/KeziahMoselle/soulsborne.build/commit/6b0a279))
 - General media collection, user link on build page, archetypes slug fix, more results on builds page ([35ce33d](https://github.com/KeziahMoselle/soulsborne.build/commit/35ce33d))
 - **user:** Base user page ([310a7a6](https://github.com/KeziahMoselle/soulsborne.build/commit/310a7a6))
-- **payload:** Add fashion collections  and richtext html fields ([6439689](https://github.com/KeziahMoselle/soulsborne.build/commit/6439689))
+- **payload:** Add fashion collections and richtext html fields ([6439689](https://github.com/KeziahMoselle/soulsborne.build/commit/6439689))
 - **homepage:** Add homepage ([a24dfd6](https://github.com/KeziahMoselle/soulsborne.build/commit/a24dfd6))
 
 ### 🩹 Fixes
@@ -136,4 +161,3 @@
 
 - KeziahMoselle <contact@keziahmoselle.fr>
 - Mehdi Tsr
-
