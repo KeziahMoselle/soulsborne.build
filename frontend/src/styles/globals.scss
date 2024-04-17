@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './libs';
-
 @layer base {
   :root {
     --background: 330, 4%, 10%, 1;
@@ -105,90 +103,8 @@
   }
 }
 
-@layer utilities {
-  .container {
-    max-width: 1164px;
-    @apply mx-auto px-2;
-  }
-
-  .container--xl {
-    max-width: 1440px;
-    @apply mx-auto px-2;
-  }
-
-  .container--small {
-    @apply max-w-lg mx-auto px-2;
-  }
-}
-
-@layer components {
-  .button {
-    @apply inline-flex text-white bg-primary font-display gap-x-2 px-7 py-2 text-xl leading-6 border border-accent transition hover:bg-accent hover:border-accent-foreground;
-  }
-}
-
-.button--discord {
-  @apply rounded-full py-4 border-none font-sans text-lg leading-5 font-medium;
-  background-color: hsla(235, 86%, 65%, 1);
-
-  &:hover {
-    background-color: hsla(235, 86%, 65%, 0.8);
-  }
-}
-
-.button--disabled {
-  @apply pointer-events-none opacity-50;
-}
-
-.link {
-  @apply text-accent-foreground underline hover:no-underline;
-}
-
-input {
-  @apply text-white;
-}
-
-.wysiwyg {
-  p {
-    margin-bottom: 1rem;
-  }
-
-  ul,
-  ol {
-    list-style: inherit;
-    padding-left: 2rem;
-  }
-}
-
-.loader {
-  --s: 25px;
-
-  --_d: calc(0.353 * var(--s));
-  width: calc(var(--s) + var(--_d));
-  aspect-ratio: 1;
-  display: grid;
-  filter: drop-shadow(0 0 0 #fff);
-  animation: l2 0.8s infinite;
-}
-.loader:before {
-  content: '';
-  clip-path: polygon(
-    var(--_d) 0,
-    100% 0,
-    100% calc(100% - var(--_d)),
-    calc(100% - var(--_d)) 100%,
-    0 100%,
-    0 var(--_d)
-  );
-  background: conic-gradient(
-    from -90deg at var(--s) var(--_d),
-    #fff 135deg,
-    #666 0 270deg,
-    #aaa 0
-  );
-}
-@keyframes l2 {
-  50% {
-    filter: drop-shadow(0 0 5px #fff);
-  }
-}
+@import './utils/';
+@import './libs';
+@import './atoms';
+@import './molecules/';
+@import './organisms/'

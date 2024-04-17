@@ -1,0 +1,18 @@
+@layer components {
+  .button {
+    @apply inline-flex text-white bg-primary font-display gap-x-2 px-7 py-2 text-xl leading-6 border border-accent transition hover:bg-accent hover:border-accent-foreground;
+  }
+}
+
+.button--discord {
+  @apply rounded-full py-4 border-none font-sans text-lg leading-5 font-medium;
+  background-color: hsla(235, 86%, 65%, 1);
+
+  &:hover {
+    background-color: hsla(235, 86%, 65%, 0.8);
+  }
+}
+
+.button--disabled {
+  @apply pointer-events-none opacity-50;
+}

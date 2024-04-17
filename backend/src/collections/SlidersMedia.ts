@@ -1,20 +1,17 @@
 import { CollectionConfig } from 'payload/types'
-import { isPublic } from '../../access/isPublic';
+import { isPublic } from '../access/isPublic';
 
-const ERMedia: CollectionConfig = {
-  slug: 'er-media',
+const SlidersMedia: CollectionConfig = {
+  slug: 'sliders-media',
   labels: {
-    singular: 'Media',
-    plural: 'Medias',
-  },
-  admin: {
-    group: 'Elden Ring',
+    singular: 'Slider Media',
+    plural: 'Sliders Medias',
   },
   access: {
     read: isPublic
   },
   upload: {
-    staticDir: 'er-media',
+    staticDir: 'sliders-media',
     disableLocalStorage: true,
     mimeTypes: ['image/*', 'audio/*', 'video/*'],
   },
@@ -26,4 +23,4 @@ const ERMedia: CollectionConfig = {
   ],
 }
 
-export default ERMedia;
+export default SlidersMedia;

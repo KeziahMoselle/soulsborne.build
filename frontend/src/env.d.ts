@@ -1,4 +1,5 @@
 /// <reference types="astro/client" />
+
 type Runtime = import('@astrojs/cloudflare').Runtime<Env>
 
 interface ImportMetaEnv {
@@ -11,12 +12,8 @@ interface ImportMeta {
 
 declare namespace App {
   interface Locals extends Runtime {
-    user: import('@payload-types').User
+    user: import('@/types').UserJWT
   }
-}
-
-interface Umami {
-  track: (event: string, data?: any) => void
 }
 
 declare global {

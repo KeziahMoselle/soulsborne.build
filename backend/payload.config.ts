@@ -8,23 +8,36 @@ import { buildConfig } from 'payload/config'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
+/**
+ * Collections
+ */
+
 // General collections
 import Archetypes from '@/collections/Archetypes'
-import Fashion from '@/collections/Fashion'
-import FashionMedia from '@/collections/FashionMedia'
 import Media from '@/collections/Media'
 import Preregistrations from '@/collections/Preregistrations'
 import Restrictions from '@/collections/Restrictions'
-import Sliders from '@/collections/Sliders'
 import Users from '@/collections/Users'
+
+// Fashion
+import Fashion from '@/collections/Fashion'
+import FashionMedia from '@/collections/FashionMedia'
+
+// Sliders
+import Sliders from '@/collections/Sliders'
+import SlidersMedia from '@/collections/SlidersMedia'
 
 // Games
 import ERCollections from '@/collections/EldenRing'
 
+
+/**
+ * CORS
+ */
+
 export const ALLOWED_ORIGINS = [
   // Back
   'https://payload.soulsborne.build',
-  'https://dev-payload.soulsborne.build',
   'http://localhost:3000',
   // Front
   'https://soulsborne.build',
@@ -32,8 +45,9 @@ export const ALLOWED_ORIGINS = [
   'http://localhost:4321',
 ]
 
-const filename = fileURLToPath(import.meta.url)
-const dirname = path.dirname(filename)
+/**
+ * S3 Uploads
+ */
 
 const adapter = s3Adapter({
   config: {
@@ -47,13 +61,19 @@ const adapter = s3Adapter({
   bucket: process.env.S3_BUCKET,
 })
 
+/**
+ * Configuration
+ */
+
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
+
 export default buildConfig({
   cors: ALLOWED_ORIGINS,
   csrf: ALLOWED_ORIGINS,
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
       ...defaultFeatures,
-      // The HTMLConverter Feature is the feature which manages the HTML serializers. If you do not pass any arguments to it, it will use the default serializers.
       HTMLConverterFeature({}),
     ],
   }),
@@ -66,6 +86,7 @@ export default buildConfig({
     Preregistrations,
     Restrictions,
     Sliders,
+    SlidersMedia,
     Users,
     // Games
     ...ERCollections,
@@ -76,15 +97,35 @@ export default buildConfig({
         media: {
           adapter,
           disablePayloadAccessControl: true,
+          disableLocalStorage: true,
+          generateFileURL: ({ filename, prefix }) => `https://cdn.soulsborne.build/${prefix}/${filename}`,
+          prefix: 'media',
         },
         'er-media': {
           adapter,
           disablePayloadAccessControl: true,
+          disableLocalStorage: true,
+          generateFileURL: ({ filename, prefix }) => `https://cdn.soulsborne.build/${prefix}/${filename}`,
+          prefix: 'er-media',
+        },
+        'fashion-media': {
+          adapter,
+          disablePayloadAccessControl: true,
+          disableLocalStorage: true,
+          generateFileURL: ({ filename, prefix }) => `https://cdn.soulsborne.build/${prefix}/${filename}`,
+          prefix: 'fashion-media',
+        },
+        'sliders-media': {
+          adapter,
+          disablePayloadAccessControl: true,
+          disableLocalStorage: true,
+          generateFileURL: ({ filename, prefix }) => `https://cdn.soulsborne.build/${prefix}/${filename}`,
+          prefix: 'sliders-media',
         },
       },
     }),
   ],
-  secret: process.env.PAYLOAD_SECRET,
+  secret: process.env.PAYLOAD_SECRET || 'jawliejfilwajefSEANlawefawfewag349jwgo3gj4w',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },

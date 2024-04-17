@@ -16,7 +16,7 @@ const { user } = Astro.locals
 ---
 
 <!doctype html>
-<html class="h-full bg-background text-foreground font-display" lang="en">
+<html class="h-full bg-background text-foreground font-display bg-pattern bg-repeat selection:bg-accent selection:text-white" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -28,7 +28,7 @@ const { user } = Astro.locals
       description="soulsborne.build is a website focused on the soulsborne series (Dark Souls, Bloodborne, Elden Ring) which aims to centralize community created content like builds and character appearances as well as some interesting lore data visualization."
       openGraph={{
         basic: {
-          title: title,
+          title: `${title} | soulsborne.build`,
           type: 'image',
           image: 'https://cdn.soulsborne.build/og/banner.jpg',
         },
@@ -37,7 +37,6 @@ const { user } = Astro.locals
         creator: '@KeziahMoselle',
       }}
       extend={{
-        link: [{ rel: 'icon', href: '/favicon.ico' }],
         meta: [
           {
             name: 'twitter:image',
@@ -79,9 +78,10 @@ const { user } = Astro.locals
                     alt=""
                   />
                   <img
-                    class="size-8 rounded-full"
-                    src={(user?.image as Media)?.thumbnailURL}
+                    class="size-8 rounded-full object-center object-cover"
+                    src={(user?.image as Media)?.thumbnailURL ?? '/sellen.jpg'}
                     alt=""
+                    loading="lazy"
                   />
                   <span class="inline-block pr-12">{user.name}</span>
                 </a>
@@ -156,26 +156,26 @@ const { user } = Astro.locals
               class="transform transition hover:scale-105"
               href="https://github.com/KeziahMoselle/soulsborne.build"
             >
-              <img src="/icons/github.svg" alt="GitHub" />
+              <img src="/icons/github.svg" alt="GitHub" loading="lazy" />
             </a>
             <a
               class="transform transition hover:scale-105"
               href="https://twitter.com/soulsbornebuild"
             >
-              <img src="/icons/twitter.svg" alt="Twitter" />
+              <img src="/icons/twitter.svg" alt="Twitter" loading="lazy" />
             </a>
             <a
               class="transform transition hover:scale-105"
               href="https://discord.gg/kpvXugU7Uk"
             >
-              <img src="/icons/discord.svg" alt="Discord" />
+              <img src="/icons/discord.svg" alt="Discord" loading="lazy" />
             </a>
           </div>
 
           <nav class="flex justify-center items-center">
             <ul class="flex gap-x-6 text-xl leading-6">
-              <li><a class="hover:underline" href="#">Terms of Use</a></li>
-              <li><a class="hover:underline" href="#">Privacy Policy</a></li>
+              <li><a class="hover:underline" href="#" data-astro-prefetch="false">Terms of Use</a></li>
+              <li><a class="hover:underline" href="#" data-astro-prefetch="false">Privacy Policy</a></li>
             </ul>
           </nav>
 
@@ -184,6 +184,7 @@ const { user } = Astro.locals
               <img
                 class="h-7 w-auto"
                 src="/kofi-button-blue.png"
+                loading="lazy"
                 alt="Support me on Ko-Fi"
               />
             </a>

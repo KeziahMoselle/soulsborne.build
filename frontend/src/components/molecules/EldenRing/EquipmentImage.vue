@@ -50,6 +50,7 @@ const previewImage = computed(() => {
       height="128"
       width="128"
       src="/elden-ring/builder/select-background.png"
+      loading="lazy"
       alt=""
     />
 
@@ -57,6 +58,7 @@ const previewImage = computed(() => {
       v-if="!isSelect"
       class="h-full w-full border"
       src="/build-equipment-background.png"
+      loading="lazy"
     />
 
     <slot name="background">
@@ -76,6 +78,7 @@ const previewImage = computed(() => {
         width="128"
         :src="SELECT_IMAGES[type]"
         alt=""
+        loading="lazy"
       />
     </slot>
     <!-- Item's image here -->
@@ -90,6 +93,7 @@ const previewImage = computed(() => {
             'opacity-0': previewImage === '',
           }"
           :src="previewImage"
+          loading="lazy"
         />
       </slot>
     </div>

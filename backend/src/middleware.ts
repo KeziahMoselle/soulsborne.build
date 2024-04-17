@@ -3,7 +3,6 @@ import { NextResponse } from 'next/server'
 export const ALLOWED_ORIGINS = [
   // Back
   'https://payload.soulsborne.build',
-  'https://dev-payload.soulsborne.build',
   'http://localhost:3000',
   // Front
   'https://soulsborne.build',

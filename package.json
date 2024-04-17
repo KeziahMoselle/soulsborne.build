@@ -26,6 +26,11 @@
     }
   ],
   "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm:dev:payload\" \"npm:dev:astro\"",
+    "dev:payload": "cd backend && pnpm dev",
+    "dev:astro": "cd frontend && npm run dev"
+  },
   "engines": {
     "node": ">=20"
   },

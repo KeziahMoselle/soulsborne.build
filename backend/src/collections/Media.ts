@@ -13,7 +13,6 @@ const Media: CollectionConfig = {
   upload: {
     staticDir: 'media',
     disableLocalStorage: true,
-    adminThumbnail: ({ doc }) => `https://cdn.soulsborne.build/${doc.filename}`,
     mimeTypes: ['image/*', 'audio/*', 'video/*'],
   },
   fields: [

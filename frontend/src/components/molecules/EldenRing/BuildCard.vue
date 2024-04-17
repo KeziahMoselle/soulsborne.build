@@ -90,6 +90,7 @@ const backgroundImage = computed(() => {
             class="size-8"
             src="https://cdn.soulsborne.build/test%2Fbleed.png"
             alt="bleed"
+            loading="lazy"
           />
           <p class="-ml-4 w-52 lg:w-48 2xl:w-64">
             <Vue3Marquee
@@ -104,7 +105,7 @@ const backgroundImage = computed(() => {
             </Vue3Marquee>
           </p>
         </div>
-        <img class="w-full h-[44px]" src="/build-title.png" alt="" />
+        <img class="w-full h-[44px]" src="/build-title.png" alt="" loading="lazy" />
       </div>
 
       <LikeBuildButton :build="build" :has-voted="hasVoted" />

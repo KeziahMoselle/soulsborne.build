@@ -25,6 +25,16 @@ export interface PayloadUserResponse {
   exp: string
 }
 
+export interface UserJWT {
+  id: number
+  collection: 'users'
+  email: string
+  name: string
+  roles: import('@payload-types').User['roles']
+  iat: number
+  exp: number
+}
+
 export interface PayloadOptionLike {
   id: number
   name: string

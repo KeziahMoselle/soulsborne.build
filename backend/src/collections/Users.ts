@@ -22,6 +22,7 @@ const Users: CollectionConfig = {
       name: 'image',
       label: 'Image',
       type: 'upload',
+      saveToJWT: true,
       relationTo: 'media',
     },
     {
@@ -47,7 +48,6 @@ const Users: CollectionConfig = {
       saveToJWT: true,
       defaultValue: 'user',
       access: {
-        read: isAdminOrSelfFieldLevel,
         create: isAdminFieldLevel,
         update: isAdminFieldLevel,
       },

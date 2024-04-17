@@ -50,6 +50,7 @@ const votedBuilds = await apiFetch<PayloadCollection<ErBuild>>(
           class="size-20 rounded-full"
           src={(user?.image as Media)?.thumbnailURL}
           alt=""
+          loading="lazy"
         />
         <h2 class="type-h1">{user.name}</h2>
       </div>

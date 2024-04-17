@@ -68,18 +68,25 @@ You can view the backlog and roadmap here: https://github.com/users/KeziahMosell
 Install globally:
 
 - [Docker](https://www.docker.com/)
-  - For the step 5.
+  - For the step 3.
 - [Node.js](https://nodejs.org/en/download) (>20.x)
 - [pnpm](https://pnpm.io/)
+- `npm i concurrently -g`
 
 ### Steps
 
 1. Copy the `.env.example` file to `.env` in both `backend` and `frontend` directories and fill in the values
 
-2. Install the dependencies via pnpm in both directories
+2. Install the dependencies via pnpm in `/backend`
 
 ```bash
 pnpm install
+```
+
+And in `/frontend` directory:
+
+```bash
+npm install
 ```
 
 3. Start the local PostgreSQL database by running (in `/backend` directory)
@@ -88,7 +95,7 @@ pnpm install
 start-database.sh
 ```
 
-4. Run the development server for both the backend and frontend directories (run in each directories)
+1. Run the development server for both the backend and frontend directories at root run this:
 
 ```bash
 pnpm dev

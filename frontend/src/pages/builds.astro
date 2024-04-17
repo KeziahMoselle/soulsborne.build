@@ -12,6 +12,34 @@ const builds = await getMostVotedBuilds({
 
 <Layout title="Explore builds">
   <section class="mt-4">
+    <nav class="flex justify-center gap-4 mb-8">
+      <a
+        href={`?page=${builds.prevPage}`}
+        class:list={[
+          'button',
+          {
+            'button--disabled': !builds.hasPrevPage,
+          },
+        ]}
+        class="button"
+      >
+        <ArrowLeft />
+        Previous
+      </a>
+      <a
+        href={`?page=${builds.nextPage}`}
+        class:list={[
+          'button',
+          {
+            'button--disabled': !builds.hasNextPage,
+          },
+        ]}
+      >
+        Next
+        <ArrowRight />
+      </a>
+    </nav>
+
     <div
       class="container--xl grid gap-5 justify-center sm:grid-cols-2 lg:grid-cols-3"
     >

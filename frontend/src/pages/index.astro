@@ -50,12 +50,12 @@ const CORE_MEMBERS = [
 
 <Layout title="Home">
   <!-- Hero image -->
-  <div class="relative">
-    <img
-      class="-z-10 absolute top-0 w-full max-h-screen object-cover object-top"
-      src="/hero/gideon.webp"
-      alt="Gideon the all knowing during the intro cinematic"
-    />
+  <div class="hero hero--homepage relative">
+      <img
+        class="hero__image -z-10 absolute top-0 w-full max-h-screen object-cover object-top"
+        src="/hero/gideon.webp"
+        alt="Gideon the all knowing during the intro cinematic"
+      />
   </div>
 
   <!-- Hero -->
@@ -184,30 +184,21 @@ const CORE_MEMBERS = [
         src="/builder.png"
         alt="The builder that allows users to create builds"
       >
-        Lorem ipsum dolor sit amet consectetur. Elit cras libero quam sociis.
-        Egestas cursus condimentum dui aliquet convallis eget. Libero orci
-        tincidunt quis nibh at in rhoncus elementum. In amet placerat luctus
-        cras sem.
+        The builder can be used to easily create and share an existing build you have in-game.
       </CardImage>
       <CardImage
         title="Fashion souls"
         src=""
         alt="Preview of a created fashion"
       >
-        Lorem ipsum dolor sit amet consectetur. Elit cras libero quam sociis.
-        Egestas cursus condimentum dui aliquet convallis eget. Libero orci
-        tincidunt quis nibh at in rhoncus elementum. In amet placerat luctus
-        cras sem.
+        The Fashion souls section allows you to share and vote character appearances, it only contains weapons/armors and optionally sliders. Sliders that you can create and share separately and link to your fashion.
       </CardImage>
       <CardImage
         title="Lore tree graph"
         src="/lore-graph-tree.png"
         alt="Lore tree graph"
       >
-        Lorem ipsum dolor sit amet consectetur. Elit cras libero quam sociis.
-        Egestas cursus condimentum dui aliquet convallis eget. Libero orci
-        tincidunt quis nibh at in rhoncus elementum. In amet placerat luctus
-        cras sem.
+        The lore graph tree feature allows you to quickly see and understand the relations between items/NPCs. Clicking on an item opens a side panel where you can read the item's description.
       </CardImage>
     </div>
   </section>
@@ -220,6 +211,7 @@ const CORE_MEMBERS = [
       class="absolute inset-0 h-full w-full object-cover object-top filter brightness-75"
       src="/hero/malenia.jpg"
       alt="Malenia vs Radhan during the intro cinematic"
+      loading="lazy"
     />
 
     <p class="text-4xl lg:type-h1 drop-shadow-md max-w-lg">
@@ -242,15 +234,10 @@ const CORE_MEMBERS = [
       class="bg-secondary border border-primary px-4 py-4 flex flex-col gap-y-8 lg:px-28 lg:py-8"
     >
       <article class="wysiwyg font-mono">
-        <h4>v0.3.0</h4>
+        <h4>v0.8.0 (17 April 2024)</h4>
         <ul>
           <li>Homepage</li>
-        </ul>
-      </article>
-
-      <article class="wysiwyg font-mono">
-        <h4>v0.2.0</h4>
-        <ul>
+          <li>Preregistrations</li>
           <li>Builder β</li>
           <li>Builds listing without filters and sort</li>
           <li>User profile with created and voted builds</li>
@@ -258,7 +245,7 @@ const CORE_MEMBERS = [
       </article>
 
       <article class="wysiwyg font-mono">
-        <h4>v0.1.0</h4>
+        <h4>v0.1.0 (10 April 2024)</h4>
         <ul>
           <li>Database modeling and initial seeding</li>
           <li>Login/Register</li>
@@ -269,7 +256,7 @@ const CORE_MEMBERS = [
   </section>
 
   <div class="container">
-    <img class="my-14 w-full object-contain" src="/separator.png" alt="" />
+    <img class="my-14 w-full object-contain" src="/separator.png" alt="" loading="lazy" />
   </div>
 
   <!-- Members & Contributors -->
@@ -285,11 +272,12 @@ const CORE_MEMBERS = [
           CORE_MEMBERS.map(member => (
             <div class="flex gap-4">
               <div class="relative">
-                <img class="size-[100px]" src="/avatar-background.png" alt="" />
+                <img class="size-[100px]" src="/avatar-background.png" alt="" loading="lazy" />
                 <img
                   class="size-[70px] absolute top-[15px] left-[15px]"
                   src={member.image.src}
                   alt={member.image.alt}
+                  loading="lazy"
                 />
               </div>
               <div class="flex flex-col justify-between">
@@ -306,19 +294,6 @@ const CORE_MEMBERS = [
           ))
         }
       </div>
-
-      <!-- TODO: contributors whenever we have external contributors -->
-      <!-- <h2 class="type-h2 text-center mt-20 mb-16">& contributors</h2>
-
-			<div class="grid gap-x-4 lg:grid-cols-3">
-				<div class="w-44">
-					<ul>
-						<li>
-
-						</li>
-					</ul>
-				</div>
-			</div> -->
     </div>
   </section>
 
@@ -332,6 +307,7 @@ const CORE_MEMBERS = [
         class="absolute inset-0 opacity-50 md:opacity-100 h-full w-full object-cover pointer-events-none"
         src="/discord-background.png"
         alt="Discord"
+        loading="lazy"
       />
 
       <div class="wysiwyg text-xl leading-6">

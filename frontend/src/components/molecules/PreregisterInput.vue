@@ -50,8 +50,8 @@ async function preregister(e) {
         </button>
       </div>
     </form>
-    <div v-else class="w-full pl-8 pr-8 py-4 bg-white text-black border border-ring text-xl leading-6">
-      <p class="type-h2 mb-2">
+    <div v-else class="w-full pl-8 pr-8 bg-secondary border border-primary px-4 py-4 text-xl leading-6">
+      <p class="text-center type-h3 mb-4">
         Thank you for registering!
       </p>
       <p>You will only receive 1 email to let you know that we publicly released our website!</p>

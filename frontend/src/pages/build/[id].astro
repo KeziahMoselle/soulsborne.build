@@ -41,6 +41,7 @@ const youtubeMatches = build.youtube_url?.match(REGEX_YOUTUBE_URL)
       src={(build.images?.[0]?.image as ErMedia)?.thumbnailURL ??
         'https://cdn.soulsborne.build/Limgrave%20Erdtree%20-%20MENU_Load_00002_PS5.jpg'}
       alt=""
+      loading="lazy"
     />
     <div class="absolute inset-0 block bg-primary opacity-20 -z-[9]"></div>
 
@@ -54,11 +55,13 @@ const youtubeMatches = build.youtube_url?.match(REGEX_YOUTUBE_URL)
             class="-z-10 absolute top-0 left-0 h-full w-full"
             src="/background-text.png"
             alt=""
+            loading="lazy"
           />
           <img
             class="size-8 rounded-full"
             src={(created_by?.image as Media)?.thumbnailURL}
             alt=""
+            loading="lazy"
           />
           <span>
             {created_by.name}
@@ -127,6 +130,7 @@ const youtubeMatches = build.youtube_url?.match(REGEX_YOUTUBE_URL)
             class="zoomable aspect-video h-full object-contain"
             src={image.thumbnailURL}
             alt=""
+            loading="lazy"
           />
         ))
       }
