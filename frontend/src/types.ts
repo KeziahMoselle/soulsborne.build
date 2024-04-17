@@ -30,6 +30,7 @@ export interface UserJWT {
   collection: 'users'
   email: string
   name: string
+  image: import('@payload-types').Media
   roles: import('@payload-types').User['roles']
   iat: number
   exp: number
