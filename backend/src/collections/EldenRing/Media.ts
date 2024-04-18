@@ -14,6 +14,7 @@ const ERMedia: CollectionConfig = {
     read: isPublic
   },
   upload: {
+    adminThumbnail: ({ doc }) => `https://cdn.soulsborne.build/er-media/${doc.filename}`,
     staticDir: 'er-media',
     disableLocalStorage: true,
     mimeTypes: ['image/*', 'audio/*', 'video/*'],

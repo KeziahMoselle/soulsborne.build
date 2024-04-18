@@ -11,6 +11,7 @@ const SlidersMedia: CollectionConfig = {
     read: isPublic
   },
   upload: {
+    adminThumbnail: ({ doc }) => `https://cdn.soulsborne.build/sliders-media/${doc.filename}`,
     staticDir: 'sliders-media',
     disableLocalStorage: true,
     mimeTypes: ['image/*', 'audio/*', 'video/*'],

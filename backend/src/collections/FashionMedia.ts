@@ -11,6 +11,7 @@ const FashionMedia: CollectionConfig = {
     read: isPublic
   },
   upload: {
+    adminThumbnail: ({ doc }) => `https://cdn.soulsborne.build/fashion-media/${doc.filename}`,
     staticDir: 'fashion-media',
     disableLocalStorage: true,
     mimeTypes: ['image/*', 'audio/*', 'video/*'],
