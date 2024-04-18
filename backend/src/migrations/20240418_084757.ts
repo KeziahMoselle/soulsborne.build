@@ -173,6 +173,7 @@ CREATE TABLE IF NOT EXISTS "_fashion_v_rels" (
 CREATE TABLE IF NOT EXISTS "fashion_media" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"alt" varchar,
+	"prefix" varchar,
 	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
 	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
 	"url" varchar,
@@ -187,6 +188,7 @@ CREATE TABLE IF NOT EXISTS "fashion_media" (
 CREATE TABLE IF NOT EXISTS "media" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"alt" varchar,
+	"prefix" varchar,
 	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
 	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
 	"url" varchar,
@@ -196,6 +198,13 @@ CREATE TABLE IF NOT EXISTS "media" (
 	"filesize" numeric,
 	"width" numeric,
 	"height" numeric
+);
+
+CREATE TABLE IF NOT EXISTS "preregistrations" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"email" varchar NOT NULL,
+	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS "restrictions" (
@@ -231,6 +240,21 @@ CREATE TABLE IF NOT EXISTS "sliders_rels" (
 	"path" varchar NOT NULL,
 	"fashion_media_id" integer,
 	"users_id" integer
+);
+
+CREATE TABLE IF NOT EXISTS "sliders_media" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"alt" varchar,
+	"prefix" varchar,
+	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+	"url" varchar,
+	"thumbnail_u_r_l" varchar,
+	"filename" varchar,
+	"mime_type" varchar,
+	"filesize" numeric,
+	"width" numeric,
+	"height" numeric
 );
 
 CREATE TABLE IF NOT EXISTS "users_roles" (
@@ -605,6 +629,7 @@ CREATE TABLE IF NOT EXISTS "er_classes_rels" (
 CREATE TABLE IF NOT EXISTS "er_media" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"alt" varchar,
+	"prefix" varchar,
 	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
 	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
 	"url" varchar,
@@ -1122,6 +1147,8 @@ CREATE INDEX IF NOT EXISTS "fashion_media_created_at_idx" ON "fashion_media" ("c
 CREATE UNIQUE INDEX IF NOT EXISTS "fashion_media_filename_idx" ON "fashion_media" ("filename");
 CREATE INDEX IF NOT EXISTS "media_created_at_idx" ON "media" ("created_at");
 CREATE UNIQUE INDEX IF NOT EXISTS "media_filename_idx" ON "media" ("filename");
+CREATE UNIQUE INDEX IF NOT EXISTS "preregistrations_email_idx" ON "preregistrations" ("email");
+CREATE INDEX IF NOT EXISTS "preregistrations_created_at_idx" ON "preregistrations" ("created_at");
 CREATE INDEX IF NOT EXISTS "restrictions_created_at_idx" ON "restrictions" ("created_at");
 CREATE INDEX IF NOT EXISTS "sliders_images_order_idx" ON "sliders_images" ("_order");
 CREATE INDEX IF NOT EXISTS "sliders_images_parent_id_idx" ON "sliders_images" ("_parent_id");
@@ -1129,6 +1156,8 @@ CREATE INDEX IF NOT EXISTS "sliders_created_at_idx" ON "sliders" ("created_at");
 CREATE INDEX IF NOT EXISTS "sliders_rels_order_idx" ON "sliders_rels" ("order");
 CREATE INDEX IF NOT EXISTS "sliders_rels_parent_idx" ON "sliders_rels" ("parent_id");
 CREATE INDEX IF NOT EXISTS "sliders_rels_path_idx" ON "sliders_rels" ("path");
+CREATE INDEX IF NOT EXISTS "sliders_media_created_at_idx" ON "sliders_media" ("created_at");
+CREATE UNIQUE INDEX IF NOT EXISTS "sliders_media_filename_idx" ON "sliders_media" ("filename");
 CREATE INDEX IF NOT EXISTS "users_roles_order_idx" ON "users_roles" ("order");
 CREATE INDEX IF NOT EXISTS "users_roles_parent_idx" ON "users_roles" ("parent_id");
 CREATE UNIQUE INDEX IF NOT EXISTS "users_name_idx" ON "users" ("name");
@@ -2343,10 +2372,12 @@ DROP TABLE "_fashion_v";
 DROP TABLE "_fashion_v_rels";
 DROP TABLE "fashion_media";
 DROP TABLE "media";
+DROP TABLE "preregistrations";
 DROP TABLE "restrictions";
 DROP TABLE "sliders_images";
 DROP TABLE "sliders";
 DROP TABLE "sliders_rels";
+DROP TABLE "sliders_media";
 DROP TABLE "users_roles";
 DROP TABLE "users";
 DROP TABLE "users_rels";

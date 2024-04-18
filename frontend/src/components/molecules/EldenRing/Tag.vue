@@ -11,7 +11,7 @@ const tag = props.href ? 'a' : 'span'
   <component
     :is="tag"
     :href="href ?? undefined"
-    class="bg-accent-foreground text-sm leading-4 px-2 rounded italic"
+    class="inline-flex items-center bg-accent-foreground text-sm leading-4 px-2 rounded italic"
   >
     {{ label }}
   </component>

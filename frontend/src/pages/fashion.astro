@@ -1,7 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro'
+import Fashion from '@/components/molecules/Fashion.vue'
 ---
 
 <Layout title="Explore fashion">
-  <h1>Fashion</h1>
+  <div class="grid grid-cols-12">
+    <aside class="col-span-2">
+      <p>Filters</p>
+    </aside>
+
+    <section class="col-span-10 container--xl grid gap-2 md:grid-cols-3 md:gap-4 lg:grid-cols-4 lg:gap-5">
+      {Array.from({ length: 12 }).map((fashion) => (
+        <Fashion fashion={fashion} />
+      ))}
+    </section>
+  </div>
 </Layout>
