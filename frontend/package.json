@@ -19,6 +19,7 @@
     "@astrojs/vue": "^4.0.9",
     "@nanostores/persistent": "^0.10.1",
     "@nanostores/vue": "^0.10.0",
+    "@sentry/astro": "^7.110.1",
     "@types/qs": "^6.9.14",
     "@vee-validate/zod": "^4.12.6",
     "@vueuse/core": "^10.9.0",
