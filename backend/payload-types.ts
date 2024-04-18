@@ -15,6 +15,7 @@ export interface Config {
     preregistrations: Preregistration;
     restrictions: Restriction;
     sliders: Slider;
+    'sliders-media': SlidersMedia;
     users: User;
     'er-affinities': ErAffinity;
     'er-ammunitions': ErAmmunition;
@@ -144,6 +145,7 @@ export interface Fashion {
 export interface FashionMedia {
   id: number;
   alt?: string | null;
+  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -222,6 +224,7 @@ export interface ErWeapon {
 export interface ErMedia {
   id: number;
   alt?: string | null;
+  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -686,6 +689,7 @@ export interface User {
 export interface Media {
   id: number;
   alt?: string | null;
+  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -767,6 +771,24 @@ export interface Slider {
   created_by?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sliders-media".
+ */
+export interface SlidersMedia {
+  id: number;
+  alt?: string | null;
+  prefix?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
