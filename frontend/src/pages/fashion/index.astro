@@ -1,0 +1,23 @@
+---
+import { FilterIcon } from 'lucide-vue-next'
+import Layout from '@/layouts/Layout.astro'
+import CardFashion from '@/components/molecules/CardFashion.vue'
+---
+
+<Layout title="Explore fashion">
+  <div class="grid gap-4 grid-cols-12 mt-4">
+    <aside class="col-span-12 px-2 md:col-span-2">
+      <button class="button md:hidden">
+        <span>Open filters</span>
+        <FilterIcon />
+      </button>
+      <p class="hidden md:inline-block">Filters</p>
+    </aside>
+
+    <section class="w-full col-span-12 md:col-span-10 container--xl grid gap-2 grid-cols-2 sm:grid-cols-fashion md:gap-4 lg:gap-5">
+      {Array.from({ length: 12 }).map((fashion) => (
+        <CardFashion fashion={fashion} />
+      ))}
+    </section>
+  </div>
+</Layout>

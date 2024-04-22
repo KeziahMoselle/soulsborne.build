@@ -9,7 +9,7 @@ import {
 </script>
 
 <template>
-  <NavigationMenu class="self-stretch border-r *:h-full">
+  <NavigationMenu class="self-stretch border-r *:h-full z-50">
     <NavigationMenuList class="h-full">
       <NavigationMenuItem class="h-full flex items-center">
         <NavigationMenuTrigger class="h-full">

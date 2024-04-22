@@ -11,6 +11,7 @@ export default {
     extend: {
       gridTemplateColumns: {
         'er-builder': 'repeat(auto-fill, 128px)',
+        'fashion': 'repeat(auto-fill, 217px)',
       },
       colors: {
         border: 'hsl(var(--border))',
@@ -46,6 +47,11 @@ export default {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        gradient: {
+          one: 'rgba(45, 40, 26, 0)',
+          two: 'rgba(45, 40, 26, 0.435)',
+          three: 'rgba(45, 40, 26, 1)'
+        }
       },
       fontFamily: {
         display: ['garamond-premier-pro', ...defaultTheme.fontFamily.serif],
