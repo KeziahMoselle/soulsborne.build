@@ -44,7 +44,7 @@ async function preregister(e) {
         <input name="email" type="email" placeholder="Your best email address"
           class="w-full pl-8 pr-8 py-4 bg-white text-black border border-ring placeholder:italic md:text-xl leading-6 transition focus:invalid:border-destructive focus:border-primary focus:outline-none lg:pr-36"
           required />
-        <button class="button  sm:absolute sm:right-2 sm:top-2" :class="{ 'button--disabled': loading }">
+        <button class="button  sm:absolute sm:right-2 sm:top-2 sm:bottom-2" :class="{ 'button--disabled': loading }">
           <span v-if="!loading">Notify me</span>
           <span v-else>Loading...</span>
         </button>
