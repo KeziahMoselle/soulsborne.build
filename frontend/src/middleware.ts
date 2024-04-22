@@ -27,6 +27,10 @@ const beta = defineMiddleware(async ({ locals, url, redirect }, next) => {
       return next()
     }
 
+    if (url.pathname.includes('/api')) {
+      return next()
+    }
+
     if (AUTHORIZED_BETA_PATHNAMES.includes(url.pathname)) {
       return next()
     }
