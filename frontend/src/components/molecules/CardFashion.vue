@@ -7,7 +7,7 @@ import { Heart } from 'lucide-vue-next';
   <article class="group/fashion relative z-10 border border-accent w-full h-[330px] flex items-end pl-[10px] pr-[14px] pb-[14px] drop-shadow-sm">
     <div class="absolute inset-0 after:opacity-0 after:transition-opacity after:duration-300 after:ease-out after:absolute after:inset-0 after:bg-gradient-to-b after:from-gradient-one after:from-0% after:via-gradient-two after:via-70% after:to-gradient-three after:to-100% group-hover/fashion:after:opacity-100">
       <img
-        class="w-full h-full object-cover object-center"
+        class="w-full h-full object-cover object-center filter saturate-50 transition group-hover/fashion:saturate-100"
         src="/fashion-card.jpg"
         alt="Fashion example" />
     </div>
