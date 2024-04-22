@@ -33,7 +33,7 @@ const mainWeapons = computed(() => {
     props.build.mainhand_weapons.length > 0 &&
     props.build.offhand_weapons.length > 0
   ) {
-    return [props.build.mainhand_weapons[0], props.build.offhand_weapons[0]]
+    return [props.build.mainhand_weapons[0].weapon, props.build.offhand_weapons[0].weapon.value]
   }
 
   // No offhand but at least 1 mainhand
@@ -41,14 +41,18 @@ const mainWeapons = computed(() => {
     props.build.mainhand_weapons.length > 0 &&
     props.build.offhand_weapons.length === 0
   ) {
-    return props.build.mainhand_weapons.slice(0, 2).filter(Boolean)
+    return props.build.mainhand_weapons.slice(0, 2)
+      .filter(Boolean)
+      .map((i) => i.weapon)
   }
 
   if (
     props.build.offhand_weapons.length > 0 &&
     props.build.mainhand_weapons.length === 0
   ) {
-    return props.build.offhand_weapons.slice(0, 2).filter(Boolean)
+    return props.build.offhand_weapons.slice(0, 2)
+      .filter(Boolean)
+      .map((i) => i.weapon)
   }
 })
 
@@ -133,7 +137,7 @@ const backgroundImage = computed(() => {
     <!-- Build preview -->
     <div class="grid ml-8 mt-8 gap-2 grid-cols-2 lg:grid-cols-3">
       <EquipmentImage
-        v-for="{ weapon } in mainWeapons"
+        v-for="weapon in mainWeapons"
         :equipment="weapon"
         size="l"
       />

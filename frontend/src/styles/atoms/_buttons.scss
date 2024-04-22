@@ -1,6 +1,6 @@
 @layer components {
   .button {
-    @apply inline-flex text-white bg-primary font-display gap-x-2 px-7 py-2 text-xl leading-6 border border-accent transition hover:bg-accent hover:border-accent-foreground;
+    @apply inline-flex items-center text-white bg-primary font-display gap-x-2 px-7 py-2 text-xl leading-6 border border-accent transition hover:bg-accent hover:border-accent-foreground;
   }
 }
 

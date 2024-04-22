@@ -31,9 +31,9 @@ const beta = defineMiddleware(async ({ locals, url, redirect }, next) => {
       return next()
     }
 
-    return redirect('/', 307)
+    return redirect('/?unauthorized', 307)
   } catch {
-    return redirect('/', 307)
+    return redirect('/?unauthorized', 307)
   }
 })
 

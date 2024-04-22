@@ -5,6 +5,7 @@ import TranslateImages from '@/components/atoms/TranslateImages.vue'
 import { getMostVotedBuilds } from '@/api'
 import CardImage from '@/components/molecules/CardImage.vue'
 import PreregisterInput from '@/components/molecules/PreregisterInput.vue'
+import { BookPlus, MessageSquarePlusIcon, SquareKanbanIcon } from 'lucide-vue-next'
 
 const builds = await getMostVotedBuilds({ limit: 3 })
 
@@ -184,7 +185,7 @@ const CORE_MEMBERS = [
         src="/builder.png"
         alt="The builder that allows users to create builds"
       >
-        The builder can be used to easily create and share an existing build you have in-game.
+        The builder can be used to easily create and share an existing build you have in-game. The listing allows you to search for a build that uses a specific weapon or sorcery/incantation.
       </CardImage>
       <CardImage
         title="Fashion souls"
@@ -233,6 +234,17 @@ const CORE_MEMBERS = [
     <div
       class="bg-secondary border border-primary px-4 py-4 flex flex-col gap-y-8 lg:px-28 lg:py-8"
     >
+      <div class="flex justify-end items-center gap-4">
+        <div class="flex items-center gap-x-1">
+          <div class="size-3 rounded-full bg-white border"></div>
+          <span>Done</span>
+        </div>
+        <div class="flex items-center gap-x-1">
+          <div class="size-3 rounded-full bg-accent-foreground border"></div>
+          <span>Work in Progress</span>
+        </div>
+      </div>
+
       <article class="wysiwyg font-mono text-accent-foreground">
         <h4>v3.0.0 (No ETA)</h4>
         <ul>
@@ -249,6 +261,12 @@ const CORE_MEMBERS = [
             <ul>
               <li>Link items to items/NPCs to link their lore implications</li>
               <li>Make your own conclusions by reading the item's description and follow the NPCs/items relations</li>
+            </ul>
+          </li>
+          <li>
+            Database of items
+            <ul>
+              <li>Filterable list of items</li>
             </ul>
           </li>
           <li>Fashion souls</li>
@@ -293,6 +311,13 @@ const CORE_MEMBERS = [
           <li>Builder α</li>
         </ul>
       </article>
+
+      <div class="flex justify-center">
+        <a class="button" href="https://github.com/users/KeziahMoselle/projects/2">
+          <span>Checkout the full Roadmap</span>
+          <SquareKanbanIcon />
+        </a>
+      </div>
     </div>
   </section>
 
@@ -335,6 +360,22 @@ const CORE_MEMBERS = [
           ))
         }
       </div>
+
+      <p class="type-h2 text-center mt-10 md:mt-20">& contributors</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 text-xl">
+        <ul>
+          <li class="flex items-center gap-x-2">
+            <span>Randy</span>
+            <BookPlus class="size-4" />
+            <MessageSquarePlusIcon class="size-4" />
+          </li>
+          <li class="flex items-center gap-x-2">
+            <span>Zeph</span>
+            <MessageSquarePlusIcon class="size-4" />
+          </li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -372,13 +413,18 @@ const CORE_MEMBERS = [
           </li>
           <li>Upload the images of items in our CMS</li>
           <li>Double check if data are correct</li>
-          <li>Lore experts for the lore graph tree feature</li>
+          <li><span class="font-semibold text-accent-foreground">Lore experts</span> for the lore graph tree feature</li>
         </ul>
+        <p class="mt-4">We need <span class="font-semibold text-accent-foreground">beta testers</span> and <span class="font-semibold text-accent-foreground">feedback friends</span> too! Join the Discord :)</p>
       </div>
 
-      <div class="flex justify-center mt-8">
+      <div class="flex justify-center gap-4 mt-8">
         <a class="button button--discord" href="https://discord.gg/kpvXugU7Uk">
           Join us on Discord
+        </a>
+        <a class="button" href="https://github.com/KeziahMoselle/soulsborne.build">
+          GitHub
+          <img src="/icons/github.svg" alt="GitHub" loading="lazy" class="size-5" />
         </a>
       </div>
     </div>

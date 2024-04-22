@@ -6,6 +6,7 @@ import { Toaster } from 'vue-sonner'
 import { Menu } from 'lucide-vue-next'
 import GameSelect from '@/components/molecules/GameSelect.vue'
 import Logout from '@/components/Auth/Logout.vue'
+import Notifications from '@/components/atoms/Notifications.vue'
 
 interface Props {
   title: string
@@ -192,5 +193,6 @@ const { user } = Astro.locals
     </footer>
 
     <Toaster client:load />
+    <Notifications client:only />
   </body>
 </html>
