@@ -23,20 +23,38 @@ export const POST = async (req: NextRequest) => {
   if (user) {
     return Response.json({ message: 'Already logged in.' })
   }
+
   try {
     const body = bodySchema.parse(requestBody)
 
-    const user = await payload.create({
-      collection: 'users',
-      data: {
-        name: body.name,
-        email: body.email,
-        password: body.password,
-        roles: ['user'],
-      },
+    const hasBetaAccess = await payload.find({
+      collection: 'preregistrations',
+      where: {
+        email: {
+          equals: body.email.toLowerCase()
+        }
+      }
     })
 
-    return Response.json({ success: true, user })
+    if (hasBetaAccess.docs.length && hasBetaAccess.docs[0].is_beta) {
+      const user = await payload.create({
+        collection: 'users',
+        data: {
+          name: body.name,
+          email: body.email,
+          password: body.password,
+          roles: ['user'],
+        },
+      })
+
+      return Response.json({ success: true, user })
+    } else {
+      return new Response(JSON.stringify({
+        message: 'Email address does not have beta access.'
+      }), {
+        status: 400,
+      })
+    }
   } catch (error) {
     if (error instanceof ZodError) {
       payload.logger.error(`${error.message} ${error.issues.map((e) => e.message).join(', ')}`)

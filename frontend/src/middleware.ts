@@ -7,7 +7,7 @@ function parseJwt(token) {
   return JSON.parse(atob(base64));
 }
 
-const AUTHORIZED_BETA_PATHNAMES = ['/', '/builds', '/fashion', '/login']
+const AUTHORIZED_BETA_PATHNAMES = ['/', '/builds', '/fashion', '/register', '/login']
 
 const auth = defineMiddleware(async ({ cookies, locals }, next) => {
   try {

@@ -10,7 +10,7 @@ EXCEPTION
 END $$;
 
 DO $$ BEGIN
- CREATE TYPE "_enum__fashion_v_version_game_v" AS ENUM('er', 'ds', 'ds2', 'ds3', 'bb');
+ CREATE TYPE "enum__fashion_v_version_game" AS ENUM('er', 'ds', 'ds2', 'ds3', 'bb');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -28,7 +28,7 @@ EXCEPTION
 END $$;
 
 DO $$ BEGIN
- CREATE TYPE "_enum__er_affinities_v_version_type_v" AS ENUM('Physical', 'Magic', 'Flame', 'Golden', 'Occult');
+ CREATE TYPE "enum__er_affinities_v_version_type" AS ENUM('Physical', 'Magic', 'Flame', 'Golden', 'Occult');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -40,7 +40,7 @@ EXCEPTION
 END $$;
 
 DO $$ BEGIN
- CREATE TYPE "_enum__er_ammunitions_v_version_ammunition_type_v" AS ENUM('Bolt', 'Greatbolt');
+ CREATE TYPE "enum__er_ammunitions_v_version_ammunition_type" AS ENUM('Bolt', 'Greatbolt');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -52,7 +52,7 @@ EXCEPTION
 END $$;
 
 DO $$ BEGIN
- CREATE TYPE "_enum__er_armors_v_version_armor_type_v" AS ENUM('Helm', 'Chest', 'Gauntlet', 'Leg');
+ CREATE TYPE "enum__er_armors_v_version_armor_type" AS ENUM('Helm', 'Chest', 'Gauntlet', 'Leg');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -70,13 +70,13 @@ EXCEPTION
 END $$;
 
 DO $$ BEGIN
- CREATE TYPE "_enum__er_shields_v_version_shield_type_v" AS ENUM('Small Shield', 'Medium Shield', 'Greatshield');
+ CREATE TYPE "enum__er_shields_v_version_shield_type" AS ENUM('Small Shield', 'Medium Shield', 'Greatshield');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 
 DO $$ BEGIN
- CREATE TYPE "_enum__er_shields_v_version_scaling_letter_v" AS ENUM('S', 'A', 'B', 'C', 'D', 'E', 'TODO');
+ CREATE TYPE "enum__er_shields_v_version_scaling_letter" AS ENUM('S', 'A', 'B', 'C', 'D', 'E', 'TODO');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -88,7 +88,7 @@ EXCEPTION
 END $$;
 
 DO $$ BEGIN
- CREATE TYPE "_enum__er_weapons_v_version_scaling_letter_v" AS ENUM('S', 'A', 'B', 'C', 'D', 'E', 'TODO');
+ CREATE TYPE "enum__er_weapons_v_version_scaling_letter" AS ENUM('S', 'A', 'B', 'C', 'D', 'E', 'TODO');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS "_fashion_v" (
 	"version_description" jsonb,
 	"version_description_html" varchar,
 	"version_youtube_url" varchar,
-	"version_game" "_enum__fashion_v_version_game_v",
+	"version_game" "enum__fashion_v_version_game",
 	"version_votes_count" numeric,
 	"version_updated_at" timestamp(3) with time zone,
 	"version_created_at" timestamp(3) with time zone,
@@ -203,6 +203,7 @@ CREATE TABLE IF NOT EXISTS "media" (
 CREATE TABLE IF NOT EXISTS "preregistrations" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"email" varchar NOT NULL,
+	"is_beta" boolean,
 	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
 	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
 );
@@ -312,7 +313,7 @@ CREATE TABLE IF NOT EXISTS "_er_affinities_v" (
 	"version_name" varchar,
 	"version_description" jsonb,
 	"version_description_html" varchar,
-	"version_type" "_enum__er_affinities_v_version_type_v",
+	"version_type" "enum__er_affinities_v_version_type",
 	"version_updated_at" timestamp(3) with time zone,
 	"version_created_at" timestamp(3) with time zone,
 	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -356,7 +357,7 @@ CREATE TABLE IF NOT EXISTS "er_ammunitions_rels" (
 
 CREATE TABLE IF NOT EXISTS "_er_ammunitions_v" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"version_ammunition_type" "_enum__er_ammunitions_v_version_ammunition_type_v",
+	"version_ammunition_type" "enum__er_ammunitions_v_version_ammunition_type",
 	"version_name" varchar,
 	"version_description" jsonb,
 	"version_description_html" varchar,
@@ -416,7 +417,7 @@ CREATE TABLE IF NOT EXISTS "er_armors_rels" (
 
 CREATE TABLE IF NOT EXISTS "_er_armors_v" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"version_armor_type" "_enum__er_armors_v_version_armor_type_v",
+	"version_armor_type" "enum__er_armors_v_version_armor_type",
 	"version_name" varchar,
 	"version_description" jsonb,
 	"version_description_html" varchar,
@@ -774,7 +775,7 @@ CREATE TABLE IF NOT EXISTS "_er_shields_v_version_scaling" (
 	"_order" integer NOT NULL,
 	"_parent_id" integer NOT NULL,
 	"id" serial PRIMARY KEY NOT NULL,
-	"letter" "_enum__er_shields_v_version_scaling_letter_v" NOT NULL,
+	"letter" "enum__er_shields_v_version_scaling_letter" NOT NULL,
 	"_uuid" varchar
 );
 
@@ -788,7 +789,7 @@ CREATE TABLE IF NOT EXISTS "_er_shields_v_version_requirements" (
 
 CREATE TABLE IF NOT EXISTS "_er_shields_v" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"version_shield_type" "_enum__er_shields_v_version_shield_type_v",
+	"version_shield_type" "enum__er_shields_v_version_shield_type",
 	"version_name" varchar,
 	"version_description" jsonb,
 	"version_description_html" varchar,
@@ -1055,7 +1056,7 @@ CREATE TABLE IF NOT EXISTS "_er_weapons_v_version_scaling" (
 	"_order" integer NOT NULL,
 	"_parent_id" integer NOT NULL,
 	"id" serial PRIMARY KEY NOT NULL,
-	"letter" "_enum__er_weapons_v_version_scaling_letter_v" NOT NULL,
+	"letter" "enum__er_weapons_v_version_scaling_letter" NOT NULL,
 	"_uuid" varchar
 );
 

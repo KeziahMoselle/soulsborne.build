@@ -22,6 +22,11 @@ const Preregistrations: CollectionConfig = {
       unique: true,
       required: true,
     },
+    {
+      name: 'is_beta',
+      label: 'Has beta access?',
+      type: 'checkbox'
+    }
   ],
 }
 

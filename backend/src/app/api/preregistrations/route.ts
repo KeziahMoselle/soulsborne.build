@@ -20,7 +20,7 @@ export const POST = async (req: NextRequest) => {
     const result = await payload.create({
       collection: 'preregistrations',
       data: {
-        email,
+        email: email.toLowerCase(),
       },
     })
 

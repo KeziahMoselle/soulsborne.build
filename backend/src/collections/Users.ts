@@ -1,6 +1,6 @@
 import { CollectionConfig } from 'payload/types'
 import { isAdmin, isAdminFieldLevel } from '../access/isAdmin'
-import { isAdminOrSelf, isAdminOrSelfFieldLevel } from '../access/isAdminOrSelf'
+import { isAdminOrSelf } from '../access/isAdminOrSelf'
 import { lexicalHTML } from '@payloadcms/richtext-lexical'
 
 const Users: CollectionConfig = {
@@ -16,6 +16,9 @@ const Users: CollectionConfig = {
     read: () => true,
     update: isAdminOrSelf,
     delete: isAdminOrSelf,
+    admin({ req }) {
+      return req.user.roles.includes('admin')
+    },
   },
   fields: [
     {

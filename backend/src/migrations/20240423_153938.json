@@ -1,5 +1,5 @@
 {
-  "id": "903ef5d9-ac32-42e1-a47e-899a703181b3",
+  "id": "36e61c5d-7a95-475c-86dd-69159df987ea",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -493,7 +493,7 @@
         },
         "version_game": {
           "name": "version_game",
-          "type": "_enum__fashion_v_version_game_v",
+          "type": "enum__fashion_v_version_game",
           "primaryKey": false,
           "notNull": false
         },
@@ -992,6 +992,12 @@
           "type": "varchar",
           "primaryKey": false,
           "notNull": true
+        },
+        "is_beta": {
+          "name": "is_beta",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
         },
         "updated_at": {
           "name": "updated_at",
@@ -1887,7 +1893,7 @@
         },
         "version_type": {
           "name": "version_type",
-          "type": "_enum__er_affinities_v_version_type_v",
+          "type": "enum__er_affinities_v_version_type",
           "primaryKey": false,
           "notNull": false
         },
@@ -2304,7 +2310,7 @@
         },
         "version_ammunition_type": {
           "name": "version_ammunition_type",
-          "type": "_enum__er_ammunitions_v_version_ammunition_type_v",
+          "type": "enum__er_ammunitions_v_version_ammunition_type",
           "primaryKey": false,
           "notNull": false
         },
@@ -2804,7 +2810,7 @@
         },
         "version_armor_type": {
           "name": "version_armor_type",
-          "type": "_enum__er_armors_v_version_armor_type_v",
+          "type": "enum__er_armors_v_version_armor_type",
           "primaryKey": false,
           "notNull": false
         },
@@ -6310,7 +6316,7 @@
         },
         "letter": {
           "name": "letter",
-          "type": "_enum__er_shields_v_version_scaling_letter_v",
+          "type": "enum__er_shields_v_version_scaling_letter",
           "primaryKey": false,
           "notNull": true
         },
@@ -6436,7 +6442,7 @@
         },
         "version_shield_type": {
           "name": "version_shield_type",
-          "type": "_enum__er_shields_v_version_shield_type_v",
+          "type": "enum__er_shields_v_version_shield_type",
           "primaryKey": false,
           "notNull": false
         },
@@ -8794,7 +8800,7 @@
         },
         "letter": {
           "name": "letter",
-          "type": "_enum__er_weapons_v_version_scaling_letter_v",
+          "type": "enum__er_weapons_v_version_scaling_letter",
           "primaryKey": false,
           "notNull": true
         },
@@ -9467,8 +9473,8 @@
         "bb": "bb"
       }
     },
-    "_enum__fashion_v_version_game_v": {
-      "name": "_enum__fashion_v_version_game_v",
+    "enum__fashion_v_version_game": {
+      "name": "enum__fashion_v_version_game",
       "values": {
         "er": "er",
         "ds": "ds",
@@ -9495,8 +9501,8 @@
         "Occult": "Occult"
       }
     },
-    "_enum__er_affinities_v_version_type_v": {
-      "name": "_enum__er_affinities_v_version_type_v",
+    "enum__er_affinities_v_version_type": {
+      "name": "enum__er_affinities_v_version_type",
       "values": {
         "Physical": "Physical",
         "Magic": "Magic",
@@ -9512,8 +9518,8 @@
         "Greatbolt": "Greatbolt"
       }
     },
-    "_enum__er_ammunitions_v_version_ammunition_type_v": {
-      "name": "_enum__er_ammunitions_v_version_ammunition_type_v",
+    "enum__er_ammunitions_v_version_ammunition_type": {
+      "name": "enum__er_ammunitions_v_version_ammunition_type",
       "values": {
         "Bolt": "Bolt",
         "Greatbolt": "Greatbolt"
@@ -9528,8 +9534,8 @@
         "Leg": "Leg"
       }
     },
-    "_enum__er_armors_v_version_armor_type_v": {
-      "name": "_enum__er_armors_v_version_armor_type_v",
+    "enum__er_armors_v_version_armor_type": {
+      "name": "enum__er_armors_v_version_armor_type",
       "values": {
         "Helm": "Helm",
         "Chest": "Chest",
@@ -9557,16 +9563,16 @@
         "TODO": "TODO"
       }
     },
-    "_enum__er_shields_v_version_shield_type_v": {
-      "name": "_enum__er_shields_v_version_shield_type_v",
+    "enum__er_shields_v_version_shield_type": {
+      "name": "enum__er_shields_v_version_shield_type",
       "values": {
         "Small Shield": "Small Shield",
         "Medium Shield": "Medium Shield",
         "Greatshield": "Greatshield"
       }
     },
-    "_enum__er_shields_v_version_scaling_letter_v": {
-      "name": "_enum__er_shields_v_version_scaling_letter_v",
+    "enum__er_shields_v_version_scaling_letter": {
+      "name": "enum__er_shields_v_version_scaling_letter",
       "values": {
         "S": "S",
         "A": "A",
@@ -9589,8 +9595,8 @@
         "TODO": "TODO"
       }
     },
-    "_enum__er_weapons_v_version_scaling_letter_v": {
-      "name": "_enum__er_weapons_v_version_scaling_letter_v",
+    "enum__er_weapons_v_version_scaling_letter": {
+      "name": "enum__er_weapons_v_version_scaling_letter",
       "values": {
         "S": "S",
         "A": "A",
