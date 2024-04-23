@@ -707,6 +707,7 @@ export interface Media {
 export interface Preregistration {
   id: number;
   email: string;
+  is_beta?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
