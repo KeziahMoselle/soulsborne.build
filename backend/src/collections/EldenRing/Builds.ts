@@ -3,6 +3,7 @@ import { CollectionConfig } from 'payload/types'
 import { isPublic } from '../../access/isPublic'
 import { isUser } from '../../access/isUser'
 import { lexicalHTML } from '@payloadcms/richtext-lexical'
+import { isAdmin, isAdminFieldLevel } from '@/access/isAdmin'
 
 const ERBuilds: CollectionConfig = {
   slug: 'er-builds',
@@ -13,6 +14,10 @@ const ERBuilds: CollectionConfig = {
   admin: {
     group: 'Elden Ring',
     useAsTitle: 'name',
+    description: 'Builds created by users on the website',
+    hidden({ user }) {
+      return !user?.roles?.includes('admin')
+    },
   },
   access: {
     read: isPublic,
@@ -98,6 +103,10 @@ const ERBuilds: CollectionConfig = {
       hasMany: true,
       maxDepth: 0,
       unique: true,
+      access: {
+        create: isAdminFieldLevel,
+        update: isAdminFieldLevel
+      },
       admin: {
         position: 'sidebar'
       }
@@ -107,6 +116,10 @@ const ERBuilds: CollectionConfig = {
       label: 'Votes count',
       type: 'number',
       defaultValue: 0,
+      access: {
+        create: isAdminFieldLevel,
+        update: isAdminFieldLevel
+      },
       admin: {
         position: 'sidebar'
       }

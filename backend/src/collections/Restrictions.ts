@@ -1,6 +1,7 @@
 import { CollectionConfig } from 'payload/types'
 import { isPublic } from '../access/isPublic'
 import { lexicalHTML } from '@payloadcms/richtext-lexical'
+import { isAdmin } from '@/access/isAdmin'
 
 const Restrictions: CollectionConfig = {
   slug: 'restrictions',
@@ -12,7 +13,8 @@ const Restrictions: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    read: isPublic
+    read: isPublic,
+    delete: isAdmin,
   },
   fields: [
     {

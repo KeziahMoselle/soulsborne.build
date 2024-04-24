@@ -8,6 +8,9 @@ const Users: CollectionConfig = {
   auth: true,
   admin: {
     useAsTitle: 'email',
+    hidden({ user }) {
+      return !user?.roles?.includes('admin')
+    },
   },
   timestamps: true,
   disableDuplicate: true,
@@ -16,9 +19,6 @@ const Users: CollectionConfig = {
     read: () => true,
     update: isAdminOrSelf,
     delete: isAdminOrSelf,
-    admin({ req }) {
-      return req.user.roles.includes('admin')
-    },
   },
   fields: [
     {

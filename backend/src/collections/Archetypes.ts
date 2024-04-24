@@ -1,6 +1,7 @@
 import { CollectionConfig } from 'payload/types'
 import { isPublic } from '../access/isPublic'
 import { lexicalHTML } from '@payloadcms/richtext-lexical'
+import { isAdmin } from '@/access/isAdmin'
 
 const Archetypes: CollectionConfig = {
   slug: 'archetypes',
@@ -12,7 +13,8 @@ const Archetypes: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    read: isPublic
+    read: isPublic,
+    delete: isAdmin,
   },
   fields: [
     {

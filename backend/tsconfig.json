@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -19,11 +23,25 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@payload-config": ["./payload.config.ts"],
-      "@payload-types": ["./payload-types.ts"]
-    }
+      "@/*": [
+        "./src/*"
+      ],
+      "@payload-config": [
+        "./payload.config.ts"
+      ],
+      "@payload-types": [
+        "./payload-types.ts"
+      ]
+    },
+    "target": "ES2017"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

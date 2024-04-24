@@ -29,6 +29,7 @@ import SlidersMedia from '@/collections/SlidersMedia'
 
 // Games
 import ERCollections from '@/collections/EldenRing'
+import { isLocalStorageDisabled } from '@/utils/isLocalstorageDisabled'
 
 
 /**
@@ -68,6 +69,39 @@ const adapter = s3Adapter({
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+const plugins = []
+
+if (isLocalStorageDisabled) {
+  plugins.push(cloudStorage({
+    collections: {
+      media: {
+        adapter,
+        disablePayloadAccessControl: true,
+        generateFileURL: ({ filename, prefix }) => `https://cdn.soulsborne.build/${prefix}/${filename}`,
+        prefix: 'media',
+      },
+      'er-media': {
+        adapter,
+        disablePayloadAccessControl: true,
+        generateFileURL: ({ filename, prefix }) => `https://cdn.soulsborne.build/${prefix}/${filename}`,
+        prefix: 'er-media',
+      },
+      'fashion-media': {
+        adapter,
+        disablePayloadAccessControl: true,
+        generateFileURL: ({ filename, prefix }) => `https://cdn.soulsborne.build/${prefix}/${filename}`,
+        prefix: 'fashion-media',
+      },
+      'sliders-media': {
+        adapter,
+        disablePayloadAccessControl: true,
+        generateFileURL: ({ filename, prefix }) => `https://cdn.soulsborne.build/${prefix}/${filename}`,
+        prefix: 'sliders-media',
+      },
+    },
+  }))
+}
+
 export default buildConfig({
   cors: ALLOWED_ORIGINS,
   csrf: ALLOWED_ORIGINS,
@@ -91,40 +125,7 @@ export default buildConfig({
     // Games
     ...ERCollections,
   ],
-  plugins: [
-    cloudStorage({
-      collections: {
-        media: {
-          adapter,
-          disablePayloadAccessControl: true,
-          disableLocalStorage: true,
-          generateFileURL: ({ filename, prefix }) => `https://cdn.soulsborne.build/${prefix}/${filename}`,
-          prefix: 'media',
-        },
-        'er-media': {
-          adapter,
-          disablePayloadAccessControl: true,
-          disableLocalStorage: true,
-          generateFileURL: ({ filename, prefix }) => `https://cdn.soulsborne.build/${prefix}/${filename}`,
-          prefix: 'er-media',
-        },
-        'fashion-media': {
-          adapter,
-          disablePayloadAccessControl: true,
-          disableLocalStorage: true,
-          generateFileURL: ({ filename, prefix }) => `https://cdn.soulsborne.build/${prefix}/${filename}`,
-          prefix: 'fashion-media',
-        },
-        'sliders-media': {
-          adapter,
-          disablePayloadAccessControl: true,
-          disableLocalStorage: true,
-          generateFileURL: ({ filename, prefix }) => `https://cdn.soulsborne.build/${prefix}/${filename}`,
-          prefix: 'sliders-media',
-        },
-      },
-    }),
-  ],
+  plugins,
   secret: process.env.PAYLOAD_SECRET || 'jawliejfilwajefSEANlawefawfewag349jwgo3gj4w',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

@@ -1,6 +1,7 @@
 import { CollectionConfig } from 'payload/types'
 import { isPublic } from '../../access/isPublic'
 import { lexicalHTML } from '@payloadcms/richtext-lexical'
+import { isAdmin } from '@/access/isAdmin'
 
 const ERWeapons: CollectionConfig = {
   slug: 'er-weapons',
@@ -19,7 +20,8 @@ const ERWeapons: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    read: isPublic
+    read: isPublic,
+    delete: isAdmin,
   },
   timestamps: true,
   versions: true,
