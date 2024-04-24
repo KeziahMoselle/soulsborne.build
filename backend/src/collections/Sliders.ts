@@ -2,6 +2,7 @@ import { CollectionConfig } from 'payload/types'
 import { isPublic } from '../access/isPublic'
 import { isUser } from '../access/isUser'
 import { lexicalHTML } from '@payloadcms/richtext-lexical';
+import { isAdminFieldLevel } from '@/access/isAdmin';
 
 const Sliders: CollectionConfig = {
   slug: 'sliders',
@@ -9,9 +10,15 @@ const Sliders: CollectionConfig = {
     singular: 'Slider',
     plural: 'Sliders',
   },
+  admin: {
+    description: 'Sliders created by users',
+    hidden({ user }) {
+      return !user?.roles?.includes('admin')
+    },
+  },
   access: {
     read: isPublic,
-    create: isUser
+    create: isUser,
   },
   timestamps: true,
   fields: [
@@ -55,6 +62,10 @@ const Sliders: CollectionConfig = {
       hasMany: true,
       maxDepth: 0,
       unique: true,
+      access: {
+        create: isAdminFieldLevel,
+        update: isAdminFieldLevel
+      },
       admin: {
         position: 'sidebar'
       }
@@ -64,6 +75,10 @@ const Sliders: CollectionConfig = {
       label: 'Votes count',
       type: 'number',
       defaultValue: 0,
+      access: {
+        create: isAdminFieldLevel,
+        update: isAdminFieldLevel
+      },
       admin: {
         position: 'sidebar'
       }

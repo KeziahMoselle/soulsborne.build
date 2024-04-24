@@ -1,5 +1,6 @@
 import { CollectionConfig } from 'payload/types'
 import { isPublic } from '../../access/isPublic'
+import { isAdmin } from '@/access/isAdmin'
 
 const ERStatistics: CollectionConfig = {
   slug: 'er-classes',
@@ -12,7 +13,8 @@ const ERStatistics: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    read: isPublic
+    read: isPublic,
+    delete: isAdmin,
   },
   fields: [
     {

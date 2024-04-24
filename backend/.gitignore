@@ -41,3 +41,6 @@ next-env.d.ts
 .env
 
 /media
+/er-media
+/fashion-media
+/sliders-media

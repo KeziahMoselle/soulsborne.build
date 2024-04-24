@@ -3,12 +3,19 @@ import { isPublic } from '../access/isPublic'
 import { isUser } from '../access/isUser'
 import { GameSelectField } from '@/fields/GameSelectField';
 import { lexicalHTML } from '@payloadcms/richtext-lexical';
+import { isAdminFieldLevel } from '@/access/isAdmin';
 
 const Fashion: CollectionConfig = {
   slug: 'fashion',
   labels: {
     singular: 'Fashion',
     plural: 'Fashion',
+  },
+  admin: {
+    description: 'Fashion created by users',
+    hidden({ user }) {
+      return !user?.roles?.includes('admin')
+    },
   },
   access: {
     read: isPublic,
@@ -90,6 +97,10 @@ const Fashion: CollectionConfig = {
       hasMany: true,
       maxDepth: 0,
       unique: true,
+      access: {
+        create: isAdminFieldLevel,
+        update: isAdminFieldLevel
+      },
       admin: {
         position: 'sidebar'
       }
@@ -99,6 +110,10 @@ const Fashion: CollectionConfig = {
       label: 'Votes count',
       type: 'number',
       defaultValue: 0,
+      access: {
+        create: isAdminFieldLevel,
+        update: isAdminFieldLevel
+      },
       admin: {
         position: 'sidebar'
       }

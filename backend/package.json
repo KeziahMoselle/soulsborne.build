@@ -10,22 +10,24 @@
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
+    "ci": "payload migrate && pnpm build",
     "generate:types": "payload generate:types",
-    "seed": "tsx ./src/scripts/seed.ts"
+    "seed": "tsx ./src/scripts/seed.ts",
+    "seed:builds": "tsx ./src/scripts/seed-builds.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.552.0",
     "@aws-sdk/lib-storage": "^3.552.0",
-    "@payloadcms/db-postgres": "3.0.0-beta.12",
-    "@payloadcms/next": "3.0.0-beta.12",
-    "@payloadcms/plugin-cloud-storage": "3.0.0-beta.12",
-    "@payloadcms/richtext-lexical": "3.0.0-beta.12",
-    "@payloadcms/translations": "3.0.0-beta.12",
-    "@payloadcms/ui": "3.0.0-beta.12",
+    "@payloadcms/db-postgres": "3.0.0-beta.14",
+    "@payloadcms/next": "3.0.0-beta.14",
+    "@payloadcms/plugin-cloud-storage": "3.0.0-beta.14",
+    "@payloadcms/richtext-lexical": "3.0.0-beta.14",
+    "@payloadcms/translations": "3.0.0-beta.14",
+    "@payloadcms/ui": "3.0.0-beta.14",
     "aws-crt": "^1.21.1",
     "cross-env": "^7.0.3",
     "next": "^14.3.0-canary.7",
-    "payload": "3.0.0-beta.12",
+    "payload": "3.0.0-beta.14",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sharp": "0.32.6",
@@ -45,5 +47,5 @@
   "engines": {
     "node": ">=20"
   },
-  "packageManager": "pnpm@9.0.5"
+  "packageManager": "pnpm@8.15.7+sha256.50783dd0fa303852de2dd1557cd4b9f07cb5b018154a6e76d0f40635d6cee019"
 }

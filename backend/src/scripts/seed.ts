@@ -8,7 +8,7 @@ function fetchJSON(url) {
   return fetch(url).then((res) => res.json())
 }
 
-function getLexicalContent(type: 'quote' | 'paragraph', quote: string) {
+export function getLexicalContent(type: 'quote' | 'paragraph', quote: string) {
   const direction: 'ltr' = "ltr"
   return {
     "root": {
