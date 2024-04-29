@@ -22,7 +22,7 @@
     "@types/qs": "^6.9.14",
     "@vee-validate/zod": "^4.12.6",
     "@vueuse/core": "^10.9.0",
-    "astro": "^4.5.17",
+    "astro": "^4.7.0",
     "astro-seo": "^0.8.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
