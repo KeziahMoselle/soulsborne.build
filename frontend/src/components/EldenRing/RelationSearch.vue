@@ -44,7 +44,6 @@ const optionsGroups = computed(() =>
       .filter(item =>
         item.name.toLowerCase().includes(searchTerm.value.toLowerCase()),
       )
-      .splice(0, 50),
   ]),
 )
 const previewEquipment = computed(() => {
