@@ -33,7 +33,10 @@ const mainWeapons = computed(() => {
     props.build.mainhand_weapons.length > 0 &&
     props.build.offhand_weapons.length > 0
   ) {
-    return [props.build.mainhand_weapons[0].weapon, props.build.offhand_weapons[0].weapon.value]
+    return [
+      props.build.mainhand_weapons[0].weapon,
+      props.build.offhand_weapons[0].weapon.value,
+    ]
   }
 
   // No offhand but at least 1 mainhand
@@ -41,18 +44,20 @@ const mainWeapons = computed(() => {
     props.build.mainhand_weapons.length > 0 &&
     props.build.offhand_weapons.length === 0
   ) {
-    return props.build.mainhand_weapons.slice(0, 2)
+    return props.build.mainhand_weapons
+      .slice(0, 2)
       .filter(Boolean)
-      .map((i) => i.weapon)
+      .map(i => i.weapon)
   }
 
   if (
     props.build.offhand_weapons.length > 0 &&
     props.build.mainhand_weapons.length === 0
   ) {
-    return props.build.offhand_weapons.slice(0, 2)
+    return props.build.offhand_weapons
+      .slice(0, 2)
       .filter(Boolean)
-      .map((i) => i.weapon)
+      .map(i => i.weapon)
   }
 })
 
@@ -92,7 +97,7 @@ const backgroundImage = computed(() => {
         >
           <img
             class="size-8"
-            src="https://cdn.soulsborne.build/test%2Fbleed.png"
+            src="https://cdn-soulsborne.reverie.moe/test%2Fbleed.png"
             alt="bleed"
             loading="lazy"
           />
@@ -109,7 +114,12 @@ const backgroundImage = computed(() => {
             </Vue3Marquee>
           </p>
         </div>
-        <img class="w-full h-[44px]" src="/build-title.png" alt="" loading="lazy" />
+        <img
+          class="w-full h-[44px]"
+          src="/build-title.png"
+          alt=""
+          loading="lazy"
+        />
       </div>
 
       <LikeBuildButton :build="build" :has-voted="hasVoted" />

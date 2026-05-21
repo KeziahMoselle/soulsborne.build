@@ -30,7 +30,7 @@ const previewImage = computed(() => {
   }
 
   if (props.equipment) {
-    return 'https://cdn.soulsborne.build/test%2Fmainhand.png'
+    return 'https://cdn-soulsborne.reverie.moe/test%2Fmainhand.png'
   }
 
   return ''

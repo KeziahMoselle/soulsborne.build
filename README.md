@@ -59,7 +59,7 @@ You can view the backlog and roadmap here: https://github.com/users/KeziahMosell
   - The frontend is running in server mode so it makes use of [Cloudflare workers](https://workers.cloudflare.com/)
 - **Next.js** PayloadCMS app is hosted on an OVH VPS managed by [Coolify](https://coolify.io/)
 - **Assets** uploaded to PayloadCMS are uploaded to [Cloudflare R2](https://www.cloudflare.com/developer-platform/r2/)
-  - `cdn.soulsborne.build`
+  - `cdn-soulsborne.reverie.moe`
 
 ## Contributing
 

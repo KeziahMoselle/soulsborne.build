@@ -31,7 +31,6 @@ import SlidersMedia from '@/collections/SlidersMedia'
 import ERCollections from '@/collections/EldenRing'
 import { isLocalStorageDisabled } from '@/utils/isLocalstorageDisabled'
 
-
 /**
  * CORS
  */
@@ -72,44 +71,47 @@ const dirname = path.dirname(filename)
 const plugins = []
 
 if (isLocalStorageDisabled) {
-  plugins.push(cloudStorage({
-    collections: {
-      media: {
-        adapter,
-        disablePayloadAccessControl: true,
-        generateFileURL: ({ filename, prefix }) => `https://cdn.soulsborne.build/${prefix}/${filename}`,
-        prefix: 'media',
+  plugins.push(
+    cloudStorage({
+      collections: {
+        media: {
+          adapter,
+          disablePayloadAccessControl: true,
+          generateFileURL: ({ filename, prefix }) =>
+            `https://cdn-soulsborne.reverie.moe/${prefix}/${filename}`,
+          prefix: 'media',
+        },
+        'er-media': {
+          adapter,
+          disablePayloadAccessControl: true,
+          generateFileURL: ({ filename, prefix }) =>
+            `https://cdn-soulsborne.reverie.moe/${prefix}/${filename}`,
+          prefix: 'er-media',
+        },
+        'fashion-media': {
+          adapter,
+          disablePayloadAccessControl: true,
+          generateFileURL: ({ filename, prefix }) =>
+            `https://cdn-soulsborne.reverie.moe/${prefix}/${filename}`,
+          prefix: 'fashion-media',
+        },
+        'sliders-media': {
+          adapter,
+          disablePayloadAccessControl: true,
+          generateFileURL: ({ filename, prefix }) =>
+            `https://cdn-soulsborne.reverie.moe/${prefix}/${filename}`,
+          prefix: 'sliders-media',
+        },
       },
-      'er-media': {
-        adapter,
-        disablePayloadAccessControl: true,
-        generateFileURL: ({ filename, prefix }) => `https://cdn.soulsborne.build/${prefix}/${filename}`,
-        prefix: 'er-media',
-      },
-      'fashion-media': {
-        adapter,
-        disablePayloadAccessControl: true,
-        generateFileURL: ({ filename, prefix }) => `https://cdn.soulsborne.build/${prefix}/${filename}`,
-        prefix: 'fashion-media',
-      },
-      'sliders-media': {
-        adapter,
-        disablePayloadAccessControl: true,
-        generateFileURL: ({ filename, prefix }) => `https://cdn.soulsborne.build/${prefix}/${filename}`,
-        prefix: 'sliders-media',
-      },
-    },
-  }))
+    }),
+  )
 }
 
 export default buildConfig({
   cors: ALLOWED_ORIGINS,
   csrf: ALLOWED_ORIGINS,
   editor: lexicalEditor({
-    features: ({ defaultFeatures }) => [
-      ...defaultFeatures,
-      HTMLConverterFeature({}),
-    ],
+    features: ({ defaultFeatures }) => [...defaultFeatures, HTMLConverterFeature({})],
   }),
   collections: [
     // General collections

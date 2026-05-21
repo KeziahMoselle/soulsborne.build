@@ -17,7 +17,10 @@ const { user } = Astro.locals
 ---
 
 <!doctype html>
-<html class="h-full bg-background text-foreground font-display bg-pattern bg-repeat selection:bg-accent selection:text-white" lang="en">
+<html
+  class="h-full bg-background text-foreground font-display bg-pattern bg-repeat selection:bg-accent selection:text-white"
+  lang="en"
+>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -31,7 +34,7 @@ const { user } = Astro.locals
         basic: {
           title: `${title} | soulsborne.build`,
           type: 'image',
-          image: 'https://cdn.soulsborne.build/og/banner.jpg',
+          image: 'https://cdn-soulsborne.reverie.moe/og/banner.jpg',
         },
       }}
       twitter={{
@@ -41,7 +44,7 @@ const { user } = Astro.locals
         meta: [
           {
             name: 'twitter:image',
-            content: 'https://cdn.soulsborne.build/og/banner.jpg',
+            content: 'https://cdn-soulsborne.reverie.moe/og/banner.jpg',
           },
           { name: 'twitter:title', content: `${title} | soulsborne.build` },
         ],
@@ -114,8 +117,7 @@ const { user } = Astro.locals
               >
             </li>
             <li class="font-display text-xl leading-5">
-              <a href="/fashion">Fashion</a
-              >
+              <a href="/fashion">Fashion</a>
             </li>
             <li class="font-display text-xl leading-5">
               <a href="/builds">Builds</a>
@@ -173,8 +175,14 @@ const { user } = Astro.locals
 
           <nav class="flex justify-center items-center">
             <ul class="flex gap-x-6 text-xl leading-6">
-              <li><a class="hover:underline" href="#" data-astro-prefetch="false">Terms of Use</a></li>
-              <li><a class="hover:underline" href="#" data-astro-prefetch="false">Privacy Policy</a></li>
+              <li>
+                <a class="hover:underline" href="#" data-astro-prefetch="false"
+                  >Terms of Use</a>
+              </li>
+              <li>
+                <a class="hover:underline" href="#" data-astro-prefetch="false"
+                  >Privacy Policy</a>
+              </li>
             </ul>
           </nav>
         </div>
